@@ -284,7 +284,8 @@ INLINE void Font::Draw()
 	if (this->bSpace)
 		return;
 
-	pFont->Render(1.0f);
+	// TODO: remove delta
+	pFont->Render();
 }
 
 INLINE void Font::Update(f32 dt)

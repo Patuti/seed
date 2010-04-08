@@ -220,7 +220,7 @@ class Button : public IWidget, public IResource
 		virtual void SetDisabled(BOOL b);
 
 		// IRenderable
-		virtual void Render(f32 delta);
+		virtual void Render();
 
 		// IResource
 		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);

@@ -767,18 +767,16 @@ INLINE void Button::SetDisabled(BOOL b)
 	IWidget::SetDisabled(b);
 }
 
-INLINE void Button::Render(f32 delta)
+INLINE void Button::Render()
 {
-	UNUSED(delta);
-
 	if (bSpriteBased)
 	{
-		this->cSprite.Render(delta);
+		this->cSprite.Render();
 	}
 
 	if (bLabelBased)
 	{
-		this->cLabel.Render(delta);
+		this->cLabel.Render();
 	}
 
 	//DEBUG_BUTTON_RECT;

@@ -553,10 +553,8 @@ void Theora::ConfigureRendering()
 	#endif
 }
 
-void Theora::Render(f32 delta)
+void Theora::Render()
 {
-	UNUSED(delta);
-
 	if (pTexData != NULL)
 	{
 		glEnable(GL_TEXTURE_2D);

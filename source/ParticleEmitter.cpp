@@ -355,7 +355,7 @@ INLINE void ParticleEmitter::Update(f32 deltaTime)
 	bTransformationChanged = FALSE;
 }
 
-INLINE void ParticleEmitter::Render(f32 delta)
+INLINE void ParticleEmitter::Render()
 {
 	if (bEnabled)
 	{
@@ -364,7 +364,7 @@ INLINE void ParticleEmitter::Render(f32 delta)
 			if (!arParticles[i].bActive)
 				continue;
 
-			arParticles[i].Render(delta);
+			arParticles[i].Render();
 		}
 	}
 }

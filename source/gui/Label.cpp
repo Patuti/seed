@@ -40,7 +40,7 @@
 #include "Log.h"
 #include "Rect.h"
 #include "gui/Label.h"
-#include "Renderer2D.h"
+#include "ViewManager.h"
 #include "Screen.h"
 
 #define TAG		"[GUI::Label] "
@@ -106,10 +106,8 @@ void Label::Update(f32 dt)
 	}
 }
 
-void Label::Render(f32 delta)
+void Label::Render()
 {
-	UNUSED(delta);
-
 	cText.SetBlending(eBlendOperation);
 	cText.SetColor(iColor);
 	cText.SetScale(GetScaleX(), GetScaleY());

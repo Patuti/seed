@@ -65,18 +65,19 @@
 #include "Updater.h"
 #include "ModuleManager.h"
 #include "Cartridge.h"
+#include "ViewManager.h"
+#include "RendererManager.h"
 
 namespace Seed {
 
 namespace Private
 {
 	IGameApp	*pApplication 	= NULL;
-	IRenderer	*pRenderer 	= NULL;
 	BOOL		bInitialized 	= FALSE;
-	int		iArgc		= 0;
-	char		**pcArgv	= NULL;
+	int			iArgc			= 0;
+	char		**pcArgv		= NULL;
 	BOOL		bDisableSound	= FALSE;
-	f32		fCurrentTime	= 0.0f;
+	f32			fCurrentTime	= 0.0f;
 }
 
 ResourceManager glResourceManager("global");
@@ -119,11 +120,6 @@ INLINE void SetGameApp(IGameApp *app, int argc, char **argv)
 	CommandLineParse(argc, argv);
 }
 
-INLINE void SetRenderer(IRenderer *renderer)
-{
-	Private::pRenderer = renderer;
-}
-
 INLINE void WriteOut(const char *msg)
 {
 	if (Private::pApplication)
@@ -157,6 +153,8 @@ BOOL Initialize()
 	ret = ret && pModuleManager->Add(pFileSystem);
 	ret = ret && pModuleManager->Add(pCartridge);
 	ret = ret && pModuleManager->Add(pScreen);
+	ret = ret && pModuleManager->Add(pViewManager);
+	ret = ret && pModuleManager->Add(pRendererManager);
 
 	if (!Private::bDisableSound)
 		ret = ret && pModuleManager->Add(pSoundSystem);
@@ -216,15 +214,16 @@ void Update()
 
 	pUpdater->Run(dt, 1.0f / 60.0f); //60
 
-	Seed::Render(dt);
+	Seed::Render();
 }
 
-void Render(f32 delta)
+void Render()
 {
 #if !defined(_QT_)
-	Private::pRenderer->Render(delta);
+	//Private::pRenderer->Render(delta);
+	pViewManager->Render();
 #endif
-	pScreen->Update(delta);
+	pScreen->Update();
 }
 
 void Shutdown()

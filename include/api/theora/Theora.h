@@ -124,7 +124,7 @@ class Theora : /*public IVideo,*/ public IRenderable, public Thread
 		virtual void PlayToFrame(u32 frame);
 
 		// IRenderable
-		virtual void Render(f32 delta);
+		virtual void Render();
 		virtual void Update(f32 delta);
 
 		// Thread

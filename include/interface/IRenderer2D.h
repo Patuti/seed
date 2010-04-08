@@ -51,7 +51,6 @@ class IRenderer2D
 		virtual ~IRenderer2D();
 
 		virtual void ClearScreen(const PIXEL color) const;
-		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
 
 	private:
 		SEED_DISABLE_COPY(IRenderer2D);

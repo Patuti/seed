@@ -58,7 +58,7 @@ class IBasicMesh : public ITransformable2D
 
 		// IRenderable
 		virtual void Update(f32 dt);
-		virtual void Render(f32 dt);
+		virtual void Render();
 
 	protected:
 		void *operator new(size_t len);

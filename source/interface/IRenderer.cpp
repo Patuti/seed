@@ -165,36 +165,45 @@ INLINE void IRenderer::Update(const RenderableVector &vec, f32 delta) const
 	}
 }
 
-BOOL IRenderer::Render(f32 delta)
+INLINE void IRenderer::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill) const
 {
-	if (!IModule::IsEnabled())
-		return FALSE;
-
-	this->FilterObjects();
-	this->Culler();
-
-	this->Begin();
-		this->BeginRenderMask();
-		this->RenderScene(vMaskRenderables, delta);
-		this->RenderScene(vMaskRenderablesStatic, delta);
-
-		this->BeginRenderMasked();
-		this->RenderScene(vMaskedRenderables, delta);
-		this->RenderScene(vMaskedRenderablesStatic, delta);
-
-		this->BeginRenderUnmasked();
-		this->RenderScene(vVisibleRenderables, delta);
-		this->RenderScene(vVisibleRenderablesStatic, delta);
-
-		this->BeginRenderSpecial();
-		this->RenderScene(vSpecialRenderables, delta);
-		this->RenderScene(vSpecialRenderablesStatic, delta);
-	this->End();
-
-	return TRUE;
+	UNUSED(x);
+	UNUSED(y);
+	UNUSED(w);
+	UNUSED(h);
+	UNUSED(color);
+	UNUSED(fill);
+	SEED_ABSTRACT_METHOD;
 }
 
-INLINE void IRenderer::RenderScene(const RenderableVector &vec, f32 delta) const
+void IRenderer::Render()
+{
+	if (IModule::IsEnabled())
+	{
+		this->FilterObjects();
+		this->Culler();
+
+		this->Begin();
+			this->BeginRenderMask();
+			this->RenderScene(vMaskRenderables);
+			this->RenderScene(vMaskRenderablesStatic);
+
+			this->BeginRenderMasked();
+			this->RenderScene(vMaskedRenderables);
+			this->RenderScene(vMaskedRenderablesStatic);
+
+			this->BeginRenderUnmasked();
+			this->RenderScene(vVisibleRenderables);
+			this->RenderScene(vVisibleRenderablesStatic);
+
+			this->BeginRenderSpecial();
+			this->RenderScene(vSpecialRenderables);
+			this->RenderScene(vSpecialRenderablesStatic);
+		this->End();
+	}
+}
+
+INLINE void IRenderer::RenderScene(const RenderableVector &vec) const
 {
 	ConstRenderableVectorIterator it = vec.begin();
 	ConstRenderableVectorIterator end = vec.end();
@@ -204,7 +213,7 @@ INLINE void IRenderer::RenderScene(const RenderableVector &vec, f32 delta) const
 		IRenderable *obj = const_cast<IRenderable *>(*it);
 		ASSERT_NULL(obj);
 
-		obj->Render(delta);
+		obj->Render();
 	}
 }
 

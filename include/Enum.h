@@ -60,6 +60,8 @@ enum eObjectType
 	ObjectParticleEmitter,
 	ObjectParticleEmitterObject,
 	ObjectParticleManager,
+	ObjectViewManager,
+	ObjectRendererManager,
 
 	// System
 	ObjectConfiguration,

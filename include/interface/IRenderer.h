@@ -71,7 +71,9 @@ class IRenderer : public IUpdatable, public IModule
 		virtual ~IRenderer();
 
 		virtual void Update(const RenderableVector &vec, f32 delta) const;
-		virtual BOOL Render(f32 delta);
+		virtual void Render();
+
+		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
 
 		/// Set the buffer mode for this rendering engine
 		virtual void SetBufferMode(eBufferMode mode);
@@ -81,7 +83,7 @@ class IRenderer : public IUpdatable, public IModule
 
 		virtual void Begin() const;
 		virtual void End() const;
-		virtual void RenderScene(const RenderableVector &vec, f32 delta) const;
+		virtual void RenderScene(const RenderableVector &vec) const;
 
 		virtual void BeginRenderMask() const;
 		virtual void BeginRenderMasked() const;

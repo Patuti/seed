@@ -40,18 +40,13 @@
 #include "Array.h"
 #include "Config.h"
 #include "interface/IModule.h"
-#include "interface/IUpdatable.h"
-
-class IViewport
-{
-	public:
-		void Update(f32 dt) {};
-		void Render() {};
-};
 
 namespace Seed {
 
-class ViewManager : public IModule, public IUpdatable
+class IViewport;
+class IRenderer;
+
+class ViewManager : public IModule
 {
 	public:
 		static ViewManager instance;
@@ -63,7 +58,9 @@ class ViewManager : public IModule, public IUpdatable
 		virtual void Add(IViewport *view);
 		virtual void Remove(IViewport *view);
 
-		//BOOL Render();
+		virtual void Render();
+
+		virtual IRenderer *GetCurrentRenderer() const;
 
 		// IModule
 		virtual BOOL Initialize();
@@ -73,11 +70,6 @@ class ViewManager : public IModule, public IUpdatable
 		virtual void Disable();
 		virtual void Enable();
 
-		virtual void Render();
-
-		// IUpdatable
-		virtual BOOL Update(f32 dt);
-
 		// IObject
 		virtual const char *GetObjectName() const;
 		virtual int GetObjectType() const;
@@ -85,7 +77,9 @@ class ViewManager : public IModule, public IUpdatable
 	private:
 		SEED_DISABLE_COPY(ViewManager);
 
+	private:
 		Array<IViewport *, SEED_VIEWPORT_MAX> arViewport;
+		IViewport *pCurrentViewport;
 		BOOL bEnabled;
 };
 

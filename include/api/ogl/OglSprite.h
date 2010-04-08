@@ -67,7 +67,7 @@ class Sprite : public ISprite
 		virtual void Update(f32 delta);
 
 		// IRenderable
-		virtual void Render(f32 delta);
+		virtual void Render();
 
 	private:
 		SEED_DISABLE_COPY(Sprite);

@@ -112,9 +112,6 @@ class Screen : public IScreen
 		virtual BOOL Reset();
 		virtual BOOL Shutdown();
 
-		// IUpdatable
-		virtual BOOL Update(f32 dt);
-
 		virtual void Setup(u32 mode = SCREEN_AUTODETECTFS);
 		virtual void SetMode(u32 mode);
 		virtual void FadeOut();
@@ -127,6 +124,9 @@ class Screen : public IScreen
 
 		void SwapSurfaces();
 		void ApplyFade();
+
+		// IScreen
+		virtual void Update();
 
 	protected:
 		u32		surfaceSize;

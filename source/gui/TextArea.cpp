@@ -40,7 +40,7 @@
 #include "Log.h"
 #include "Rect.h"
 #include "gui/TextArea.h"
-#include "Renderer2D.h"
+#include "ViewManager.h"
 #include "Screen.h"
 #include "Number.h"
 
@@ -114,10 +114,8 @@ void TextArea::Update(f32 dt)
 	this->bTransformationChanged = FALSE;
 }
 
-void TextArea::Render(f32 delta)
+void TextArea::Render()
 {
-	UNUSED(delta);
-
 	DEBUG_TEXTAREA_RECT;
 
 	this->cText.SetBlending(this->eBlendOperation);

@@ -93,7 +93,7 @@ INLINE void Movie::Reset()
 	arTimelines.Truncate();
 }
 
-INLINE void Movie::Render(f32 delta)
+INLINE void Movie::Render()
 {
 	if (!this->bPlaying)
 		return;
@@ -108,10 +108,8 @@ INLINE void Movie::Render(f32 delta)
 			arTimelines[i]->SetRotation(this->GetRotation());
 		}
 
-		arTimelines[i]->Render(delta);
+		arTimelines[i]->Render();
 	}
-
-	UNUSED(delta);
 }
 
 INLINE const char *Movie::GetObjectName() const

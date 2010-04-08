@@ -29,60 +29,58 @@
  **
  *****************************************************************************/
 
-/*! \file ViewManager.cpp
-	\author	Danny Angelo Carminati Grein
+/*! \file RendererManager.cpp
+	\author	Everton Fernando Patitucci da Silva
 	\brief Renderer Manager
 */
 
-#include "ViewManager.h"
+#include "RendererManager.h"
 #include "Defines.h"
 #include "Log.h"
 #include "Enum.h"
-#include "interface/IViewport.h"
 #include "interface/IRenderer.h"
 
-#define TAG		"[ViewManager] "
+#define TAG		"[RendererManager] "
 
 namespace Seed {
 
-ViewManager ViewManager::instance;
+RendererManager RendererManager::instance;
 
-ViewManager::ViewManager()
-	: arViewport()
-	, pCurrentViewport(NULL)
+RendererManager::RendererManager()
+	: arRenderer()
 	, bEnabled(TRUE)
 {
-	arViewport.Truncate();
+	arRenderer.Truncate();
 }
 
-ViewManager::~ViewManager()
+RendererManager::~RendererManager()
 {
 	this->Reset();
 }
 
-INLINE BOOL ViewManager::Initialize()
+INLINE BOOL RendererManager::Initialize()
 {
 	IModule::Initialize();
 	
-	for (u32 i = 0; i < arViewport.Size(); i++)
+	for (u32 i = 0; i < arRenderer.Size(); i++)
 	{
-		arViewport[i]->GetRenderer()->Initialize();
+		arRenderer[i]->Initialize();
 	}
 
 	return TRUE;
 }
 
-INLINE BOOL ViewManager::Reset()
+INLINE BOOL RendererManager::Reset()
 {
-	arViewport.Truncate();
+	arRenderer.Truncate();
 	return IModule::Reset();
 }
 
-INLINE BOOL ViewManager::Shutdown()
+INLINE BOOL RendererManager::Shutdown()
 {
-	for (u32 i = 0; i < arViewport.Size(); i++)
+	for (u32 i = 0; i < arRenderer.Size(); i++)
 	{
-		arViewport[i]->GetRenderer()->Shutdown();
+		arRenderer[i]->Shutdown();
 	}
 
 	this->Reset();
@@ -90,14 +88,14 @@ INLINE BOOL ViewManager::Shutdown()
 	return IModule::Shutdown();
 }
 
-void ViewManager::Add(IViewport *view)
+void RendererManager::Add(IRenderer *renderer)
 {
-	ASSERT_NULL(view);
+	ASSERT_NULL(renderer);
 
 	BOOL found = FALSE;
-	for (u32 i = 0; i < arViewport.Size(); i++)
+	for (u32 i = 0; i < arRenderer.Size(); i++)
 	{
-		if (arViewport[i] == view)
+		if (arRenderer[i] == renderer)
 		{
 			found = TRUE;
 			break;
@@ -106,58 +104,35 @@ void ViewManager::Add(IViewport *view)
 
 	if (!found)
 	{
-		arViewport.Add();
-		arViewport[arViewport.Size() - 1] = view;
+		arRenderer.Add();
+		arRenderer[arRenderer.Size() - 1] = renderer;
 	}
 }
 
-void ViewManager::Remove(IViewport *view)
+void RendererManager::Remove(IRenderer *renderer)
 {
-	ASSERT_NULL(view);
-	arViewport.Remove(view);
+	ASSERT_NULL(renderer);
+	arRenderer.Remove(renderer);
 }
 
-INLINE void ViewManager::Disable()
+INLINE void RendererManager::Disable()
 {
 	bEnabled = FALSE;
 }
 
-INLINE void ViewManager::Enable()
+INLINE void RendererManager::Enable()
 {
 	bEnabled = TRUE;
 }
 
-INLINE void ViewManager::Render()
+INLINE const char *RendererManager::GetObjectName() const
 {
-	if (bEnabled)
-	{
-		u32 len = arViewport.Size();
-
-		for (u32 i = 0; i < len; i++)
-		{
-			pCurrentViewport = arViewport[i];
-			pCurrentViewport->Render();
-		}
-	}
-
-	pCurrentViewport = NULL;
+	return "RendererManager";
 }
 
-INLINE IRenderer *ViewManager::GetCurrentRenderer() const
+INLINE int RendererManager::GetObjectType() const
 {
-	ASSERT_MSG(pCurrentViewport, TAG "GetCurrentRenderer must be called within Render call.");
-
-	return pCurrentViewport->GetRenderer();
-}
-
-INLINE const char *ViewManager::GetObjectName() const
-{
-	return "ViewManager";
-}
-
-INLINE int ViewManager::GetObjectType() const
-{
-	return Seed::ObjectViewManager;
+	return Seed::ObjectRendererManager;
 }
 
 } // namespace

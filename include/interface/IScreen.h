@@ -39,7 +39,6 @@
 
 
 #include "IModule.h"
-#include "IUpdatable.h"
 
 
 namespace Seed {
@@ -51,7 +50,7 @@ class IRenderer;
 /**
 Any Screen implementation must implement this interface.
 */
-class IScreen : public IModule, public IUpdatable
+class IScreen : public IModule
 {
 	public:
 		IScreen();
@@ -125,6 +124,9 @@ class IScreen : public IModule, public IUpdatable
 
 		/// Sets the actual 2d renderer
 		virtual void SetRenderer(IRenderer *renderer); // FIXME: RenderManager
+
+		///
+		virtual void Update();
 
 		// IModule
 		virtual BOOL IsRequired() const;

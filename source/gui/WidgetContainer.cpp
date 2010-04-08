@@ -157,9 +157,8 @@ INLINE void WidgetContainer::SetDisabled(BOOL b)
 	}
 }
 
-INLINE void WidgetContainer::Render(f32 delta)
+INLINE void WidgetContainer::Render()
 {
-	UNUSED(delta);
 }
 
 INLINE void WidgetContainer::Add(IWidget *widget)

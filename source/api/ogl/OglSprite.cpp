@@ -178,13 +178,13 @@ void Sprite::Update(f32 delta)
 	bTransformationChanged = FALSE;
 }
 
-void Sprite::Render(f32 delta)
+void Sprite::Render()
 {
 	if (!this->bInitialized)
 		return;
 
-	this->Update(delta);
-	UNUSED(delta);
+	// TODO: do not call Update from here. Put it into Scene (?).
+	this->Update(0.0f);
 
 	Image *image = static_cast<Image *>(pFrameImage);
 	ASSERT(image);

@@ -71,9 +71,8 @@ INLINE void IRenderable::Reset()
 	this->bSpecial = FALSE;
 }
 
-INLINE void IRenderable::Render(f32 delta)
+INLINE void IRenderable::Render()
 {
-	UNUSED(delta);
 	SEED_ABSTRACT_METHOD;
 }
 

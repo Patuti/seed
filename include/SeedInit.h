@@ -67,15 +67,6 @@ namespace Seed {
  	*/
 	void SetGameApp(IGameApp *app, int argc, char **argv);
 
-	/// Set which IRenderer to use.
-	/**
- 	You must instantiate a IRenderer to use inside your Setup method, and then pass a pointer to Seed. This will be deprecated
-	anytime soon.
-
-	\param renderer A pointer to the IRenderer that you instantiated.
- 	*/
-	void SetRenderer(IRenderer *renderer);
-
 	/// Displays a output message by using IGameApp::WriteOut implementation.
 	/**
  	This method is a channeling point to all output messages that Seed will use. If you do not override IGameApp::WriteOut, it
@@ -108,7 +99,7 @@ namespace Seed {
 	/**
  	Renders the game state and will be called once per frame.
  	*/
-	void Render(f32 delta);
+	void Render();
 
 	/// Shutdown Seed
 	/**
@@ -122,9 +113,6 @@ namespace Seed {
 	{
 		/// A pointer to the IGameApp implementation.
 		extern IGameApp	*pApplication;
-
-		/// A pointer to the user IRenderer so Seed can query for informations and do operations with it.
-		extern IRenderer	*pRenderer;
 
 		/// Flag indicating that Seed is Initialized or not.
 		extern BOOL		bInitialized;

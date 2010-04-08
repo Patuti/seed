@@ -118,6 +118,10 @@
 #include <Timeline.h>
 #include <Movie.h>
 
+#include <interface/IViewport.h>
+#include <ViewManager.h>
+#include <RendererManager.h>
+
 #include <SeedInit.h>
 
 #if SEED_USE_THEORA == 1

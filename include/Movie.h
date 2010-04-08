@@ -62,7 +62,7 @@ class Movie : public ITransformable2D
 
 		// IRenderable
 		virtual void Update(f32 delta);
-		virtual void Render(f32 delta);
+		virtual void Render();
 
 		// IObject
 		virtual const char *GetObjectName() const;

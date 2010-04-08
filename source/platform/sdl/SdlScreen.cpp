@@ -44,6 +44,7 @@
 #include "MemoryManager.h"
 #include "Renderer.h"
 #include "SeedInit.h"
+#include "RendererManager.h"
 
 
 #define TAG "[Screen] "
@@ -458,14 +459,9 @@ BOOL Screen::Shutdown()
 	return TRUE;
 }
 
-INLINE BOOL Screen::Update(f32 dt)
+INLINE void Screen::Update()
 {
-	//if (!IScreen::Update(dt))
-	//	return FALSE;
-
 	this->SwapSurfaces();
-
-	return TRUE;
 }
 
 INLINE void Screen::FadeOut()
@@ -532,11 +528,11 @@ INLINE void Screen::ToggleFullscreen()
 	iFlags ^= SDL_FULLSCREEN;
 	
 	glResourceManager.Unload(Seed::ObjectImage);
-	pRenderer->Shutdown();
+	pRendererManager->Shutdown();
 	this->InitializeVideo();
 	//this->Shutdown();
 	//this->Initialize();
-	pRenderer->Initialize();
+	pRendererManager->Initialize();
 	glResourceManager.Reload(Seed::ObjectImage);
 #endif
 }
@@ -549,11 +545,11 @@ INLINE void Screen::SetMode(u32 mode)
 	this->InitializeVideo();
 #else
 	glResourceManager.Unload(Seed::ObjectImage);
-	pRenderer->Shutdown();
+	pRendererManager->Shutdown();
 	this->Shutdown();
 	IScreen::SetMode(mode);
 	this->Initialize();
-	pRenderer->Initialize();
+	pRendererManager->Initialize();
 	glResourceManager.Reload(Seed::ObjectImage);
 #endif
 }

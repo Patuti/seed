@@ -90,6 +90,10 @@ INLINE void IScreen::SetRenderer(IRenderer *renderer)
 	this->pRenderer = renderer;
 }
 
+INLINE void IScreen::Update()
+{
+}
+
 INLINE u32 IScreen::GetHeight() const
 {
 	return this->iHeight;

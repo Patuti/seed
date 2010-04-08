@@ -71,7 +71,7 @@ class WidgetContainer : public IWidget
 
 		// IRenderable
 		virtual void SetVisible(BOOL b);
-		virtual void Render(f32 delta);
+		virtual void Render();
 
 		// IObject
 		virtual const char *GetObjectName() const;

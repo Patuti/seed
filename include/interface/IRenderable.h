@@ -172,7 +172,7 @@ class IRenderable : public IObject
 		IRenderable();
 		virtual ~IRenderable();
 
-		virtual void Render(f32 delta);
+		virtual void Render();
 		virtual void Update(f32 delta);
 		virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
 		virtual void SetColor(f32 r, f32 g, f32 b, f32 a);

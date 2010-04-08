@@ -221,7 +221,7 @@ typedef u16  WideChar;
 #define WideChar	u16
 
 #ifdef DEBUG
-#define DEBUG_RECT(x, y, w, h, c) static_cast<Renderer2D *>(Seed::Private::pRenderer)->DrawRect(x, y, w, h, c);
+#define DEBUG_RECT(x, y, w, h, c) pViewManager->GetCurrentRenderer()->DrawRect(x, y, w, h, c);
 #else
 #define DEBUG_RECT(x, y, w, h, c)
 #endif

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="Seed"
 	ProjectGUID="{D5B9F9EE-D553-47C6-B1E8-10D5145F6472}"
 	RootNamespace="Seed"
@@ -240,6 +240,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\Configuration.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\Dictionary.cpp"
 				>
 			</File>
@@ -332,6 +336,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\RendererManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\ResourceGroup.cpp"
 				>
 			</File>
@@ -377,6 +385,10 @@
 			</File>
 			<File
 				RelativePath="..\source\Updater.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\ViewManager.cpp"
 				>
 			</File>
 			<Filter
@@ -571,6 +583,10 @@
 				Name="interface"
 				>
 				<File
+					RelativePath="..\source\interface\IBasicMesh.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\source\interface\ICartridge.cpp"
 					>
 				</File>
@@ -735,6 +751,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\source\interface\IViewport.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\source\interface\IWidget.cpp"
 					>
 				</File>
@@ -877,6 +897,10 @@
 			</File>
 			<File
 				RelativePath="..\include\Config.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Configuration.h"
 				>
 			</File>
 			<File
@@ -1044,6 +1068,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\include\RendererManager.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\ResourceGroup.h"
 				>
 			</File>
@@ -1147,6 +1175,10 @@
 				RelativePath="..\include\Vector3.h"
 				>
 			</File>
+			<File
+				RelativePath="..\include\ViewManager.h"
+				>
+			</File>
 			<Filter
 				Name="extra"
 				>
@@ -1214,6 +1246,10 @@
 			<Filter
 				Name="interface"
 				>
+				<File
+					RelativePath="..\include\interface\IBasicMesh.h"
+					>
+				</File>
 				<File
 					RelativePath="..\include\interface\ICartridge.h"
 					>
@@ -1376,6 +1412,10 @@
 				</File>
 				<File
 					RelativePath="..\include\interface\IUpdatable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\interface\IViewport.h"
 					>
 				</File>
 				<File

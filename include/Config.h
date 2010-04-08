@@ -85,6 +85,17 @@ Maximum amount of particles per emitter.
 */
 #define SEED_PARTICLES_MAX					500
 
+
+/*
+Maxium amount of viewports.
+*/
+#define SEED_VIEWPORT_MAX	32
+
+/*
+Maximum amount of renderers.
+*/
+#define SEED_RENDERER_MAX	16
+
 /*
 String Pools - Define the amount of each pool
 You MUST fine tune this accordingly your target platform, your needs and your use.

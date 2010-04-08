@@ -75,9 +75,6 @@ Renderer2D::Renderer2D()
 	, iDisplayList(0)
 	, nVboMeshType(GL_TRIANGLE_STRIP)
 {
-	Log(TAG "Initializing...");
-	this->Initialize();
-	Log(TAG "Initialization completed.");
 }
 
 Renderer2D::~Renderer2D()

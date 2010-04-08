@@ -29,69 +29,49 @@
  **
  *****************************************************************************/
 
-#include "interface/IBasicMesh.h"
-#include "ResourceManager.h"
-#include "MemoryManager.h"
-#include "Log.h"
+/*! \file IViewport.h
+	\author	Everton Fernando Patitucci da Silva
+	\brief Defines the Viewport interface.
+*/
+
+#ifndef __IVIEWPORT_H__
+#define __IVIEWPORT_H__
+
+#include "Defines.h"
+
 
 namespace Seed {
 
-IBasicMesh::IBasicMesh()
-	: ITransformable2D()
-	, pRes(NULL)
-	, pPool(NULL)
-	, arCustomVertexData(NULL)
-	, arCurrentVertexData(NULL)
-	, arCustomCoordsData(NULL)
-	, fTexS0(0.0f)
-	, fTexS1(0.0f)
-	, fTexT0(0.0f)
-	, fTexT1(0.0f)
-	, iNumVertices(0)
-	, iNumCustomCoords(0)
-	, nMeshType(Seed::TriangleStrip)
-{
-}
+class IRenderer;
 
-IBasicMesh::~IBasicMesh()
+/// Viewport Interface
+/**
+Interface for working with viewports.
+*/
+class IViewport
 {
-}
+	public:
+		IViewport();
+		virtual ~IViewport();
 
-INLINE void IBasicMesh::SetCustomVertexDataArray(Vector3f *myVertexData, u32 qty, eMeshType type)
-{
-	iNumVertices = qty;
-	arCustomVertexData = myVertexData;
-	nMeshType = type;
-}
+		virtual void Render();
 
-INLINE void IBasicMesh::SetCustomCoordsDataArray(f32 *myCoordsData, u32 qty)
-{
-	if (qty % 2 == 0)
-	{
-		iNumCustomCoords = qty;
-		arCustomCoordsData = myCoordsData;
-	}
-}
+		virtual void SetRenderer(IRenderer *renderer);
+		IRenderer *GetRenderer() const;
 
-void IBasicMesh::Update(f32 dt)
-{
-	UNUSED(dt);
-	SEED_ABSTRACT_METHOD;
-}
+		// IObject
+		virtual const char *GetObjectName() const;
 
-void IBasicMesh::Render()
-{
-	SEED_ABSTRACT_METHOD;
-}
+	private:
+		SEED_DISABLE_COPY(IViewport);
 
-void *IBasicMesh::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool);
-}
+	private:
+		IRenderer *pRenderer;
+};
 
-void IBasicMesh::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
-}
 
 } // namespace
+
+
+#endif // __IVIEWPORT_H__
+

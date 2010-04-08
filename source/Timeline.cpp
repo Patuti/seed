@@ -113,7 +113,7 @@ void Timeline::GotoAndPlay(const char *strKeyframeName)
 	iCurrentFrame	= iKeyframeFrom;
 }
 
-void Timeline::Render(f32 dt)
+void Timeline::Render()
 {
 	if (!pObject)
 		return;
@@ -134,7 +134,7 @@ void Timeline::Render(f32 dt)
 
 			iKeyframeFrom = 0;
 			iCurrentFrame = 0;
-			this->Render(dt);
+			this->Render();
 			return;
 		}
 	}

@@ -59,7 +59,7 @@ class Timeline
 		~Timeline();
 
 		void Reset();
-		void Render(f32 dt);
+		void Render();
 		void Rewind();
 
 		void AddKeyframe(u32 frame, Keyframe *keyframe);

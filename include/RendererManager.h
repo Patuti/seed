@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -29,69 +29,55 @@
  **
  *****************************************************************************/
 
-#include "interface/IBasicMesh.h"
-#include "ResourceManager.h"
-#include "MemoryManager.h"
-#include "Log.h"
+/*! \file RendererManager.h
+	\author	Everton Fernando Patitucci da Silva
+	\brief Renderer Manager
+*/
+
+#ifndef __RENDERER_MANAGER_H__
+#define __RENDERER_MANAGER_H__
+
+#include "Array.h"
+#include "Config.h"
+#include "interface/IModule.h"
 
 namespace Seed {
 
-IBasicMesh::IBasicMesh()
-	: ITransformable2D()
-	, pRes(NULL)
-	, pPool(NULL)
-	, arCustomVertexData(NULL)
-	, arCurrentVertexData(NULL)
-	, arCustomCoordsData(NULL)
-	, fTexS0(0.0f)
-	, fTexS1(0.0f)
-	, fTexT0(0.0f)
-	, fTexT1(0.0f)
-	, iNumVertices(0)
-	, iNumCustomCoords(0)
-	, nMeshType(Seed::TriangleStrip)
-{
-}
+class IRenderer;
 
-IBasicMesh::~IBasicMesh()
+class RendererManager : public IModule
 {
-}
+	public:
+		static RendererManager instance;
 
-INLINE void IBasicMesh::SetCustomVertexDataArray(Vector3f *myVertexData, u32 qty, eMeshType type)
-{
-	iNumVertices = qty;
-	arCustomVertexData = myVertexData;
-	nMeshType = type;
-}
+	public:
+		RendererManager();
+		virtual ~RendererManager();
 
-INLINE void IBasicMesh::SetCustomCoordsDataArray(f32 *myCoordsData, u32 qty)
-{
-	if (qty % 2 == 0)
-	{
-		iNumCustomCoords = qty;
-		arCustomCoordsData = myCoordsData;
-	}
-}
+		virtual void Add(IRenderer *renderer);
+		virtual void Remove(IRenderer *renderer);
 
-void IBasicMesh::Update(f32 dt)
-{
-	UNUSED(dt);
-	SEED_ABSTRACT_METHOD;
-}
+		// IModule
+		virtual BOOL Initialize();
+		virtual BOOL Reset();
+		virtual BOOL Shutdown();
 
-void IBasicMesh::Render()
-{
-	SEED_ABSTRACT_METHOD;
-}
+		virtual void Disable();
+		virtual void Enable();
 
-void *IBasicMesh::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool);
-}
+		// IObject
+		virtual const char *GetObjectName() const;
+		virtual int GetObjectType() const;
 
-void IBasicMesh::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
-}
+	private:
+		SEED_DISABLE_COPY(RendererManager);
+
+		Array<IRenderer *, SEED_RENDERER_MAX> arRenderer;
+		BOOL bEnabled;
+};
+
+RendererManager *const pRendererManager = &RendererManager::instance;
 
 } // namespace
+
+#endif // __RENDERER_MANAGER_H__
