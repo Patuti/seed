@@ -38,6 +38,7 @@
 #define __IVIEWPORT_H__
 
 #include "Defines.h"
+#include "Rect.h"
 
 
 namespace Seed {
@@ -57,16 +58,36 @@ class IViewport
 		virtual void Render();
 
 		virtual void SetRenderer(IRenderer *renderer);
-		IRenderer *GetRenderer() const;
+		virtual IRenderer *GetRenderer() const;
+
+		virtual void SetPosition(f32 x, f32 y);
+		virtual void SetWidth(f32 w);
+		virtual void SetHeight(f32 h);
+		
+		virtual f32 GetX() const;
+		virtual f32 GetY() const;
+		virtual f32 GetWidth() const;
+		virtual f32 GetHeight() const;
+		
+		virtual BOOL Contains(f32 x, f32 y);
 
 		// IObject
 		virtual const char *GetObjectName() const;
+		
+	
+	protected:
+		virtual void PrepareViewport();
+
+
+	protected:
+		Rect<f32> cArea;
+
 
 	private:
 		SEED_DISABLE_COPY(IViewport);
 
 	private:
-		IRenderer *pRenderer;
+		IRenderer *pRenderer; 
 };
 
 

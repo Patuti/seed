@@ -85,6 +85,9 @@ class Renderer : public IRenderer
 		virtual void BeginRenderUnmasked() const;
 		virtual void BeginRenderSpecial() const;
 		static GLint GetOpenGLMeshType(eMeshType type);
+		
+		// IRenderer
+		static void ClearScreen(const PIXEL color = 0);
 
 	protected:
 		BOOL Initialize();

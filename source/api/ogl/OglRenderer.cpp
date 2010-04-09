@@ -167,9 +167,20 @@ INLINE void Renderer::SetBufferMode(eBufferMode mode)
 	this->bufferMode = mode;
 }
 
+INLINE void Renderer::ClearScreen(const PIXEL color)
+{
+	if (color)
+	{
+		uPixel p;
+		p.pixel = color;
+
+		glClearColor(p.component.r / 255.0f, p.component.g / 255.0f, p.component.b / 255.0f, p.component.a / 255.0f);
+	}
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
 INLINE void Renderer::Begin() const
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 INLINE void Renderer::End() const

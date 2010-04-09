@@ -118,7 +118,7 @@
 #include <Timeline.h>
 #include <Movie.h>
 
-#include <interface/IViewport.h>
+#include <Viewport.h>
 #include <ViewManager.h>
 #include <RendererManager.h>
 

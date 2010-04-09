@@ -38,8 +38,8 @@
 #include "Defines.h"
 #include "Log.h"
 #include "Enum.h"
-#include "interface/IViewport.h"
-#include "interface/IRenderer.h"
+#include "Viewport.h"
+#include "Renderer.h"
 
 #define TAG		"[ViewManager] "
 
@@ -132,7 +132,8 @@ INLINE void ViewManager::Render()
 	if (bEnabled)
 	{
 		u32 len = arViewport.Size();
-
+		
+		Renderer::ClearScreen();
 		for (u32 i = 0; i < len; i++)
 		{
 			pCurrentViewport = arViewport[i];
@@ -149,6 +150,34 @@ INLINE IRenderer *ViewManager::GetCurrentRenderer() const
 
 	return pCurrentViewport->GetRenderer();
 }
+
+
+INLINE IViewport *ViewManager::GetCurrentViewport() const
+{
+	ASSERT_MSG(pCurrentViewport, TAG "GetCurrentViewport must be called within Render call.");
+
+	return pCurrentViewport;
+}
+
+
+INLINE IViewport *ViewManager::GetViewportAt(f32 x, f32 y)
+{
+	IViewport *ret = NULL;
+	if (bEnabled)
+	{
+		for (u32 i = 0; i < arViewport.Size(); i++)
+		{
+			if (arViewport[i]->Contains(x, y))
+			{
+				ret = arViewport[i];
+				break;
+			}
+		}
+	}
+	
+	return ret;
+}
+
 
 INLINE const char *ViewManager::GetObjectName() const
 {

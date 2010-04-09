@@ -48,6 +48,8 @@
 #include "EventInputPointer.h"
 #include "EventInputKeyboard.h"
 #include "EventSystem.h"
+#include "ViewManager.h"
+#include "Viewport.h"
 
 #include <SDL/SDL_syswm.h>
 
@@ -197,6 +199,7 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 
 			case SDL_MOUSEMOTION:
 			{
+				f32 x, y;
 				#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
 					this->fX = (f32)event.motion.x;
 					this->fY = (f32)event.motion.y;
@@ -204,14 +207,31 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 					this->fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
 					this->fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
 				#endif
+				
+				x = fX;
+				y = fY;
+				
+				Viewport *viewport = static_cast<Viewport*>(pViewManager->GetViewportAt(fX, fY));
+				f32 fw = 1.0f;
+				f32 fh = 1.0f;
+				if (viewport)
+				{
+					fw = (viewport->GetWidth());// * viewport->GetWidth());
+					fh = (viewport->GetHeight());// * viewport->GetHeight());
+					//x = viewport->GetX() + viewport->GetWidth() * fX;
+					//y = viewport->GetY() + viewport->GetHeight() * fY;
+					x = (fX - viewport->GetX()) / fw;
+					y = (fY - viewport->GetY()) / fh;
+				}
 
-				EventInputPointer ev(0, 0, 0, 0, this->fX, this->fY);
+				EventInputPointer ev(0, 0, 0, 0, x, y);
 				this->SendEventPointerMove(&ev);
 			}
 			break;
 
 			case SDL_MOUSEBUTTONUP:
 			{
+				f32 x, y;
 				#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
 					this->fX = (f32)event.motion.x;
 					this->fY = (f32)event.motion.y;
@@ -219,14 +239,31 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 					this->fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
 					this->fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
 				#endif
+				
+				x = fX;
+				y = fY;
+				
+				Viewport *viewport = static_cast<Viewport*>(pViewManager->GetViewportAt(fX, fY));
+				f32 fw = 1.0f;
+				f32 fh = 1.0f;
+				if (viewport)
+				{
+					fw = (viewport->GetWidth());// * viewport->GetWidth());
+					fh = (viewport->GetHeight());// * viewport->GetHeight());
+					//x = viewport->GetX() + viewport->GetWidth() * fX;
+					//y = viewport->GetY() + viewport->GetHeight() * fY;
+					x = (fX - viewport->GetX()) / fw;
+					y = (fY - viewport->GetY()) / fh;
+				}
 
-				const EventInputPointer ev(0, 0, 0, this->ConvertButtonFlags(event.button.button), fX, fY);
+				const EventInputPointer ev(0, 0, 0, this->ConvertButtonFlags(event.button.button), x, y);
 				this->SendEventPointerRelease(&ev);
 			}
 			break;
 
 			case SDL_MOUSEBUTTONDOWN:
 			{
+				f32 x, y;
 				#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
 					this->fX = (f32)event.motion.x;
 					this->fY = (f32)event.motion.y;
@@ -234,8 +271,24 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 					this->fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
 					this->fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
 				#endif
+				
+				x = fX;
+				y = fY;
+				
+				Viewport *viewport = static_cast<Viewport*>(pViewManager->GetViewportAt(fX, fY));
+				f32 fw = 1.0f;
+				f32 fh = 1.0f;
+				if (viewport)
+				{
+					fw = (viewport->GetWidth());// * viewport->GetWidth());
+					fh = (viewport->GetHeight());// * viewport->GetHeight());
+					//x = viewport->GetX() + viewport->GetWidth() * fX;
+					//y = viewport->GetY() + viewport->GetHeight() * fY;
+					x = (fX - viewport->GetX()) / fw;
+					y = (fY - viewport->GetY()) / fh;
+				}
 
-				const EventInputPointer ev(0, this->ConvertButtonFlags(event.button.button), 0, 0, fX, fY);
+				const EventInputPointer ev(0, this->ConvertButtonFlags(event.button.button), 0, 0, x, y);
 				this->SendEventPointerPress(&ev);
 			}
 			break;

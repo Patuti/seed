@@ -234,8 +234,7 @@ INLINE void ISprite::ReconfigureFrame()
 		fTexT0 = static_cast<f32>((iY) * rInvHeight);
 		fTexT1 = static_cast<f32>((iY + iHeight) * rInvHeight);
 	#else
-		f32 aspectW = 1;
-		f32 aspectH = static_cast<f32>(pScreen->GetHeight()) / static_cast<f32>(pScreen->GetWidth()) * aspectW;
+		f32 aspectH = pScreen->GetAspectRatio();
 
 		f32 w = (iWidth / static_cast<f32>(pFrame->iResolutionWidth)); //static_cast<f32>(pScreen->GetWidth());
 		f32 h = (iHeight / static_cast<f32>(pFrame->iResolutionHeight)); // static_cast<f32>(pScreen->GetHeight());
@@ -245,7 +244,7 @@ INLINE void ISprite::ReconfigureFrame()
 		ITransformable2D::SetWidth(w); // set normalized width
 		ITransformable2D::SetHeight(h); // set normalized height
 
-		this->fAspectWidth = w * aspectW;
+		this->fAspectWidth = w;
 		this->fAspectHeight = h * aspectH;
 		this->fAspectHalfWidth = this->fAspectWidth / 2.0f;
 		this->fAspectHalfHeight = this->fAspectHeight / 2.0f;

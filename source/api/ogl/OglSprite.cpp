@@ -49,6 +49,8 @@
 #include "SpriteObject.h"
 #include "Renderer2D.h"
 #include "Enum.h"
+#include "ViewManager.h"
+#include "Viewport.h"
 
 #include <math.h>
 #if defined(__APPLE_CC__)
@@ -130,6 +132,10 @@ void Sprite::Update(f32 delta)
 			vert[3] = Vector3f(+(f32)iHalfWidth, +(f32)iHalfHeight, fPriority);
 		#else
 			arCurrentVertexData = &vert[0];
+			/*vert[0] = Vector3f(-fAspectHalfWidth, -fAspectHalfHeight, fPriority);
+			vert[1] = Vector3f(+fAspectHalfWidth, -fAspectHalfHeight, fPriority);
+			vert[2] = Vector3f(-fAspectHalfWidth, +fAspectHalfHeight, fPriority);
+			vert[3] = Vector3f(+fAspectHalfWidth, +fAspectHalfHeight, fPriority);*/
 			vert[0] = Vector3f(-fAspectHalfWidth, -fAspectHalfHeight, fPriority);
 			vert[1] = Vector3f(+fAspectHalfWidth, -fAspectHalfHeight, fPriority);
 			vert[2] = Vector3f(-fAspectHalfWidth, +fAspectHalfHeight, fPriority);
@@ -141,19 +147,13 @@ void Sprite::Update(f32 delta)
 		arCurrentVertexData = arCustomVertexData;
 	}
 
-	/* Mover para viewport */
-	f32 fScreenWidth	= (f32)pScreen->GetWidth();
-	f32 fScreenHeight	= (f32)pScreen->GetHeight();
-	/* ^^^^ */
-
 	f32 x, y;
 	#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
 		x = this->iHalfWidth + ISprite::GetX();
 		y = this->iHalfHeight + ISprite::GetY();
 	#else
-		f32 ratio			= fScreenHeight / fScreenWidth;
 		x = this->fAspectHalfWidth + ISprite::GetX();
-		y = this->fAspectHalfHeight + ISprite::GetY() * ratio;
+		y = this->fAspectHalfHeight + ISprite::GetY() * pScreen->GetAspectRatio();
 	#endif
 
 	f32 lx = ISprite::GetLocalX();

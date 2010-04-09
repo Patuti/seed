@@ -191,7 +191,7 @@ BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 	if (this->Unload())
 	{
 		this->pPool = pool;
-		this->pFilename = "[dynamic qt image]";
+		this->pFilename = "[dynamic sdl image]";
 
 		this->fWidth = (f32)width / (f32)pScreen->GetWidth();
 		this->fHeight = (f32)height / (f32)pScreen->GetHeight();

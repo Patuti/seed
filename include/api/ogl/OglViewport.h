@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
-
+ 
  ** This file is part of the Seed Framework.
-
+ 
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
-
+ 
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -29,65 +29,48 @@
  **
  *****************************************************************************/
 
-/*! \file ViewManager.h
-	\author	Danny Angelo Carminati Grein
-	\brief View Manager
+/*! \file OglViewport.h
+	\author	Everton Fernando Patitucci da Silva
+	\brief Viewport OpenGL Implementation
 */
 
-#ifndef __VIEW_MANAGER_H__
-#define __VIEW_MANAGER_H__
 
-#include "Array.h"
-#include "Config.h"
-#include "interface/IModule.h"
+#ifndef __OGL_VIEWPORT_H__
+#define __OGL_VIEWPORT_H__
 
-namespace Seed {
+#include "Defines.h"
 
-class IViewport;
-class IRenderer;
+#if defined(_OGL_)
 
-class ViewManager : public IModule
+#include "interface/IViewport.h"
+
+
+namespace Seed { namespace OGL {
+
+
+class Viewport : public IViewport
 {
 	public:
-		static ViewManager instance;
+		Viewport();
+		virtual ~Viewport();
 
-	public:
-		ViewManager();
-		virtual ~ViewManager();
-
-		virtual void Add(IViewport *view);
-		virtual void Remove(IViewport *view);
-
-		virtual void Render();
-
-		virtual IRenderer *GetCurrentRenderer() const;
-		virtual IViewport *GetCurrentViewport() const;
-		
-		virtual IViewport *GetViewportAt(f32 x, f32 y);
-
-		// IModule
-		virtual BOOL Initialize();
-		virtual BOOL Reset();
-		virtual BOOL Shutdown();
-
-		virtual void Disable();
-		virtual void Enable();
-
-		// IObject
-		virtual const char *GetObjectName() const;
-		virtual int GetObjectType() const;
-
+	
+	protected:
+		// IViewport
+		virtual void PrepareViewport();
+	
+	
 	private:
-		SEED_DISABLE_COPY(ViewManager);
-
-	private:
-		Array<IViewport *, SEED_VIEWPORT_MAX> arViewport;
-		IViewport *pCurrentViewport;
-		BOOL bEnabled;
+		SEED_DISABLE_COPY(Viewport);
 };
 
-ViewManager *const pViewManager = &ViewManager::instance;
 
-} // namespace
+}} // namespace
 
-#endif // __VIEW_MANAGER_H__
+
+#else // _OGL_
+
+	#error "Include 'Viewport.h' instead 'api/ogl/OglViewport.h' directly."
+
+#endif // _OGL_
+#endif // __OGL_VIEWPORT_H__

@@ -47,10 +47,4 @@ IRenderer2D::~IRenderer2D()
 {
 }
 
-INLINE void IRenderer2D::ClearScreen(const PIXEL color) const
-{
-	UNUSED(color);
-	SEED_ABSTRACT_METHOD;
-}
-
 } // namespace

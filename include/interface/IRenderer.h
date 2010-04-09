@@ -89,6 +89,8 @@ class IRenderer : public IUpdatable, public IModule
 		virtual void BeginRenderMasked() const;
 		virtual void BeginRenderUnmasked() const;
 		virtual void BeginRenderSpecial() const;
+		
+		//static void ClearScreen(const PIXEL color = 0) const;
 
 		virtual void Sort(RenderableVector &vec);
 		virtual void Culler();

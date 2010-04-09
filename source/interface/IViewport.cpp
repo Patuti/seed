@@ -41,7 +41,8 @@
 namespace Seed {
 
 IViewport::IViewport()
-	: pRenderer(NULL)
+	: cArea(0.0f, 0.0f, 1.0f, 1.0f)
+	, pRenderer(NULL)
 {
 }
 
@@ -59,9 +60,57 @@ INLINE void IViewport::SetRenderer(IRenderer *renderer)
 }
 
 
+INLINE void IViewport::SetPosition(f32 x, f32 y)
+{
+	this->cArea.x = x;
+	this->cArea.y = y;
+}
+
+
+INLINE void IViewport::SetWidth(f32 w)
+{
+	this->cArea.width = w;
+}
+
+
+INLINE void IViewport::SetHeight(f32 h)
+{
+	this->cArea.height = h;
+}
+
+
 INLINE IRenderer *IViewport::GetRenderer() const
 {
 	return pRenderer;
+}
+
+
+INLINE f32 IViewport::GetX() const
+{
+	return cArea.x;
+}
+
+
+INLINE f32 IViewport::GetY() const
+{
+	return cArea.y;
+}
+
+
+INLINE f32 IViewport::GetWidth() const
+{
+	return cArea.width;
+}
+
+
+INLINE f32 IViewport::GetHeight() const
+{
+	return cArea.height;
+}
+
+
+INLINE void IViewport::PrepareViewport()
+{
 }
 
 
@@ -69,8 +118,15 @@ INLINE void IViewport::Render()
 {
 	if (pRenderer)
 	{
+		this->PrepareViewport();
 		pRenderer->Render();
 	}
+}
+
+
+INLINE BOOL IViewport::Contains(f32 x, f32 y)
+{
+	return cArea.Contains(x, y);
 }
 
 

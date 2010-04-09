@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
-
+ 
  ** This file is part of the Seed Framework.
-
+ 
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
-
+ 
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -29,65 +29,31 @@
  **
  *****************************************************************************/
 
-/*! \file ViewManager.h
-	\author	Danny Angelo Carminati Grein
-	\brief View Manager
+/*! \file Viewport.h
+	\author	Everton Fernando Patitucci da Silva
+	\brief Include selector
 */
 
-#ifndef __VIEW_MANAGER_H__
-#define __VIEW_MANAGER_H__
+#ifndef __VIEWPORT_H__
+#define __VIEWPORT_H__
 
-#include "Array.h"
+
 #include "Config.h"
-#include "interface/IModule.h"
 
-namespace Seed {
+#if defined(_WII_)
+	#include "platform/wii/WiiViewport.h"
+	using namespace Seed::WII;
+#endif // _WII_
 
-class IViewport;
-class IRenderer;
+#if defined(_SDL_) || defined(_QT_)
+	#include "api/ogl/OglViewport.h"
+	using namespace Seed::OGL;
+#endif // _SDL_
 
-class ViewManager : public IModule
-{
-	public:
-		static ViewManager instance;
+#if defined(_IPHONE_)
+	#include "platform/iphone/IphViewport.h"
+	using namespace Seed::iPhone;
+#endif // _IPHONE_
 
-	public:
-		ViewManager();
-		virtual ~ViewManager();
 
-		virtual void Add(IViewport *view);
-		virtual void Remove(IViewport *view);
-
-		virtual void Render();
-
-		virtual IRenderer *GetCurrentRenderer() const;
-		virtual IViewport *GetCurrentViewport() const;
-		
-		virtual IViewport *GetViewportAt(f32 x, f32 y);
-
-		// IModule
-		virtual BOOL Initialize();
-		virtual BOOL Reset();
-		virtual BOOL Shutdown();
-
-		virtual void Disable();
-		virtual void Enable();
-
-		// IObject
-		virtual const char *GetObjectName() const;
-		virtual int GetObjectType() const;
-
-	private:
-		SEED_DISABLE_COPY(ViewManager);
-
-	private:
-		Array<IViewport *, SEED_VIEWPORT_MAX> arViewport;
-		IViewport *pCurrentViewport;
-		BOOL bEnabled;
-};
-
-ViewManager *const pViewManager = &ViewManager::instance;
-
-} // namespace
-
-#endif // __VIEW_MANAGER_H__
+#endif // __VIEWPORT_H__

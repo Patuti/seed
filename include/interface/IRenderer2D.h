@@ -50,8 +50,6 @@ class IRenderer2D
 		IRenderer2D();
 		virtual ~IRenderer2D();
 
-		virtual void ClearScreen(const PIXEL color) const;
-
 	private:
 		SEED_DISABLE_COPY(IRenderer2D);
 };

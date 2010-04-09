@@ -89,7 +89,6 @@ class Renderer2D : public IRenderer2D, public Renderer
 		virtual void Begin() const;
 		virtual void End() const;
 
-		virtual void ClearScreen(const PIXEL color = 0) const;
 		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
 
 	private:

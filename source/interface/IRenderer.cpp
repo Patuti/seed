@@ -140,6 +140,12 @@ INLINE void IRenderer::BeginRenderSpecial() const
 	SEED_ABSTRACT_METHOD;
 }
 
+/*INLINE void IRenderer::ClearScreen(const PIXEL color) const
+{
+	UNUSED(color);
+	SEED_ABSTRACT_METHOD;
+}*/
+
 BOOL IRenderer::Update(f32 delta)
 {
 	if (!IModule::IsEnabled())

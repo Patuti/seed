@@ -135,18 +135,6 @@ INLINE BOOL Renderer2D::Shutdown()
 	return TRUE;
 }
 
-INLINE void Renderer2D::ClearScreen(const PIXEL color) const
-{
-	if (color)
-	{
-		uPixel p;
-		p.pixel = color;
-
-		glClearColor(p.component.r / 255.0f, p.component.g / 255.0f, p.component.b / 255.0f, p.component.a / 255.0f);
-	}
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
 INLINE void Renderer2D::Begin() const
 {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
