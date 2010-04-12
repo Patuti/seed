@@ -837,6 +837,10 @@
 						RelativePath="..\source\api\ogl\OglSprite.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\source\api\ogl\OglViewport.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="oal_ogg"
@@ -1177,6 +1181,10 @@
 			</File>
 			<File
 				RelativePath="..\include\ViewManager.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Viewport.h"
 				>
 			</File>
 			<Filter
@@ -1723,6 +1731,10 @@
 					</File>
 					<File
 						RelativePath="..\include\api\ogl\OglSprite.h"
+						>
+					</File>
+					<File
+						RelativePath="..\include\api\ogl\OglViewport.h"
 						>
 					</File>
 				</Filter>
