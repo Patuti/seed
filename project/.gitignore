@@ -1,1 +1,6 @@
 Makefile.*
+*.ncb
+*.suo
+*.user
+*.layout
+object_script*
