@@ -166,24 +166,24 @@ INLINE BOOL IWidget::IsDraggable() const
 	return this->bDraggable;
 }
 
-INLINE void IWidget::SetState(Seed::eWidgetState s)
+INLINE void IWidget::SetState(eWidgetState s)
 {
 	this->iStateStartTime = pTimer->GetMilliseconds();
 	this->iState = s;
 }
 
-INLINE Seed::eWidgetState IWidget::GetState() const
+INLINE eWidgetState IWidget::GetState() const
 {
 	return this->iState;
 }
 
-INLINE void IWidget::SetPlayerState(Seed::eWidgetState s, u32 i)
+INLINE void IWidget::SetPlayerState(eWidgetState s, u32 i)
 {
 	this->arPlayerStateStartTime[i] = pTimer->GetMilliseconds();
 	this->iPlayerState[i] = s;
 }
 
-INLINE Seed::eWidgetState IWidget::GetPlayerState(u32 i) const
+INLINE eWidgetState IWidget::GetPlayerState(u32 i) const
 {
 	return this->iPlayerState[i];
 }

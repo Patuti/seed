@@ -34,14 +34,13 @@
 	\brief Renderer OpenGL implementation
 */
 
-
 #ifndef __OGL_RENDERER_H__
 #define __OGL_RENDERER_H__
 
 #include "Defines.h"
 #include "Enum.h"
 
-#ifdef _OGL_
+#if defined(_OGL_)
 
 #include "interface/IRenderer.h"
 
@@ -90,7 +89,7 @@ struct RendererPacket
 	}
 };
 
-class Renderer : public IRenderer
+class SEED_CORE_API Renderer : public IRenderer
 {
 	friend class IScreen;
 
@@ -126,14 +125,9 @@ class Renderer : public IRenderer
 		BOOL CheckExtension(const char *extName);
 };
 
-
 }} // namespace
 
-
 #else // _OGL_
-
 	#error "Include 'Renderer.h' instead 'api/ogl/OglRenderer.h' directly."
-
 #endif // _OGL__
 #endif // __OGL_RENDERER_H__
-

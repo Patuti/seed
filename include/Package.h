@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,10 +34,8 @@
 	\brief Package system
 */
 
-
 #ifndef __PACKAGE_H__
 #define __PACKAGE_H__
-
 
 #include "Base.h"
 #include "interface/IResource.h"
@@ -45,20 +43,16 @@
 #include "File.h"
 #include "SeedInit.h"
 
-
 #include <map>
 
-
 namespace Seed {
-
 
 class ResourceManager;
 class IResource;
 
 IResource *PackageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
-
-class Package : public IResource
+class SEED_CORE_API Package : public IResource
 {
 	friend IResource *PackageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 	friend class PackageManager;
@@ -79,14 +73,11 @@ class Package : public IResource
 		void LockUnload();
 
 		// IResource
-		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
-		virtual BOOL Load(const void *data, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(const void *data, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual BOOL Unload();
 
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [](void *);
+		SEED_DISABLE_INSTANCING;
 
 	private:
 		Package();
@@ -97,9 +88,7 @@ class Package : public IResource
 		u32					iFilesAmount;
 };
 
-
 } // namespace
-
 
 #endif // __PACKAGE_H__
 

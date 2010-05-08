@@ -36,7 +36,7 @@
 
 #include "Sprite.h"
 
-#ifdef _OGL_
+#if defined(_OGL_)
 
 #include "FileSystem.h"
 #include "MemoryManager.h"
@@ -81,13 +81,11 @@ Sprite::~Sprite()
 
 u32 Sprite::GetWidthInPixel() const
 {
-	//return static_cast<Image *>(pFrame->pImage)->GetWidthInPixel();
 	return pFrameImage->GetWidthInPixel();
 }
 
 u32 Sprite::GetHeightInPixel() const
 {
-	//return static_cast<Image *>(pFrame->pImage)->GetHeightInPixel();
 	return pFrameImage->GetHeightInPixel();
 }
 
@@ -112,7 +110,7 @@ void Sprite::Update(f32 delta)
 
 	if (!arCustomVertexData)
 	{
-		#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+		#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 			arCurrentVertexData = &vert[0];
 			vert[0] = Vector3f(-(f32)iHalfWidth, -(f32)iHalfHeight, fPriority);
 			vert[1] = Vector3f(+(f32)iHalfWidth, -(f32)iHalfHeight, fPriority);
@@ -136,7 +134,7 @@ void Sprite::Update(f32 delta)
 	}
 
 	f32 x, y;
-	#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+	#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 		x = this->iHalfWidth + ISprite::GetX();
 		y = this->iHalfHeight + ISprite::GetY();
 	#else
@@ -198,6 +196,5 @@ void Sprite::Render()
 }
 
 }} // namespace
-
 
 #endif // _OGL_

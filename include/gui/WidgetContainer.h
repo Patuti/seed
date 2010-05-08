@@ -44,7 +44,7 @@
 
 namespace Seed {
 
-class WidgetContainer : public IWidget
+class SEED_CORE_API WidgetContainer : public IWidget
 {
 	public:
 		WidgetContainer();

@@ -90,6 +90,22 @@ void Label::Reset()
 	this->cText.Reset();
 }
 
+void Label::ReleaseText()
+{
+	this->iId				= 0;
+	this->iColor			= 0;
+	this->eBlendOperation	= Seed::BlendNone;
+
+	this->bVisible			= TRUE;
+	this->bChanged			= TRUE;
+	this->bTransformationChanged = TRUE;
+	this->bDisabled			= TRUE;
+	this->bAutoAdjust		= TRUE;
+	this->iAlign			= HorizontalAlignLeft;
+
+	this->cText.Reset();
+}
+
 void Label::Update(f32 dt)
 {
 	if (bChanged || bTransformationChanged)

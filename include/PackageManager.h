@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -41,31 +41,27 @@
 #include "MemoryManager.h"
 #include "SeedInit.h"
 #include "interface/IFileSystem.h"
+#include "Singleton.h"
 
 #include <map>
 
-
 namespace Seed {
-
 
 class ResourceManager;
 class Package;
 
-
-class PackageManager : public IModule
+class SEED_CORE_API PackageManager : public IModule
 {
 	friend class IFileSystem;
+	SEED_SINGLETON_DECLARE(PackageManager);
 
 	public:
 		typedef std::map<const char *, Package *, LowerThanStringComparator> PackageMap;
 		typedef std::map<const char *, Package *, LowerThanStringComparator>::iterator PackageMapIterator;
 
 	public:
-		PackageManager();
-		virtual ~PackageManager();
-
 		void AddRomPackage(const void *addr, const char *name);
-		void Add(const char *fileName, IMemoryPool *pool = pDefaultPool, ResourceManager *res = &glResourceManager);
+		void Add(const char *fileName, IMemoryPool *pool = pDefaultPool, ResourceManager *res = pResourceManager);
 		void Remove(const char *fileName);
 		void Clear();
 
@@ -76,15 +72,7 @@ class PackageManager : public IModule
 		// IObject
 		virtual const char *GetObjectName() const;
 
-	public:
-		static PackageManager instance;
-
 	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [](void *);
-
 		const void *GetFile(const char *fileName, u32 *fileSize);
 
 	private:
@@ -94,11 +82,10 @@ class PackageManager : public IModule
 		PackageMap 	mapPackage;
 };
 
-PackageManager *const pPackageManager = &PackageManager::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(PackageManager);
+}
 
 } // namespace
 
-
 #endif // __PACKAGEMANAGER_H__
-

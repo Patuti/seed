@@ -40,19 +40,13 @@
 #include "interface/ITransformable2D.h"
 #include "ParticleEmitterObject.h"
 
-//#include "Point.h"
-//#include "Particle.h"
-//#include "SeedInit.h"
-//#include "MemoryManager.h"
-//#include "Array.h"
-
 namespace Seed {
 
 class IImage;
 class ResourceManager;
 class IMemoryPool;
 
-class ParticleEmitter : public ISceneObject
+class SEED_CORE_API ParticleEmitter : public ISceneObject
 {
 	public:
 		ParticleEmitter();
@@ -63,7 +57,7 @@ class ParticleEmitter : public ISceneObject
 
 		virtual void SetFilter(eTextureFilterType type, eTextureFilter filter);
 
-		virtual void Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual void Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual void Unload();
 		virtual void Reset();
 
@@ -132,9 +126,6 @@ class ParticleEmitter : public ISceneObject
 		Particle					arParticles[SEED_PARTICLES_MAX];
 };
 
-
 } // namespace
 
-
 #endif // __PARTICLE_EMITTER_H__
-

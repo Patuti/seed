@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -85,57 +85,47 @@ ISprite::~ISprite()
 
 INLINE void ISprite::Reset()
 {
-	if (pFrameImage)
-		pFrameImage->Release();
+	sRelease(pFrameImage);
+	sRelease(pSprite);
 
-	if (pSprite)
-		pSprite->Release();
+	pAnimation		= NULL;
+	pFrame			= NULL;
+	pAnimationFrames = NULL;
+	bInitialized	= FALSE;
+	bChanged 		= FALSE;
+	bAnimation		= FALSE;
+	bLoop			= FALSE;
+	bVisible 		= TRUE;
+	bPlaying 		= FALSE;
 
-	this->pSprite = NULL;
-	this->pAnimation	= NULL;
-	this->pFrame		= NULL;
-	this->pFrameImage	= NULL;
-	this->pAnimationFrames = NULL;
-	this->bInitialized	= FALSE;
-	this->bChanged 		= FALSE;
-	this->bAnimation 	= FALSE;
-	this->bLoop 		= FALSE;
-	this->bVisible 		= TRUE;
-	this->bPlaying 		= FALSE;
-
-	this->iCurrentFrame = 0;
-	this->iFrames 		= 0;
+	iCurrentFrame = 0;
+	iFrames 		= 0;
 	fCurrentFrameRate	= 1.0f / SPRITE_GLOBAL_FRAME_TIME;
-	this->fFrameTime	= 0.0f;
-	this->iWidth 		= 0;
-	this->iHeight 		= 0;
-	this->iHalfWidth 	= 0;
-	this->iHalfHeight 	= 0;
+	fFrameTime	= 0.0f;
+	iWidth 		= 0;
+	iHeight 		= 0;
+	iHalfWidth 	= 0;
+	iHalfHeight 	= 0;
 
 	this->SetPriority(0);
 }
 
 INLINE BOOL ISprite::Unload()
 {
-	if (pFrameImage)
-		pFrameImage->Release();
+	sRelease(pFrameImage);
+	sRelease(pSprite);
 
-	if (pSprite)
-		pSprite->Release();
-
-	this->pSprite = NULL;
-	this->pAnimation	= NULL;
-	this->pFrame		= NULL;
-	this->pFrameImage	= NULL;
-	this->pAnimationFrames = NULL;
-	this->bInitialized = FALSE;
+	pAnimation		= NULL;
+	pFrame			= NULL;
+	pAnimationFrames = NULL;
+	bInitialized	= FALSE;
 
 	return TRUE;
 }
 
 INLINE BOOL ISprite::Load(const char *filename, IMemoryPool *pool)
 {
-	return this->Load(filename, &glResourceManager, pool);
+	return this->Load(filename, pResourceManager, pool);
 }
 
 BOOL ISprite::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
@@ -184,8 +174,8 @@ INLINE void ISprite::ReconfigureAnimation()
 	fFrameTime = 0.0f;
 
 	pFrame = &pAnimationFrames[iCurrentFrame];
-	if (pFrameImage)
-		pFrameImage->Release();
+
+	sRelease(pFrameImage);
 	pFrameImage = static_cast<IImage *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectImage, pPool));
 
 	this->ReconfigureFrame();
@@ -200,7 +190,7 @@ INLINE void ISprite::ReconfigureFrame()
 {
 	ASSERT_NULL(pFrameImage);
 
-	this->fCurrentFrameRate = 1.0f / static_cast<f32>(pFrame->iTime);
+	this->fCurrentFrameRate = 1.0f / static_cast<f32>(pFrame->iTime); // FIXME: iTime default value must be 1 not 0. <- division by zero
 
 	//if (this->bAnimation)
 	//	this->Play();
@@ -215,7 +205,7 @@ INLINE void ISprite::ReconfigureFrame()
 	else
 		this->iHeight = static_cast<u16>(pFrame->iHeight);
 
-	#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+	#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 		ITransformable2D::SetWidth((f32)this->iWidth);
 		ITransformable2D::SetHeight((f32)this->iHeight);
 
@@ -236,10 +226,8 @@ INLINE void ISprite::ReconfigureFrame()
 	#else
 		f32 aspectH = pScreen->GetAspectRatio();
 
-		f32 w = (iWidth / static_cast<f32>(pFrame->iResolutionWidth)); //static_cast<f32>(pScreen->GetWidth());
-		f32 h = (iHeight / static_cast<f32>(pFrame->iResolutionHeight)); // static_cast<f32>(pScreen->GetHeight());
-	//	f32 w = (iWidth / static_cast<f32>(pScreen->GetWidth()));
-	//	f32 h = (iHeight / static_cast<f32>(pScreen->GetHeight()));
+		f32 w = (iWidth / static_cast<f32>(pFrame->iResolutionWidth));
+		f32 h = (iHeight / static_cast<f32>(pFrame->iResolutionHeight));
 
 		ITransformable2D::SetWidth(w); // set normalized width
 		ITransformable2D::SetHeight(h); // set normalized height
@@ -252,8 +240,8 @@ INLINE void ISprite::ReconfigureFrame()
 		u32 iX = pFrame->iX;
 		u32 iY = pFrame->iY;
 
-		f32 rInvWidth = 1.0F / this->GetWidthInPixel(); // full width from image, not only frame area
-		f32 rInvHeight = 1.0F / this->GetHeightInPixel(); // full height from image, not only frame area
+		f32 rInvWidth = 1.0F / pFrameImage->GetAtlasWidthInPixel(); // full width from image, not only frame area
+		f32 rInvHeight = 1.0F / pFrameImage->GetAtlasHeightInPixel(); // full height from image, not only frame area
 
 		// Normalized Pixel Half Width/Height for pixel based vertex rendering
 		this->iHalfWidth = static_cast<s32>(pScreen->GetWidth() * (w / 2.0f));
@@ -494,8 +482,8 @@ void ISprite::Update(f32 delta)
 				iCurrentFrame++;
 
 			pFrame = &pAnimationFrames[iCurrentFrame];
-			if (pFrameImage)
-				pFrameImage->Release();
+
+			sRelease(pFrameImage);
 			pFrameImage = static_cast<IImage *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectImage, pPool));
 
 			this->ReconfigureFrame();
@@ -552,14 +540,6 @@ INLINE int ISprite::GetObjectType() const
 	return Seed::ObjectSprite;
 }
 
-void *ISprite::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool);
-}
-
-void ISprite::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
-}
+SEED_DISABLE_INSTANCING_IMPL(ISprite);
 
 } // namespace

@@ -47,7 +47,7 @@ namespace Seed {
 
 IResource *FontResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
-	Font *fnt = new Font();
+	Font *fnt = New(Font());
 	fnt->Load(filename, res, pool);
 
 	return fnt;
@@ -309,15 +309,6 @@ INLINE void Font::SetFilter(eTextureFilterType type, eTextureFilter filter)
 		img->SetFilter(type, filter);
 }
 
-void *Font::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool);
-}
-
-void Font::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
-}
-
+SEED_DISABLE_INSTANCING_IMPL(Font);
 
 } // namespace

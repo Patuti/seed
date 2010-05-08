@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,7 +34,6 @@
 	\brief Sprite Object information
 */
 
-
 #include "SpriteObject.h"
 #include "FileSystem.h"
 #include "Formats.h"
@@ -42,16 +41,13 @@
 #include "SeedInit.h"
 #include "StringCache.h"
 
-
 #define TAG		"[SpriteObject] "
-
 
 namespace Seed {
 
-
 IResource *SpriteResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
-	SpriteObject *spt = new SpriteObject();
+	SpriteObject *spt = New(SpriteObject());
 	spt->Load(filename, res, pool);
 
 	return spt;
@@ -75,21 +71,18 @@ BOOL SpriteObject::Unload()
 {
 	if (pAnimations)
 	{
-		if (pAnimationFrames)
-			pMemoryManager->Free(pAnimationFrames, pPool);
-			
-		pAnimationFrames 	= NULL;
+		pMemoryManager->Free(pAnimationFrames, pPool);
 		pAnimations 		= NULL;
 		pFrames 			= NULL;
-		
+
 		iMemory 	= 0;
 		iAnimations = 0;
 		bLoaded 	= FALSE;
-		
+
 		pFileSystem->Close(&stFile);
 
-#ifdef _WII_
-	#ifndef SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION
+#if defined(_WII_)
+	#if !defined(SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION)
 		pMemoryManager->Free((void *)pTplFile, pPool);
 		pTplFile = NULL;
 	#endif // SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION
@@ -116,8 +109,8 @@ BOOL SpriteObject::Load(const char *filename, ResourceManager *res, IMemoryPool 
 	TODO: 2008-10-29 | DESIGN | HIGH | CORE | Resource extension must be inside .sprite file. | Danny Angelo Carminati Grein
 	*/
 
-	#ifdef _WII_
-	#ifndef SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION
+	#if defined(_WII_)
+	#if !defined(SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION)
 		// Flawfinder: ignore
 		char tplName[128] = "\0";
 		std::map<const char *, u32, LowerThanStringComparator> frameIndex;
@@ -137,7 +130,7 @@ BOOL SpriteObject::Load(const char *filename, ResourceManager *res, IMemoryPool 
 
 		u32 id = 0;
 		u32 fid = 0;
-		
+
 		iTplFileId = pFileSystem->GetIdByFileName(pTplFile);
 	#endif // SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION
 	#endif // _WII_
@@ -158,19 +151,19 @@ BOOL SpriteObject::Load(const char *filename, ResourceManager *res, IMemoryPool 
 		iAnimations = hdr->animation_amount;
 		pAnimations = static_cast<ISprite::Animation *>((void *)ptr);
 		pAnimationFrames = (ISprite::Frame **)pMemoryManager->Alloc(iAnimations * sizeof(ISprite::Frame *), pool, "Animation Frame Pointers", "SpriteObject");
-		
+
 		// Skip animations
 		ISprite::Animation *anim;
 		for (u32 i = 0; i < iAnimations; i++)
 		{
 			READ_STRUCT(anim, ISprite::Animation, ptr);
 		}
-		
+
 		// Scan frames
 		ISprite::Frame *frame;
 		READ_STRUCT(frame, ISprite::Frame, ptr);
 		pFrames = frame;
-		
+
 		for (u32 i = 0; i < iAnimations; i++)
 		{
 			anim = &pAnimations[i];
@@ -179,11 +172,10 @@ BOOL SpriteObject::Load(const char *filename, ResourceManager *res, IMemoryPool 
 			for (u32 f = 0; f < anim->iFrames; f++)
 			{
 /*
-THIS IS HACK for Wii
-To use tpl as a container of images
+THIS IS A HACK for Wii To use tpl as a container of images
 */
-#ifdef _WII_
-	#ifndef SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION
+#if defined(_WII_)
+	#if !defined(SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION)
 				// check if it's using atlas
 				if (hdr->flags == 0x01)
 				{
@@ -201,26 +193,26 @@ To use tpl as a container of images
 						fid = id++;
 						frameIndex[str] = fid;
 					}
-					
+
 					frame->iFileId = iTplFileId;
 					frame->iId = fid;
 				}
-					
+
 	#else
 				frame->iId = 0;
 	#endif // SEED_USE_MULTIPLE_IMAGES_PER_ANIMATION
 #endif // _WII_
 				// Force frame caching
 				IResource *obj = res->Get(_F(frame->iFileId), Seed::ObjectImage, pool);
-				obj->Release(); // any garbage collect after this will wipe this object from cache
+				sRelease(obj); // any garbage collect after this will wipe this object from cache
 
 				READ_STRUCT(frame, ISprite::Frame, ptr);
 			}
 		}
-		
+
 		bLoaded = TRUE;
 	}
-					
+
 	return bLoaded;
 
 }
@@ -228,7 +220,7 @@ To use tpl as a container of images
 INLINE const ISprite::Animation *SpriteObject::GetAnimation(const char *anim) const
 {
 	const ISprite::Animation *p = NULL;
-	
+
 	u32 animId = pStringCache->GetIdByString(anim);
 	if (animId != SEED_INVALID_ID)
 	{
@@ -242,7 +234,7 @@ INLINE const ISprite::Animation *SpriteObject::GetAnimation(const char *anim) co
 		}
 	}
 	/*
-#ifdef DEBUG
+#if defined(DEBUG)
 	if (animId == SEED_INVALID_ID || p == NULL)
 	{
 		//Log(TAG "WARNING: Calling an animation '%s' that does not exists inside sprite '%s'.", anim, stFile.GetName());
@@ -287,15 +279,6 @@ INLINE int SpriteObject::GetObjectType() const
 	return Seed::ObjectSprite;
 }
 
-void *SpriteObject::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool, "Code", "SpriteObject");
-}
-
-void SpriteObject::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
-}
-
+SEED_DISABLE_INSTANCING_IMPL(SpriteObject);
 
 } // namespace

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -36,24 +36,21 @@
 
 #include "Music.h"
 
-#ifdef _OAL_OGG_
+#if defined(_OAL_OGG_)
 
 #include "Log.h"
 #include "SoundSystem.h"
 #include "Formats.h"
 
-
 #define TAG "[Music] "
 
-
 namespace Seed { namespace OAL {
-
 
 IResource *MusicResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
 	UNUSED(res);
 
-	Music *music = new Music();
+	Music *music = New(Music());
 	music->Load(filename, res, pool);
 
 	return music;
@@ -268,8 +265,6 @@ INLINE const void *Music::GetData() const
 	return this->iBuffers;
 }
 
-
 }} // namespace
-
 
 #endif // _OAL_

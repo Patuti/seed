@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,20 +37,17 @@
 #ifndef __SDL_SYSTEM_H__
 #define __SDL_SYSTEM_H__
 
-#ifdef _SDL_
+#if defined(_SDL_)
 
 #include "interface/ISystem.h"
-
+#include "Singleton.h"
 
 namespace Seed { namespace SDL {
 
-
-class System : public ISystem
+class SEED_CORE_API System : public ISystem
 {
+	SEED_SINGLETON_DECLARE(System);
 	public:
-		System();
-		virtual ~System();
-
 		// ISystem
 		virtual void GoToMenu();
 		virtual void Sleep();
@@ -87,9 +84,6 @@ class System : public ISystem
 		// IUpdatable
 		virtual BOOL Update(f32 dt);
 
-	public:
-		static System instance;
-
 	private:
 		SEED_DISABLE_COPY(System);
 
@@ -104,15 +98,13 @@ class System : public ISystem
 		u64 		iFpsTime;
 };
 
-System *const pSystem = &System::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(System);
+}
 
 }} // namespace
 
-
 #else // _SDL_
-
 	#error "Include 'System.h' instead 'platform/sdl/SdlSystem.h' directly."
-
 #endif // _SDL_
 #endif // __SDL_SYSTEM_H__

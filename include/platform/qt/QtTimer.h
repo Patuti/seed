@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,21 +37,18 @@
 #ifndef __QT_TIMER_H__
 #define __QT_TIMER_H__
 
-#ifdef _QT_
+#if defined(_QT_)
 
 #include "interface/ITimer.h"
 #include <QTime>
-
+#include "Singleton.h"
 
 namespace Seed { namespace QT {
 
-
 class Timer : public ITimer
 {
+	SEED_SINGLETON_DECLARE(Timer);
 	public:
-		Timer();
-		virtual ~Timer();
-
 		virtual BOOL Initialize();
 		virtual BOOL Reset();
 		virtual BOOL Shutdown();
@@ -60,22 +57,19 @@ class Timer : public ITimer
 		virtual void Sleep(u32 ms) const;
 
 	public:
-		static Timer instance;
 		QTime t;
 
 	private:
 		SEED_DISABLE_COPY(Timer);
 };
 
-Timer *const pTimer = &Timer::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(Timer);
+}
 
 }} // namespace
 
-
 #else // _QT_
-
 	#error "Include 'Timer.h' instead 'platform/qt/QtTimer.h' directly."
-
 #endif // _QT_
 #endif // __QT_TIMER_H__

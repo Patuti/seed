@@ -49,13 +49,13 @@ namespace Seed {
 class SpriteObject;
 class IImage;
 
-class ISprite : public IBasicMesh
+class SEED_CORE_API ISprite : public IBasicMesh
 {
 	public:
 		friend class ResourceLoader;
 
 	public:
-		struct Frame
+		struct SEED_CORE_API Frame
 		{
 			//ObjectHeader header;
 			u32		iIndex;
@@ -76,7 +76,7 @@ class ISprite : public IBasicMesh
 			//Frame() : iTime(0), iX(0), iY(0), iWidth(0), iHeight(0), iId(0), pName(NULL), pImageFile(NULL), pImage(NULL) {}
 		};
 
-		struct Animation
+		struct SEED_CORE_API Animation
 		{
 			//ObjectHeader header;
 			u32		iIndex;
@@ -94,7 +94,7 @@ class ISprite : public IBasicMesh
 		virtual ~ISprite();
 
 		virtual BOOL Load(const char *filename, IMemoryPool *pool);
-		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual BOOL Unload();
 
 		virtual const IImage *GetImage() const;
@@ -144,13 +144,10 @@ class ISprite : public IBasicMesh
 		virtual int GetObjectType() const;
 
 	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [] (void *);
-
 		virtual void ReconfigureAnimation();
 		virtual void ReconfigureFrame();
+
+		SEED_DISABLE_INSTANCING;
 
 	protected:
 		SpriteObject 	 *pSprite;

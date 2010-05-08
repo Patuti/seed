@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -39,7 +39,7 @@
 
 #include "Defines.h"
 
-#ifdef _OAL_OGG_
+#if defined(_OAL_OGG_)
 
 #include "interface/ISoundSystem.h"
 #include "interface/IResource.h"
@@ -47,6 +47,7 @@
 #include "Music.h"
 #include "File.h"
 #include "Array.h"
+#include "Singleton.h"
 
 #if defined(__APPLE_CC__)
 #include <OpenAL/al.h>
@@ -56,16 +57,12 @@
 
 #define SOUND_MASTER_VOLUME		0.2f
 
-
 namespace Seed { namespace OAL {
 
-
-class SoundSystem : public ISoundSystem
+class SEED_CORE_API SoundSystem : public ISoundSystem
 {
+	SEED_SINGLETON_DECLARE(SoundSystem);
 	public:
-		SoundSystem();
-		virtual ~SoundSystem();
-
 		// ISoundSystem
 		//virtual void PlayMusic(IMusic *mus, f32 ms = 0);
 		//virtual void StopMusic(f32 ms = 0, IMusic *mus = NULL);
@@ -84,9 +81,6 @@ class SoundSystem : public ISoundSystem
 		virtual BOOL Reset();
 		virtual BOOL Shutdown();
 
-	public:
-		static SoundSystem instance;
-
 	private:
 		SEED_DISABLE_COPY(SoundSystem);
 
@@ -98,16 +92,13 @@ class SoundSystem : public ISoundSystem
 		ALCcontext			*pContext;
 };
 
-
-SoundSystem *const pSoundSystem = &SoundSystem::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(SoundSystem);
+}
 
 }} // namespace
 
-
 #else // _OAL_OGG_
-
 	#error "Include 'SoundSystem.h' instead 'api/oal_ogg/OalOggSoundSystem.h' directly."
-
 #endif // _OAL_OGG_
 #endif // __OAL_OGG_SOUND_SYSTEM_H__

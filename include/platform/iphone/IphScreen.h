@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,10 +37,12 @@
 #ifndef __IPH_SCREEN_H__
 #define __IPH_SCREEN_H__
 
-#ifdef _IPHONE_
+#if defined(_IPHONE_)
 
 #include "interface/IScreen.h"
 #include "interface/IRenderer2D.h"
+#include "Singleton.h"
+
 #include <OpenGLES/ES1/gl.h>
 
 namespace Seed { namespace iPhone {
@@ -49,9 +51,8 @@ class IRenderer2D;
 
 class Screen : public IScreen
 {
+	SEED_SINGLETON_DECLARE(Screen);
 	public:
-		Screen();
-		virtual ~Screen();
 
 		// IScreen
 		virtual void Setup(u32 mode = LANDSCAPE);
@@ -76,9 +77,6 @@ class Screen : public IScreen
 			LANDSCAPE,
 			LANDSCAPE_GOOFY
 		};
-
-	public:
-		static Screen instance;
 
 	protected:
 		friend class Renderer;
@@ -115,7 +113,9 @@ class Screen : public IScreen
 		IRenderer2D *pRenderer;
 };
 
-Screen *const pScreen = &Screen::instance;
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(Screen);
+}
 
 }} // namespace
 

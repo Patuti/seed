@@ -84,14 +84,6 @@ void IBasicMesh::Render()
 	SEED_ABSTRACT_METHOD;
 }
 
-void *IBasicMesh::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool);
-}
-
-void IBasicMesh::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
-}
+SEED_DISABLE_INSTANCING_IMPL(IBasicMesh);
 
 } // namespace

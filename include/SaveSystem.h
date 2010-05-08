@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,20 +37,19 @@
 #ifndef __SAVESYSTEM_H__
 #define __SAVESYSTEM_H__
 
-
 #include "Cartridge.h"
-
+#include "Singleton.h"
 
 #define SAVESYSTEM_SLOT_UNUSED		(255)
 
-
 namespace Seed {
 
-
-class SaveSystem
+class SEED_CORE_API SaveSystem
 {
+	SEED_SINGLETON_DECLARE(SaveSystem);
+
 	public:
-		struct sSaveInfo
+		struct SEED_CORE_API sSaveInfo
 		{
 			u32 iID;
 			u32 iLastSlot;
@@ -58,13 +57,6 @@ class SaveSystem
 		};
 
 	public:
-		// Instance
-		static SaveSystem instance;
-
-	public:
-		SaveSystem();
-		virtual ~SaveSystem();
-
 		eCartridgeError Initialize(eCartridgeSize type);
 		eCartridgeError Prepare(u32 myId, void *slotBlankData, u32 slotDataSize, void *sharedBlankData = NULL, u32 sharedSize = 0);
 		eCartridgeError Check();
@@ -107,10 +99,10 @@ class SaveSystem
 		BOOL bInitialized;
 };
 
-SaveSystem *const pSaveSystem = &SaveSystem::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(SaveSystem);
+}
 
 } // namespace
 
 #endif // __SAVESYSTEM_H__
-

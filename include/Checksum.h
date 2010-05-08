@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,23 +34,19 @@
 	\brief Checksum calculation
 */
 
-
 #ifndef __CHECKSUM_H__
 #define __CHECKSUM_H__
 
-
 #include "Defines.h"
-
+#include "Singleton.h"
 
 namespace Seed {
 
 /// Helper class to calculate CRC checksums
-class Checksum
+class SEED_CORE_API Checksum
 {
+	SEED_SINGLETON_DECLARE(Checksum);
 	public:
-		Checksum();
-		~Checksum();
-
 		/// Sets the first polynomial to use when generating CRC tables
 		void 	SetPolynomial1(unsigned int polynomial);
 
@@ -59,25 +55,19 @@ class Checksum
 
 		/// Calculate a filename CRC (will ignore case and change '\' to '/'
 		/**
- 		\param name A file name
- 		*/
+		\param name A file name
+		*/
 		u64		Calculate(const char *name);
 
 		/// Calculate CRC from an arbitrary data until len size
 		/**
- 		\param data Pointer to the data to which generate a CRC
+		\param data Pointer to the data to which generate a CRC
 		\param len Size of the data
- 		*/
+		*/
 		u64		Calculate(const char *data, u32 len);
-
-
-	public:
-		static Checksum instance;
-
 
 	private:
 		SEED_DISABLE_COPY(Checksum);
-
 
 	private:
 		unsigned int	iPolynomial1;
@@ -88,11 +78,10 @@ class Checksum
 
 };
 
-
-Checksum *const pChecksum = &Checksum::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(Checksum);
+}
 
 } // namespace
-
 
 #endif // __CHECKSUM_H__

@@ -41,6 +41,7 @@
 #include "interface/IEventWidgetListener.h"
 #include "interface/ISceneObject.h"
 #include "interface/IInput.h"
+#include "Enum.h"
 
 #include <vector>
 #include <algorithm>
@@ -49,7 +50,7 @@ namespace Seed {
 
 class WidgetContainer;
 
-class IWidget : public ISceneObject, public IEventWidgetListener
+class SEED_CORE_API IWidget : public ISceneObject, public IEventWidgetListener
 {
 	public:
 		IWidget();
@@ -72,11 +73,11 @@ class IWidget : public ISceneObject, public IEventWidgetListener
 		virtual void SetDraggable(BOOL b);
 		virtual BOOL IsDraggable() const;
 
-		void SetState(Seed::eWidgetState s);
-		Seed::eWidgetState GetState() const;
+		void SetState(eWidgetState s);
+		eWidgetState GetState() const;
 
-		void SetPlayerState(Seed::eWidgetState s, u32 i = 0);
-		Seed::eWidgetState GetPlayerState(u32 i = 0) const;
+		void SetPlayerState(eWidgetState s, u32 i = 0);
+		eWidgetState GetPlayerState(u32 i = 0) const;
 
 		u64 GetPlayerStateStartTime(u32 i) const;
 		u64 GetStateStartTime() const;
@@ -117,11 +118,11 @@ class IWidget : public ISceneObject, public IEventWidgetListener
 		BOOL	bChanged;
 		BOOL	bDraggable;
 
-		Seed::eWidgetState 	iState;
-		Seed::eWidgetState 	iPlayerState[PLATFORM_MAX_INPUT];
-		u64					arPlayerStateStartTime[PLATFORM_MAX_INPUT];
+		eWidgetState	iState;
+		eWidgetState	iPlayerState[PLATFORM_MAX_INPUT];
+		u64				arPlayerStateStartTime[PLATFORM_MAX_INPUT];
 
-		Seed::eInputButton iButton;
+		eInputButton iButton;
 
 	private:
 		SEED_DISABLE_COPY(IWidget);

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,8 +34,7 @@
 	\brief Image SDL Implementation
 */
 
-
-#ifdef _SDL_
+#if defined(_SDL_)
 
 #include "Image.h"
 #include "FileSystem.h"
@@ -46,9 +45,7 @@
 
 #define TAG "[Image] "
 
-
 namespace Seed { namespace SDL {
-
 
 const char *const pImageFormatTable[] = {"TGA", "PNG", "JPG"};
 enum eImageFormat
@@ -60,7 +57,7 @@ enum eImageFormat
 
 IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
-	Image *image = new Image();
+	Image *image = New(Image());
 	image->Load(filename, res, pool);
 
 	return image;
@@ -158,10 +155,58 @@ BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 			ASSERT_NULL(pSurface);
 			SDL_FreeSurface(tmp);
 
-			iWidth = pSurface->w;
+			iWidth	= pSurface->w;
 			iHeight = pSurface->h;
+
+			/*
+			If the image isn't power of two, we need fix it.
+			*/
+			u32 width = 1;
+			while (width < iWidth)
+				width *= 2;
+
+			u32 height = 1;
+			while (height < iHeight)
+				height *= 2;
+
+			if (width != iWidth || height != iHeight)
+			{
+				Log(TAG "WARNING: Image size not optimal, changing from %dx%d to %dx%d", iWidth, iHeight, width, height);
+
+				SDL_Surface *pTempSurface = NULL;
+				Uint32 rmask, gmask, bmask, amask;
+
+				#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+					rmask = 0xff000000;
+					gmask = 0x00ff0000;
+					bmask = 0x0000ff00;
+					amask = 0x000000ff;
+				#else
+					rmask = 0x000000ff;
+					gmask = 0x0000ff00;
+					bmask = 0x00ff0000;
+					amask = 0xff000000;
+				#endif
+
+				pTempSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA , width, height, 32, bmask, gmask, rmask, amask);
+
+				SDL_SetAlpha(pTempSurface, 0, SDL_ALPHA_OPAQUE);
+				SDL_SetAlpha(pSurface, 0, SDL_ALPHA_OPAQUE);
+				SDL_BlitSurface(pSurface, NULL, pTempSurface, NULL);
+				SDL_SetAlpha(pTempSurface, 0, SDL_ALPHA_TRANSPARENT);
+				SDL_SetAlpha(pSurface, 0, SDL_ALPHA_TRANSPARENT);
+
+				SDL_FreeSurface(pSurface);
+				pSurface = pTempSurface;
+			}
+
 			fWidth = (f32)iWidth / (f32)pScreen->GetWidth();
 			fHeight = (f32)iHeight / (f32)pScreen->GetHeight();
+
+			// Lets keep the iWidth and iHeight the original one so the sprite rect can match it.
+			// For texture UV mapping, we use the relation between original W and H and the converted texture W and H.
+			//iWidth = pSurface->w;
+			//iHeight = pSurface->h;
 
 			iBytesPerPixel = pSurface->format->BytesPerPixel;
 			iPitch = pSurface->pitch;
@@ -238,6 +283,16 @@ BOOL Image::Unload()
 INLINE const void *Image::GetData() const
 {
 	return pData;
+}
+
+INLINE u32 Image::GetAtlasWidthInPixel() const
+{
+	return pSurface->w;
+}
+
+INLINE u32 Image::GetAtlasHeightInPixel() const
+{
+	return pSurface->h;
 }
 
 INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
@@ -371,19 +426,19 @@ INLINE int Image::LoadTexture()
 		{
 			case 4:
 				// OpenGL 1.2+ only GL_EXT_bgra
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iWidth, iHeight, 0, GL_BGRA, GL_UNSIGNED_BYTE, pData);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pSurface->w, pSurface->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, pData);
 			break;
 
 			case 3:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, iWidth, iHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, pSurface->w, pSurface->h, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
 			break;
 
 			case 2:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, iWidth, iHeight, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, pData);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, pSurface->w, pSurface->h, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, pData);
 			break;
 
 			case 1:
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, iWidth, iHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, pData);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, pSurface->w, pSurface->h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, pData);
 			break;
 
 			default:
@@ -451,8 +506,6 @@ INLINE void Image::UnloadTexture()
 	iTextureId = 0;
 }
 
-
 }} // namespace
-
 
 #endif // _SDL_

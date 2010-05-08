@@ -44,17 +44,13 @@
 #include "ResourceManager.h"
 #include "MemoryManager.h"
 
-
 namespace Seed {
-
 
 class ResourceManager;
 class SpriteObject;
 class CollisionMask;
 
-
 IResource *ButtonResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
-
 
 enum eCollisionType
 {
@@ -64,8 +60,7 @@ enum eCollisionType
 	CollisionByPixel		= 2
 };
 
-
-class Button : public IWidget, public IResource
+class SEED_CORE_API Button : public IWidget, public IResource
 {
 	friend IResource *ButtonResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
@@ -82,7 +77,7 @@ class Button : public IWidget, public IResource
 		virtual void SetDraggingPriority(u32 i);
 		virtual u32 GetDraggingPriority() const;
 		virtual void SetDragCentered(BOOL b);
-		virtual void SetSprite(const char *spriteName, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual void SetSprite(const char *spriteName, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual void SetVisible(BOOL b);
 		virtual void SetFrameControl(BOOL b);
 		virtual void SetEnableHover(BOOL b);
@@ -91,7 +86,7 @@ class Button : public IWidget, public IResource
 		virtual void SetPressOffset(f32 x, f32 y);
 		virtual void SetHoverOffset(f32 x, f32 y);
 
-		virtual void SetMask(const char *maskName, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual void SetMask(const char *maskName, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual void SetCollisionType(eCollisionType type);
 		virtual eCollisionType GetCollisionType() const;
 
@@ -225,18 +220,14 @@ class Button : public IWidget, public IResource
 		virtual void Render();
 
 		// IResource
-		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual BOOL Unload();
 
 		// IObject
 		virtual const char *GetObjectName() const;
 		virtual int GetObjectType() const;
 
-	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [] (void *);
+		SEED_DISABLE_INSTANCING;
 
 	protected:
 		Sprite	cSprite;
@@ -292,9 +283,6 @@ class Button : public IWidget, public IResource
 		CollisionMask	*pMask;
 };
 
-
 } // namespace
 
-
 #endif // __GUI_BUTTON_H__
-

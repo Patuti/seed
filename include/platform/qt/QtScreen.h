@@ -34,42 +34,40 @@
 	\brief Screen QT implementation
 */
 
-
 #ifndef __QT_SCREEN_H__
 #define __QT_SCREEN_H__
 
 #include "interface/IScreen.h"
 
-#ifdef _QT_
+#if defined(_QT_)
 
 #define FADE_OUT_COLOR  0xff
 #define FADE_OUT_SOLID  0xff
 #define FADE_OUT_TRANS	0x00
 
-#ifdef DEBUG
+#if defined(DEBUG)
 #define FADE_INCREMENT	0x04
 #else
 #define FADE_INCREMENT	0x20
 #endif // DEBUG
-
 
 #include <QPainter>
 #include <QGraphicsScene>
 #include "QtScene.h"
 
 #include "Renderer.h"
-
+#include "Singleton.h"
 
 namespace Seed { namespace QT {
 
-
 class IRenderer;
-
 
 class Screen : public IScreen
 {
 	friend class Renderer;
 	friend class Renderer2D;
+
+	SEED_SINGLETON_DECLARE(Screen);
 
 	public:
 		enum eMode
@@ -95,12 +93,7 @@ class Screen : public IScreen
 			SCREEN_2048X1024X32FS_OPENGL
 		};
 
-		static Screen instance;
-
 	public:
-		Screen();
-		virtual ~Screen();
-
 		virtual void Setup(u32 mode = SCREEN_AUTODETECTFS);
 		virtual void FadeOut();
 		virtual void FadeIn();
@@ -132,7 +125,7 @@ class Screen : public IScreen
 		void CreateHardwareSurfaces();
 		void DestroyHardwareSurfaces();
 
-#ifdef DEBUG
+#if defined(DEBUG)
 		void PrintVideoMode();
 #endif // DEBUG
 
@@ -155,16 +148,13 @@ class Screen : public IScreen
 		//QColor		cBackgroundColor;
 };
 
-
-Screen *const pScreen = &Screen::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(Screen);
+}
 
 }} // namespace
 
-
 #else //._QT_
-
 	#error "Include 'Screen.h' instead 'platform/qt/QtScreen.h' directly."
-
 #endif // _QT_
 #endif // __QT_SCREEN_H__

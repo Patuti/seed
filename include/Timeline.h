@@ -48,7 +48,7 @@ namespace Seed {
 
 class Movie;
 
-class Timeline
+class SEED_CORE_API Timeline
 {
 	public:
 		Timeline();

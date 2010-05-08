@@ -81,7 +81,7 @@ namespace Private
 	f32			fCurrentTime	= 0.0f;
 }
 
-ResourceManager glResourceManager("global");
+ResourceManager *pResourceManager = NULL;//("global");
 const Configuration *pConfiguration = NULL;
 
 #define MAX_FRAME_DELTA (1.0f / 60.0f) * 5.0f
@@ -116,7 +116,7 @@ INLINE void SetGameApp(IGameApp *app, int argc, char **argv)
 	Private::pApplication = app;
 	Private::pApplication->Setup(argc, argv);
 	pConfiguration  = app->GetConfiguration();
-	//glResourceManager = app->GetResourceManager();
+	pResourceManager = app->GetResourceManager();
 
 	CommandLineParse(argc, argv);
 }
@@ -133,6 +133,18 @@ INLINE void WriteErr(const char *msg)
 		Private::pApplication->WriteErr(msg);
 }
 
+INLINE void GetVersion(u32 *major, u32 *middle, u32 *minor)
+{
+	if (major)
+		*major = SEED_VERSION_MAJOR;
+
+	if (middle)
+		*middle = SEED_VERSION_MAJOR;
+
+	if (minor)
+		*minor = SEED_VERSION_MAJOR;
+}
+
 BOOL Initialize()
 {
 	if (!Private::pApplication)
@@ -141,7 +153,16 @@ BOOL Initialize()
 		HALT;
 	}
 
-	Info(SEED_MESSAGE);
+	Info(SEED_MESSAGE, SEED_VERSION_MAJOR, SEED_VERSION_MIDDLE, SEED_VERSION_MINOR);
+
+	Info("");
+	Info(SEED_TAG "Build Configuration:");
+
+	Info(SEED_TAG "\tTheora: %s", SEED_USE_THEORA ? "Yes" : "No");
+	Info(SEED_TAG "\tBuiltIn: %s", SEED_BUILTIN ? "Yes" : "No");
+	Info(SEED_TAG "\tSingleton: %s", SEED_SINGLETON_HEAP ? "Heap" : "Stack");
+	Info(SEED_TAG "\tParticles: %d", SEED_PARTICLES_MAX);
+	Info(SEED_TAG "\tMusic Buffer: %d", SEED_MUSIC_STREAMING_BUFFER_SIZE);
 	Info(SEED_TAG "Initializing...");
 
 	BOOL ret = TRUE;
@@ -235,6 +256,8 @@ void Shutdown()
 
 	Info(SEED_TAG "Shutting down subsystems...");
 	pModuleManager->Shutdown();
+
+	LeakReportPrint;
 
 	Private::bInitialized = FALSE;
 	Private::pApplication = NULL;

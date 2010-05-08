@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,20 +37,16 @@
 #ifndef __COLLISION_MASK_H__
 #define __COLLISION_MASK_H__
 
-
 #include "interface/IResource.h"
 #include "MemoryManager.h"
 #include "SeedInit.h"
 #include "File.h"
 
-
 namespace Seed {
-
 
 IResource *CollisionMaskResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
-
-class CollisionMask : public IResource
+class SEED_CORE_API CollisionMask : public IResource
 {
 	friend IResource *CollisionMaskResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
@@ -61,7 +57,7 @@ class CollisionMask : public IResource
 		virtual BOOL CheckPixel(u32 x, u32 y) const;
 
 		// IResource
-		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual BOOL Unload();
 		virtual u32 GetUsedMemory() const;
 
@@ -69,11 +65,7 @@ class CollisionMask : public IResource
 		virtual const char *GetObjectName() const;
 		virtual int GetObjectType() const;
 
-	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [] (void *);
+		SEED_DISABLE_INSTANCING;
 
 	private:
 		SEED_DISABLE_COPY(CollisionMask);
@@ -85,8 +77,6 @@ class CollisionMask : public IResource
 		const u8	*pData;
 };
 
-
 } // namespace
-
 
 #endif // __COLLISION_MASK_H__

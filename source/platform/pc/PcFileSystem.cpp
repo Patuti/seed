@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -36,7 +36,7 @@
 
 #include "FileSystem.h"
 
-#ifdef _PC_
+#if defined(_PC_)
 
 #include "Log.h"
 #include "MemoryManager.h"
@@ -50,12 +50,9 @@
 
 #define TAG "[FileSystem] "
 
-
 namespace Seed { namespace PC {
 
-
-FileSystem FileSystem::instance;
-
+SEED_SINGLETON_DEFINE(FileSystem);
 
 FileSystem::FileSystem()
 	: iLastLength(0)
@@ -181,6 +178,4 @@ INLINE void FileSystem::MakeDirectory(const char *dir) const
 
 }} // namespace
 
-
 #endif // _PC_
-

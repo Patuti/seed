@@ -34,7 +34,6 @@
 	\brief Sprite OpenGL Implementation
 */
 
-
 #ifndef __OGL_SPRITE_H__
 #define __OGL_SPRITE_H__
 
@@ -50,7 +49,7 @@
 
 namespace Seed { namespace OGL {
 
-class Sprite : public ISprite
+class SEED_CORE_API Sprite : public ISprite
 {
 	public:
 		Sprite();

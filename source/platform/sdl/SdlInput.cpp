@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,8 +34,7 @@
 	\brief Input Implementation
 */
 
-
-#ifdef _SDL_
+#if defined(_SDL_)
 
 #include "Defines.h"
 #include "Input.h"
@@ -57,12 +56,9 @@
 
 #define TAG "[Input] "
 
-
 namespace Seed { namespace SDL {
 
-
-Input Input::instance;
-
+SEED_SINGLETON_DEFINE(Input);
 
 Input::Input()
 	: fX(0.0f)
@@ -206,7 +202,7 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 			case SDL_MOUSEMOTION:
 			{
 				f32 x, y;
-				#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+				#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 					this->fX = (f32)event.motion.x;
 					this->fY = (f32)event.motion.y;
 				#else
@@ -238,7 +234,7 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 			case SDL_MOUSEBUTTONUP:
 			{
 				f32 x, y;
-				#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+				#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 					this->fX = (f32)event.motion.x;
 					this->fY = (f32)event.motion.y;
 				#else
@@ -270,7 +266,7 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 			case SDL_MOUSEBUTTONDOWN:
 			{
 				f32 x, y;
-				#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+				#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 					this->fX = (f32)event.motion.x;
 					this->fY = (f32)event.motion.y;
 				#else
@@ -451,8 +447,6 @@ INLINE BOOL Input::IsKeyboard() const
 	return TRUE;
 }
 
-
 }} // namespace
-
 
 #endif // _SDL_

@@ -41,13 +41,11 @@
 #include "MemoryManager.h"
 #include "TString.h"
 
-
 #include <stdarg.h>
 
 namespace Seed {
 
-
-class Text
+class SEED_CORE_API Text
 {
 	public:
 		Text();
@@ -97,8 +95,6 @@ class Text
 		eBlendMode iOperation;
 };
 
-
 } // namespace
-
 
 #endif // __TEXT_H__

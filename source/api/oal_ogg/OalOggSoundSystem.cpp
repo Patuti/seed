@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -36,7 +36,7 @@
 
 #include "SoundSystem.h"
 
-#ifdef _OAL_OGG_
+#if defined(_OAL_OGG_)
 
 #include "Log.h"
 #include "MemoryManager.h"
@@ -50,7 +50,6 @@
 #include "interface/IMusic.h"
 #include "interface/ISoundSource.h"
 #include "Timer.h"
-
 
 #include <stdio.h>
 #include <algorithm>
@@ -68,17 +67,13 @@
 #define AUDIO_FRAME_TIME	3
 #define AUDIO_DATA_PATH		"/" FILESYSTEM_DEFAULT_PATH
 
-
 // http://www.gamedev.net/reference/articles/article2031.asp
 // http://icculus.org/SDL_sound/
 // http://www.devmaster.net/articles.php?catID=6
 
-
 namespace Seed { namespace OAL {
 
-
-SoundSystem SoundSystem::instance;
-
+SEED_SINGLETON_DEFINE(SoundSystem);
 
 SoundSystem::SoundSystem()
 	: pDevice(NULL)
@@ -149,7 +144,7 @@ BOOL SoundSystem::Reset()
 		pNewMusic = NULL;
 
 		arSource.Truncate();
-		IModule::Reset();
+		// abstract IModule::Reset();
 	}
 	return TRUE;
 }
@@ -497,9 +492,6 @@ INLINE void SoundSystem::Resume()
 	ISoundSystem::Resume();
 }
 
-
 }} // namespace
 
-
 #endif // _OAL_OGG_
-

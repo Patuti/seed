@@ -46,11 +46,11 @@ namespace Seed {
 class IRenderer;
 class IImage;
 
-/// Renderable Interface
+/// Drawable Interface
 /**
 Interface for renderables objects. Things that will be rendered to the screen.
 */
-class IRenderable
+class SEED_CORE_API IRenderable : public IObject
 {
 	friend struct IRenderableAscendingPrioritySort;
 	friend struct IRenderableDescendingPrioritySort;
@@ -86,7 +86,7 @@ class IRenderable
 		SEED_DISABLE_COPY(IRenderable);
 };
 
-struct IRenderableAscendingPrioritySort
+struct SEED_CORE_API IRenderableAscendingPrioritySort
 {
 	bool operator()(IRenderable * const &left, IRenderable * const &right)
 	{
@@ -94,7 +94,7 @@ struct IRenderableAscendingPrioritySort
 	}
 };
 
-struct IRenderableDescendingPrioritySort
+struct SEED_CORE_API IRenderableDescendingPrioritySort
 {
 	bool operator()(IRenderable * const &left, IRenderable * const &right)
 	{
@@ -103,6 +103,5 @@ struct IRenderableDescendingPrioritySort
 };
 
 } // namespace
-
 
 #endif // __IRENDERABLE_H__

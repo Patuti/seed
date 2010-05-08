@@ -47,7 +47,7 @@ namespace Seed {
 class ResourceManager;
 class IMemoryPool;
 
-class IBasicMesh : public ISceneObject
+class SEED_CORE_API IBasicMesh : public ISceneObject
 {
 	public:
 		IBasicMesh();
@@ -60,11 +60,7 @@ class IBasicMesh : public ISceneObject
 		virtual void Update(f32 dt);
 		virtual void Render();
 
-	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [](void *);
+		SEED_DISABLE_INSTANCING;
 
 	private:
 		SEED_DISABLE_COPY(IBasicMesh);

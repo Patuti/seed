@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,7 +34,7 @@
 	\brief System SDL Implementation
 */
 
-#ifdef _SDL_
+#if defined(_SDL_)
 
 #include "Defines.h"
 #include "System.h"
@@ -52,9 +52,7 @@
 
 namespace Seed { namespace SDL {
 
-
-System System::instance;
-
+SEED_SINGLETON_DEFINE(System);
 
 System::System()
 	: iRetraceCount(0)
@@ -276,6 +274,5 @@ INLINE void System::EnableDefaultCursor(BOOL b)
 }
 
 }} // namespace
-
 
 #endif // _SDL_

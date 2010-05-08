@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -41,16 +41,17 @@
 
 /*
 Compiler specific pragmas here
+
+About warning 4251 - DLL export for templatized classes (std and others)
+http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 */
 #if defined(_MSC_VER)
 #pragma warning(disable:4127) // conditional expression is constant
 #pragma warning(disable:4201) // anonymous union
 #pragma warning(disable:4530)
 #pragma warning(disable:4996) // _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4251) // stl + dll
 #endif
-#if defined(__MWERKS__)
-#pragma warning off (10342)
-#endif // __MWERKS__
 
 #if defined(_WII_)
 	#include "platform/wii/WiiDefines.h"
@@ -67,6 +68,18 @@ Compiler specific pragmas here
 		#endif // IPHONE
 	#endif // SDL
 #endif // WII
+
+#ifndef SEED_CORE_API
+#define SEED_CORE_API
+#endif
+
+#ifndef SEED_PLATFORM_API
+#define SEED_PLATFORM_API
+#endif
+
+#ifndef SEED_EXTRA_API
+#define SEED_EXTRA_API
+#endif
 
 #define STRING_LENGTH					LIB_STRLEN
 #define SIZE_T							LIB_SIZE_T
@@ -121,8 +134,7 @@ Compiler specific pragmas here
 
 
 // Debugging
-#ifdef DEBUG
-
+#if defined(DEBUG)
 	#ifndef ASSERT
 	#define ASSERT							LIB_ASSERT
 	#endif // ASSERT
@@ -140,12 +152,29 @@ Compiler specific pragmas here
 	#endif // SECURITY_CHECK
 
 	#if defined(__GNUC__)
-		#define SEED_ABSTRACT_METHOD		Dbg(SEED_TAG "WARNING: Calling an 'abstract' method: [%s] (%s:%d).", __PRETTY_FUNCTION__, __FILE__, __LINE__);
+		#define __FUNC__					__PRETTY_FUNCTION__
 	#else
-		#define SEED_ABSTRACT_METHOD		Dbg(SEED_TAG "WARNING: Calling an 'abstract' method: [%s] (%s:%d).", __FUNCSIG__, __FILE__, __LINE__);
+		#define __FUNC__					__FUNCSIG__
 	#endif
+
+	#define SEED_ABSTRACT_METHOD		Dbg(SEED_TAG "WARNING: Calling an 'abstract' method: [%s] (%s:%d).", __FUNC__, __FILE__, __LINE__);
+
+	#define SEED_DISABLE_INSTANCING		public: \
+											friend class LeakReport; \
+										protected: \
+											void *operator new(size_t len); \
+											void operator delete(void *ptr); \
+											void *operator new[](size_t) throw() { return NULL; }; \
+											void operator delete[](void *) {};
+
 #else
 	#define SEED_ABSTRACT_METHOD
+
+	#define SEED_DISABLE_INSTANCING		protected: \
+											void *operator new(size_t len); \
+											void operator delete(void *ptr); \
+											void *operator new[](size_t) throw() { return NULL; }; \
+											void operator delete[](void *) {};
 
 	#if defined(__GNUC__) || defined(_WII_)
 		#ifndef ASSERT
@@ -195,6 +224,18 @@ Compiler specific pragmas here
 #define SEED_DISABLE_COPY(Class)		Class(const Class &); \
 										Class &operator=(const Class &)
 
+
+#define SEED_DISABLE_INSTANCING_IMPL(Class)	\
+										INLINE void *Class::operator new(size_t len) \
+										{ \
+											return pMemoryManager->Alloc(len); \
+										} \
+										 \
+										INLINE void Class::operator delete(void *ptr) \
+										{ \
+											pMemoryManager->Free(ptr); \
+										}
+
 #define SEED_FORWARD_DECLARATION(Class) namespace Seed { class Class; }
 
 
@@ -220,12 +261,10 @@ typedef u16  WideChar;
 #define WideString 	u16*
 #define WideChar	u16
 
-#ifdef DEBUG
+#if defined(DEBUG)
 #define DEBUG_RECT(x, y, w, h, c) pViewManager->GetCurrentRenderer()->DrawRect(x, y, w, h, c);
 #else
 #define DEBUG_RECT(x, y, w, h, c)
 #endif
 
-
 #endif // __SEED_DEFINES_H__
-

@@ -43,7 +43,7 @@ namespace Seed {
 
 class IWidget;
 
-class EventWidget : public IEvent
+class SEED_CORE_API EventWidget : public IEvent
 {
 	public:
 		virtual ~EventWidget();

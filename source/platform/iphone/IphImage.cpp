@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,7 +34,7 @@
 	\brief Image Iphone Implementation
 */
 
-#ifdef _IPHONE_
+#if defined(_IPHONE_)
 
 #include "Image.h"
 #include "FileSystem.h"
@@ -60,7 +60,7 @@ IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemo
 {
 	UNUSED(res);
 
-	Image *image = new Image();
+	Image *image = New(Image());
 	image->Load(filename, pool);
 
 	return image;
@@ -92,7 +92,7 @@ INLINE void Image::Load(const char *filename, IMemoryPool *pool)
 	ASSERT_NULL(pool);
 	this->pPool = pool;
 
-#ifndef ENABLE_NATIVE_PVRTC_FORMAT
+#if !defined(ENABLE_NATIVE_PVRTC_FORMAT)
 	this->LoadPNG(filename); // Ja configura W e H
 #else
 	this->LoadPVRTC(filename);
@@ -141,7 +141,7 @@ INLINE const void *Image::GetData() const
 
 INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
 {
-#ifndef ENABLE_NATIVE_PVRTC_FORMAT
+#if !defined(ENABLE_NATIVE_PVRTC_FORMAT)
 	if (this->pImage || pixelFormat != kTexture2DPixelFormat_RGB565 || pixelFormat != kTexture2DPixelFormat_A8)
 	{
 		const PIXEL *data1 = static_cast<const PIXEL *>(pImage);
@@ -159,7 +159,7 @@ INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
 
 INLINE PIXEL Image::GetPixel(u32 x, u32 y) const
 {
-#ifndef ENABLE_NATIVE_PVRTC_FORMAT
+#if !defined(ENABLE_NATIVE_PVRTC_FORMAT)
 	if (!this->pImage)
 		return 0;
 
@@ -180,7 +180,7 @@ INLINE PIXEL Image::GetPixel(u32 x, u32 y) const
 
 INLINE u8 Image::GetPixelAlpha(u32 x, u32 y) const
 {
-#ifndef ENABLE_NATIVE_PVRTC_FORMAT
+#if !defined(ENABLE_NATIVE_PVRTC_FORMAT)
 	if (!this->pImage)
 		return 255;
 
@@ -300,7 +300,7 @@ void Image::LoadPVRTC(const char *file)
 	this->pImage = stFile.GetData();
 	this->bCompressed = TRUE;
 
-//#ifdef ENABLE_PRELOAD_TEXTURE
+//#if defined(ENABLE_PRELOAD_TEXTURE)
 	this->LoadTexture();
 //#endif // ENABLE_PRELOAD_TEXTURE
 
@@ -429,7 +429,7 @@ void Image::LoadPNG(const char *file)
 		for (i = 0; i < width * height; ++i, ++inPixel32)
 			*outPixel16++ = ((((*inPixel32 >> 0) & 0xFF) >> 3) << 11) | ((((*inPixel32 >> 8) & 0xFF) >> 2) << 5) | ((((*inPixel32 >> 16) & 0xFF) >> 3) << 0);
 
-		pMemoryManager->Free(data, this->pPool);
+		pMemoryManager->Free(data, pPool);
 		data = tempData;
 	}
 
@@ -453,7 +453,7 @@ void Image::LoadPNG(const char *file)
 
 	//pImage = data;
 #if SEED_ENABLE_KEEP_IMAGE_DATA == 0 // Release texture memory?
-	pMemoryManager->Free(const_cast<void *>(this->pImage), this->pPool);
+	pMemoryManager->Free(const_cast<void *>(pImage), pPool);
 	pImage = NULL;
 #endif // SEED_ENABLE_KEEP_IMAGE_DATA
 }

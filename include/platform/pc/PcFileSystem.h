@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -43,19 +43,16 @@
 
 #include "MemoryManager.h"
 #include "interface/IFileSystem.h"
+#include "Singleton.h"
 
 #define FILESYSTEM_DEFAULT_PATH	"data/"
 
-
 namespace Seed { namespace PC {
 
-
-class FileSystem : public IFileSystem
+class SEED_CORE_API FileSystem : public IFileSystem
 {
+	SEED_SINGLETON_DECLARE(FileSystem);
 	public:
-		FileSystem();
-		virtual ~FileSystem();
-
 		virtual BOOL Open(const char *pFname, File *file, IMemoryPool *pool = pDefaultPool);
 		virtual u32 GetLength() const;
 		virtual void MakeDirectory(const char *dir) const;
@@ -67,9 +64,6 @@ class FileSystem : public IFileSystem
 
 		virtual void SetWorkDirectory(const char *dir);
 
-	public:
-		static FileSystem instance;
-
 	private:
 		SEED_DISABLE_COPY(FileSystem);
 
@@ -79,16 +73,13 @@ class FileSystem : public IFileSystem
 		u32 iLastLength;
 };
 
-FileSystem *const pFileSystem = &FileSystem::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(FileSystem);
+}
 
 }} // namespace
 
-
 #else // _PC_
-
 	#error "Include 'FileSystem.h' instead 'platform/pc/PcFileSystem.h' directly."
-
 #endif // _PC_
 #endif // __PC_FILESYSTEM_H__
-

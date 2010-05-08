@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -46,9 +46,7 @@
 
 #include <map>
 
-
 namespace Seed {
-
 
 typedef IResource *(*pResourceLoaderFunc)(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
@@ -58,8 +56,7 @@ typedef ResourceMap::iterator ResourceIterator;
 typedef std::map<Seed::eObjectType, pResourceLoaderFunc> LoaderMap;
 typedef LoaderMap::iterator LoaderIterator;
 
-
-class ResourceManager
+class SEED_CORE_API ResourceManager
 {
 	public:
 		ResourceManager(const char *name);
@@ -93,10 +90,6 @@ class ResourceManager
 		static LoaderMap mapLoaders;
 };
 
-
 } // namespace
 
-
 #endif // __RESOURCE_MANAGER_H__
-
-

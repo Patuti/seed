@@ -66,6 +66,7 @@ HEADERS += ../include/StateMachine.h \
 	../include/Profiler.h \
 	../include/ModuleManager.h \
 	../include/ViewManager.h \
+	../include/LeakReport.h \
 	../include/interface/IBasicMesh.h \
 	../include/interface/IRenderer2D.h \
 	../include/interface/IEventInputMotionListener.h \
@@ -229,6 +230,7 @@ HEADERS += ../include/StateMachine.h \
 	../include/StringPool.h \
 	../include/TString.h \
 	../include/SceneManager.h \
+	../include/Singleton.h \
 	../include/platform/qt/QtPch.h
 
 SOURCES += ../source/EventInputPointer.cpp \
@@ -253,6 +255,7 @@ SOURCES += ../source/EventInputPointer.cpp \
 	../source/Updater.cpp \
 	../source/Profiler.cpp \
 	../source/ParticleEmitterObject.cpp \
+	../source/LeakReport.cpp \
 	../source/interface/IBasicMesh.cpp \
 	../source/interface/IThread.cpp \
 	../source/interface/IRenderable.cpp \

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,16 +34,15 @@
 	\brief Input Implementation
 */
 
-
 #ifndef __QT_INPUT_H__
 #define __QT_INPUT_H__
 
-#ifdef _QT_
+#if defined(_QT_)
 
 #include "interface/IInput.h"
 #include "interface/IInputPointer.h"
 #include "interface/IInputKeyboard.h"
-
+#include "Singleton.h"
 
 namespace Seed { namespace QT {
 
@@ -53,10 +52,8 @@ class Input : public IInput, public IInputPointer, public IInputKeyboard
 {
 	friend class Scene;
 
+	SEED_SINGLETON_DECLARE(Input);
 	public:
-		Input();
-		virtual ~Input();
-
 		// IInput
 		virtual eInputButton GetButtonCode(u32 button) const;
 		virtual u32 ConvertButtonFlags(u32 flags);
@@ -88,8 +85,6 @@ class Input : public IInput, public IInputPointer, public IInputKeyboard
 		virtual BOOL Shutdown();
 		virtual BOOL Reset();
 
-		static Input instance;
-
 	protected:
 		void PointerMove(f32 x, f32 y, u16 joystick = 0);
 		void PointerPress(f32 x, f32 y, u32 btn, u16 joystick = 0);
@@ -108,16 +103,13 @@ class Input : public IInput, public IInputPointer, public IInputKeyboard
 		eKey TranslateKey(u32 key);
 };
 
-
-Input *const pInput = &Input::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(Input);
+}
 
 }} // namespace
 
-
 #else // _QT_
-
 	#error "Include 'Input.h' instead 'platform/qt/QtInput.h' directly."
-
 #endif // _QT_
 #endif // __QT_INPUT_H__

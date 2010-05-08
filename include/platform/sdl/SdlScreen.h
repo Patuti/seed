@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,19 +34,19 @@
 	\brief Screen SDL implementation
 */
 
-
 #ifndef __SDL_SCREEN_H__
 #define __SDL_SCREEN_H__
 
 #include "interface/IScreen.h"
+#include "Singleton.h"
 
-#ifdef _SDL_
+#if defined(_SDL_)
 
 #define FADE_OUT_COLOR  0xff
 #define FADE_OUT_SOLID  0xff
 #define FADE_OUT_TRANS	0x00
 
-#ifdef DEBUG
+#if defined(DEBUG)
 #define FADE_INCREMENT	0x20
 #else
 #define FADE_INCREMENT	0x04
@@ -56,58 +56,40 @@ namespace Seed { namespace OGL { class Renderer; class Renderer2D; }}
 
 namespace Seed { namespace SDL {
 
-
 class IRenderer;
 
-
-class Screen : public IScreen
+class SEED_CORE_API Screen : public IScreen
 {
 	friend class OGL::Renderer;
 	friend class OGL::Renderer2D;
 
+	SEED_SINGLETON_DECLARE(Screen);
 	public:
 		enum eMode
 		{
 			SCREEN_AUTODETECTW,
 			SCREEN_AUTODETECTFS,
 			SCREEN_320X240X32W_OPENGL,
-			//SCREEN_320X240X32W_SW,
 			SCREEN_480x272x32W_OPENGL,
-			//SCREEN_480x272x32W_SW,
 			SCREEN_480x320x32W_OPENGL,
 			SCREEN_IPHONE,
-			//SCREEN_480x320x32W_SW,
+			SCREEN_IPHONE_LANDSCAPE,
+			SCREEN_IPHONE_PORTRAIT,
 			SCREEN_640X480X32W_OPENGL,
 			SCREEN_WII,
-			//SCREEN_640X480X32W_SW,
 			SCREEN_800X600X32W_OPENGL,
-			//SCREEN_800X600X32W_SW,
 			SCREEN_1024X768X32W_OPENGL,
-			//SCREEN_1024X768X32W_SW,
 			SCREEN_2048X1024X32W_OPENGL,
-			//SCREEN_2048X1024X32W_SW,
 			SCREEN_320X240X32FS_OPENGL,
-			//SCREEN_320X240X32FS_SW,
 			SCREEN_480x272x32FS_OPENGL,
-			//SCREEN_480x272x32FS_SW,
 			SCREEN_480x320x32FS_OPENGL,
-			//SCREEN_480x320x32FS_SW,
 			SCREEN_640X480X32FS_OPENGL,
-			//SCREEN_640X480X32FS_SW,
 			SCREEN_800X600X32FS_OPENGL,
-			//SCREEN_800X600X32FS_SW,
 			SCREEN_1024X768X32FS_OPENGL,
-			//SCREEN_1024X768X32FS_SW,
 			SCREEN_2048X1024X32FS_OPENGL
-			//SCREEN_2048X1024X32FS_SW
 		};
 
-		static Screen instance;
-
 	public:
-		Screen();
-		virtual ~Screen();
-
 		virtual BOOL Initialize();
 		virtual BOOL Reset();
 		virtual BOOL Shutdown();
@@ -139,7 +121,7 @@ class Screen : public IScreen
 		void PrepareMode();
 		void SetupOpenGL();
 
-#ifdef DEBUG
+#if defined(DEBUG)
 		void PrintVideoMode();
 #endif // DEBUG
 
@@ -158,15 +140,13 @@ class Screen : public IScreen
 		SDL_VideoInfo *videoInfo;
 };
 
-Screen *const pScreen = &Screen::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(Screen);
+}
 
 }} // namespace
 
-
 #else //._SDL_
-
 	#error "Include 'Screen.h' instead 'platform/sdl/SdlScreen.h' directly."
-
 #endif // _SDL_
 #endif // __SDL_SCREEN_H__

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -39,10 +39,11 @@
 
 #include "Defines.h"
 
-#ifdef _WII_
+#if defined(_WII_)
 
 #include "interface/IScreen.h"
 #include "interface/IRenderer.h"
+#include "Singleton.h"
 
 namespace Seed { namespace WII {
 
@@ -56,6 +57,7 @@ class Screen : public IScreen
 	friend class Renderer3D;
 	friend class HomeButton;
 
+	SEED_SINGLETON_DECLARE(Screen);
 	public:
 		Screen();
 		virtual ~Screen();
@@ -76,9 +78,6 @@ class Screen : public IScreen
 		virtual u32 GetHeight() const;
 		virtual u32 GetWidth() const;
 
-	public:
-		static Screen instance;
-
 	protected:
 		u32			surfaceSize;
 		static void *pSurfaceA;
@@ -94,7 +93,7 @@ class Screen : public IScreen
 		void DestroyHardwareSurfaces();
 		void ApplyFade();
 
-#ifdef DEBUG
+#if defined(DEBUG)
 		void PrintVideoMode();
 #endif // DEBUG
 
@@ -121,7 +120,9 @@ class Screen : public IScreen
 		BOOL 		bFirstFrame;
 };
 
-Screen *const pScreen = &Screen::instance;
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(Screen);
+}
 
 }} // namespace
 

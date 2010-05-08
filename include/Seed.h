@@ -72,6 +72,8 @@
 #include <Input.h>
 #include <Image.h>
 
+#include <LeakReport.h>
+
 #include <interface/IEventInputMotionListener.h>
 #include <interface/IEventInputKeyboardListener.h>
 #include <interface/IEventInputPointerListener.h>
@@ -131,8 +133,8 @@
 #include <api/theora/Theora.h>
 #endif
 
-#ifdef _WII_
-	#ifdef USE_AILIVE
+#if defined(_WII_)
+	#if defined(USE_AILIVE)
 		#include <platform/wii/WiiAiLive.h>
 	#endif // USE_AILIVE
 #endif // _WII_

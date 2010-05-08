@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,23 +34,19 @@
 	\brief Defines the Memory Pool class interface
 */
 
-
 #ifndef __IMEMORYPOOL_H__
 #define __IMEMORYPOOL_H__
 
-
 #include "Defines.h"
 
-
 namespace Seed {
-
 
 /// MemoryPool Interface
 /**
 Systems that has multiple ways or kinds of memory must implement its own MemoryPool. At least
 one MemoryPool is needed and it must be called DefaultMemoryPool.
 */
-class IMemoryPool
+class SEED_CORE_API IMemoryPool
 {
 	public:
 		IMemoryPool();
@@ -70,8 +66,6 @@ class IMemoryPool
 		SEED_DISABLE_COPY(IMemoryPool);
 };
 
-
 } // namespace
-
 
 #endif // __IMEMORYPOOL_H__

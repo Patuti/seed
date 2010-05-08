@@ -34,10 +34,9 @@
 	\brief 2D Renderer OpenGL implementation
 */
 
-
 #include "Renderer2D.h"
 
-#ifdef _OGL_
+#if defined(_OGL_)
 
 #include "Log.h"
 #include "Screen.h"
@@ -45,11 +44,12 @@
 #include "Sprite.h"
 #include "Image.h"
 
-
 #include <math.h>
+
 #if defined(_SDL_)
 #include <SDL/SDL.h>
 #endif // _SDL_
+
 #if defined(__APPLE_CC__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>
@@ -60,9 +60,7 @@
 
 #define TAG "[Renderer2D] "
 
-
 namespace Seed { namespace OGL {
-
 
 Renderer2D::Renderer2D()
 	: fScreenW(0)
@@ -168,7 +166,7 @@ INLINE void Renderer2D::Enable2D() const
 	glPushMatrix();
 	glLoadIdentity();
 
-	#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+	#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 		glOrtho(0.0f, pScreen->GetWidth(), pScreen->GetHeight(), 0.0f, -1000000, 0);
 	#else
 		f32 aspectH = fScreenH / fScreenW;

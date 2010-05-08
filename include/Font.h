@@ -46,7 +46,7 @@ namespace Seed {
 
 IResource *FontResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
-class Font : public IResource
+class SEED_CORE_API Font : public IResource
 {
 	friend IResource *FontResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 	friend class Text;
@@ -71,7 +71,7 @@ class Font : public IResource
 		virtual void SetFilter(eTextureFilterType type, eTextureFilter filter);
 
 		// IResource
-		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual BOOL Unload();
 		virtual u32 GetUsedMemory() const;
 
@@ -80,16 +80,13 @@ class Font : public IResource
 		virtual const char *GetObjectName() const;
 
 	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [](void *);
-
 		void SetBlending(eBlendMode op);
 		void SetColor(PIXEL px);
 		void Draw();
 		void Update(f32 dt);
 		void SetScale(f32 x, f32 y);
+
+		SEED_DISABLE_INSTANCING;
 
 	private:
 		SEED_DISABLE_COPY(Font);

@@ -34,7 +34,6 @@
 	\brief A sound source interface to play 2D and 3D sounds
 */
 
-
 #ifndef __ISOUND_SOURCE_H__
 #define __ISOUND_SOURCE_H__
 
@@ -45,7 +44,6 @@
 #include "ResourceManager.h"
 
 namespace Seed {
-
 
 enum eSoundSourceState
 {
@@ -64,8 +62,7 @@ enum eSoundSourceState
 	SourceFading
 };
 
-
-class ISoundSource : public IObject
+class SEED_CORE_API ISoundSource : public IObject
 {
 	public:
 		ISoundSource();
@@ -74,7 +71,7 @@ class ISoundSource : public IObject
 		//virtual void SetSound(ISound *sound);
 		//virtual ISound *GetSound() const;
 		virtual void Load(const char *filename, IMemoryPool *pool = pDefaultPool);
-		virtual void Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual void Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual void Unload();
 
 		virtual void SetPosition(f32 x, f32 y, f32 z);

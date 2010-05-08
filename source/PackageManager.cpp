@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,19 +34,15 @@
 	\brief Package system
 */
 
-
 #include "PackageManager.h"
 #include "Log.h"
 #include "Package.h"
 
-
 #define TAG		"[PackageManager] "
-
 
 namespace Seed {
 
-
-PackageManager PackageManager::instance;
+SEED_SINGLETON_DEFINE(PackageManager);
 
 PackageManager::PackageManager()
 	: mapPackage()
@@ -68,7 +64,7 @@ void PackageManager::Clear()
 		Package *pkg = (*itb).second;
 
 		Log(TAG "Removing package %s.", (*itb).first);
-		pkg->Release();
+		sRelease(pkg);
 	}
 
 	mapPackage.clear();
@@ -93,8 +89,7 @@ void PackageManager::Remove(const char *fileName)
 	if (it != mapPackage.end())
 	{
 		Package *p = (*it).second;
-		p->Release();
-		//glResourceManager.GarbageCollect();
+		sRelease(p);
 
 		mapPackage.erase(it);
 	}
@@ -104,7 +99,7 @@ void PackageManager::AddRomPackage(const void *addr, const char *name)
 {
 	ASSERT_NULL(addr);
 
-	Package *p = new Package(name);
+	Package *p = New(Package(name));
 	p->LockUnload();
 	p->Load(addr);
 
@@ -146,16 +141,6 @@ const void *PackageManager::GetFile(const char *fileName, u32 *fileSize)
 INLINE const char *PackageManager::GetObjectName() const
 {
 	return "PackageManager";
-}
-
-void *PackageManager::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool);
-}
-
-void PackageManager::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
 }
 
 } // namespace

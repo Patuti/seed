@@ -34,10 +34,9 @@
 	\brief Renderer OpenGL implementation
 */
 
-
 #include "Renderer.h"
 
-#ifdef _OGL_
+#if defined(_OGL_)
 
 #include "Log.h"
 #include "MemoryManager.h"
@@ -70,9 +69,7 @@ PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB = 0;
 // Multi Draw Array
 PFNGLMULTIDRAWARRAYSEXTPROC glMultiDrawArraysEXT = 0;
 
-
 namespace Seed { namespace OGL {
-
 
 Renderer::Renderer()
 	: bufferMode()
@@ -159,7 +156,7 @@ INLINE BOOL Renderer::Initialize()
 
 INLINE BOOL Renderer::Reset()
 {
-	return TRUE; //IRenderer::Reset(); abstract
+	return TRUE; // abstract IRenderer::Reset();
 }
 
 INLINE void Renderer::SetBufferMode(eBufferMode mode)
@@ -428,6 +425,5 @@ INLINE void Renderer::SetBlendingOperation(eBlendMode mode, PIXEL color) const
 }
 
 }} // namespace
-
 
 #endif // _OGL_

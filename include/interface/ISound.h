@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,17 +37,14 @@
 #ifndef __ISOUND_H__
 #define __ISOUND_H__
 
-
 #include "SeedInit.h"
 #include "IResource.h"
 #include "MemoryManager.h"
 #include "ResourceManager.h"
 
-
 namespace Seed {
 
-
-class ISound : public IResource
+class SEED_CORE_API ISound : public IResource
 {
 	public:
 		ISound();
@@ -63,16 +60,11 @@ class ISound : public IResource
 		virtual int GetObjectType() const;
 		virtual const char *GetObjectName() const;
 
-	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [] (void *);
+		SEED_DISABLE_INSTANCING;
 
 	private:
 		SEED_DISABLE_COPY(ISound);
 };
-
 
 } // namespace
 

@@ -18,7 +18,6 @@
 
 #include <math.h>
 
-
 #define ROUND(x) ((x - static_cast<u32>(x)) > 0.5 ? static_cast<u32>(x) + 1 : static_cast<u32>(x))
 
 #if DEBUG_ENABLE_RECT_BUTTON == 1
@@ -29,10 +28,9 @@
 
 namespace Seed {
 
-
 IResource *ButtonResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
-	Button *btn = new Button();
+	Button *btn = New(Button());
 	btn->Load(filename, res, pool);
 
 	return btn;
@@ -103,7 +101,7 @@ BOOL Button::Unload()
 
 	if (bLabelBased)
 	{
-		this->cLabel.Reset();
+		this->cLabel.ReleaseText();
 		this->bLabelBased = FALSE;
 	}
 
@@ -363,7 +361,7 @@ INLINE BOOL Button::CheckPixel(f32 x, f32 y) const
 
 	u32 pX, pY, iPxTargetX, iPxTargetY;
 
-	#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+	#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 		pX = static_cast<u32>(x);
 		pY = static_cast<u32>(y);
 
@@ -782,8 +780,7 @@ INLINE void Button::SetMask(const char *maskName, ResourceManager *res, IMemoryP
 {
 	ASSERT_NULL(pool);
 
-	if (pMask)
-		pMask->Release();
+	sRelease(pMask);
 
 	if (!pRes)
 		pRes = res;
@@ -796,8 +793,7 @@ INLINE void Button::SetCollisionType(eCollisionType type)
 {
 	if (pMask && type != CollisionByMask)
 	{
-		pMask->Release();
-		pMask = NULL;
+		sRelease(pMask);
 	}
 
 	this->eButtonCollision = type;
@@ -1320,16 +1316,6 @@ INLINE void Button::SetDragCentered(BOOL b)
 	this->bCenterDrag = b;
 }
 
-INLINE void *Button::operator new(size_t len)
-{
-	return pMemoryManager->Alloc(len, pDefaultPool);
-}
-
-INLINE void Button::operator delete(void *ptr)
-{
-	pMemoryManager->Free(ptr, pDefaultPool);
-}
-
 INLINE const char *Button::GetObjectName() const
 {
 	return "Button";
@@ -1339,5 +1325,7 @@ INLINE int Button::GetObjectType() const
 {
 	return Seed::ObjectGuiButton;
 }
+
+SEED_DISABLE_INSTANCING_IMPL(Button);
 
 } // namespace

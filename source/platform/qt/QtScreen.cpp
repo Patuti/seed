@@ -34,8 +34,7 @@
 	\brief Screen QT implementation
 */
 
-
-#ifdef _QT_
+#if defined(_QT_)
 
 #include "Defines.h"
 #include "Screen.h"
@@ -44,20 +43,18 @@
 #include "MemoryManager.h"
 
 /*
-#ifndef GL_MULTISAMPLE
+##if !defined(GL_MULTISAMPLE)
 #define GL_MULTISAMPLE  0x809D
 #endif // GL_MULTISAMPLE
 */
 
 #define TAG "[Screen] "
 
-
 namespace Seed { namespace QT {
 
+SEED_SINGLETON_DEFINE(Screen);
 
-Screen Screen::instance;
 Scene *Screen::pScene = NULL;
-
 
 Screen::Screen()
 {
@@ -218,7 +215,7 @@ BOOL Screen::Initialize()
 	Log(TAG "Initializing...");
 	IModule::Initialize();
 	if (!this->pScene)
-		this->pScene = new Scene(iWidth, iHeight);
+		this->pScene = New(Scene(iWidth, iHeight));
 
 	this->Reset();
 	this->bFading		= FALSE;
@@ -239,7 +236,7 @@ BOOL Screen::Shutdown()
 	Log(TAG "Terminating...");
 	BOOL r = this->Reset();
 
-	delete pScene;
+	Delete(pScene);
 	pScene = NULL;
 	IModule::Shutdown();
 	Log(TAG "Terminated.");
@@ -392,6 +389,4 @@ INLINE void *Screen::GetSurface() const
 
 }} // namespace
 
-
 #endif // _QT_
-

@@ -34,18 +34,16 @@
 	\brief Point utils
 */
 
-
 #ifndef __POINT_H__
 #define __POINT_H__
 
 #include <math.h>
 #include <stdlib.h>
 
-
 namespace Seed {
 
 // was fixed32
-template <class TYPE> class Point
+template <class TYPE> class SEED_CORE_API Point
 {
 	public:
 		union
@@ -287,6 +285,4 @@ typedef Point<s32> Point2i;
 
 } // namespace
 
-
 #endif // _POINT_H__
-

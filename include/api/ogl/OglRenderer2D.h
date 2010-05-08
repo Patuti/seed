@@ -34,7 +34,6 @@
 	\brief 2D Renderer OpenGL implementation
 */
 
-
 #ifndef __OGL_RENDERER2D_H__
 #define __OGL_RENDERER2D_H__
 
@@ -51,7 +50,7 @@
 
 namespace Seed { namespace OGL {
 
-class Renderer2D : public IRenderer2D, public Renderer
+class SEED_CORE_API Renderer2D : public IRenderer2D, public Renderer
 {
 	public:
 		Renderer2D();
@@ -107,13 +106,9 @@ class Renderer2D : public IRenderer2D, public Renderer
 		mutable GLsizei		arPacketCount[SEED_RENDERER_PACKET_MAX];
 };
 
-
 }} // namespace
 
-
 #else // _OGL_
-
 	#error "Include 'Renderer2D.h' instead 'api/ogl/OglRenderer2D.h' directly."
-
 #endif // _OGL_
 #endif // __OGL_RENDERER2D_H__

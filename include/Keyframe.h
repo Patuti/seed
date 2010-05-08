@@ -42,7 +42,7 @@
 
 namespace Seed {
 
-class Keyframe
+class SEED_CORE_API Keyframe
 {
 	public:
 		enum

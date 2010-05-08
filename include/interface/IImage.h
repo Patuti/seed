@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -48,7 +48,7 @@ namespace Seed {
 /**
 Base texture class. This IResource must not be instanciable. It has basic information about the texture image.
 */
-class IImage : public IResource
+class SEED_CORE_API IImage : public IResource
 {
 	public:
 		IImage();
@@ -66,11 +66,17 @@ class IImage : public IResource
 		/// GetPixelAlpha returns only the alpha component of the pixel.
 		virtual u8 GetPixelAlpha(u32 x, u32 y) const;
 
-		/// Gets the texture image width in pixels.
+		/// Gets the texture width in pixels.
 		virtual u32 GetWidthInPixel() const;
 
-		/// Gets the texture image height in pixels.
+		/// Gets the texture height in pixels.
 		virtual u32 GetHeightInPixel() const;
+
+		/// Gets the full atlas width in pixels.
+		virtual u32 GetAtlasWidthInPixel() const;
+
+		/// Gets the full atlas height in pixels.
+		virtual u32 GetAtlasHeightInPixel() const;
 
 		/// Gets the texture image width normalized (0.0f - 1.0f).
 		virtual f32 GetWidth() const;
@@ -123,11 +129,7 @@ class IImage : public IResource
 		virtual int GetObjectType() const;
 		virtual const char *GetObjectName() const;
 
-	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [](void *);
+		SEED_DISABLE_INSTANCING;
 
 	protected:
 		eTextureFilter		nMinFilter;

@@ -37,7 +37,6 @@
 #ifndef __GUI_MANAGER_H__
 #define __GUI_MANAGER_H__
 
-
 #include "Defines.h"
 #include "interface/IWidget.h"
 #include "interface/IObject.h"
@@ -45,20 +44,14 @@
 #include "interface/IInputPointer.h"
 #include "interface/IEventInputPointerListener.h"
 #include "WidgetContainer.h"
-
+#include "Singleton.h"
 
 namespace Seed {
 
-
-class GuiManager : public IModule, public IUpdatable, public IEventInputPointerListener
+class SEED_CORE_API GuiManager : public IModule, public IUpdatable, public IEventInputPointerListener
 {
+	SEED_SINGLETON_DECLARE(GuiManager);
 	public:
-		static GuiManager instance;
-
-	public:
-		GuiManager();
-		virtual ~GuiManager();
-
 		void Add(IWidget *widget);
 		void Remove(IWidget *widget);
 
@@ -86,11 +79,10 @@ class GuiManager : public IModule, public IUpdatable, public IEventInputPointerL
 		WidgetContainer cContainer;
 };
 
-GuiManager *const pGuiManager = &GuiManager::instance;
-
+extern "C" {
+SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(GuiManager);
+}
 
 } // namespace
 
-
 #endif // __GUI_MANAGER_H__
-

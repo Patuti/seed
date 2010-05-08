@@ -101,13 +101,11 @@ INLINE void ParticleEmitter::Unload()
 		arParticles[i].bActive = FALSE;
 	}
 
-	if (pEmitterObject)
-		pEmitterObject->Release();
+	sRelease(pEmitterObject);
 
-	//psInfo	= NULL;
-	pRes	= NULL;
-	pPool	= NULL;
-	pFilename = NULL;
+	pRes		= NULL;
+	pPool		= NULL;
+	pFilename	= NULL;
 	pSpriteFilename = NULL;
 }
 

@@ -115,7 +115,7 @@
 
 namespace Seed {
 
-class Theora : /*public IVideo,*/ public IRenderable, public Thread
+class SEED_CORE_API Theora : /*public IVideo,*/ public IRenderable, public Thread
 {
 	public:
 		Theora();

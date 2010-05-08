@@ -46,7 +46,7 @@
 
 namespace Seed {
 
-struct ParticleEmitterInfo
+struct SEED_CORE_API ParticleEmitterInfo
 {
 	u32					iDummy;
 	u32					iTextureFrame;
@@ -102,7 +102,7 @@ struct ParticleEmitterInfo
 
 IResource *ParticleEmitterObjectResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
-class ParticleEmitterObject : public IResource
+class SEED_CORE_API ParticleEmitterObject : public IResource
 {
 	friend IResource *ParticleEmitterObjectResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 	friend class ParticleEmitter;
@@ -121,14 +121,11 @@ class ParticleEmitterObject : public IResource
 		virtual int GetObjectType() const;
 
 	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [](void *);
-
 		// IResource
 		virtual BOOL Unload();
-		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
+
+		SEED_DISABLE_INSTANCING;
 
 	private:
 		SEED_DISABLE_COPY(ParticleEmitterObject);

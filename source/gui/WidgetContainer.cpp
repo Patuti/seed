@@ -92,7 +92,7 @@ void WidgetContainer::Reset()
 
 	IWidget::Reset();
 
-#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 	this->SetWidth(1024.0f); //f32(pScreen->GetWidth()));
 	this->SetHeight(768.0f); //f32(pScreen->GetHeight()));
 #else

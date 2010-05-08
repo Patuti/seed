@@ -108,11 +108,9 @@ INLINE BOOL Theora::Unload()
 	if (iTextureId)
 		glDeleteTextures(1, &iTextureId);
 
-	if (pTexData)
-		pMemoryManager->Free(pTexData);
+	pMemoryManager->Free(pTexData);
 
 	iTextureId = 0;
-	pTexData = NULL;
 	pPlayer = NULL;
 
 	return TRUE;
@@ -511,7 +509,7 @@ void Theora::ConfigureRendering()
 	coords[6] = 0.0f;
 	coords[7] = fTexScaleY;
 
-	#ifdef SEED_USE_REAL_COORDINATE_SYSTEM
+	#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
 		// A
 		vertices[0] = 0.0f;
 		vertices[1] = 0.0f;

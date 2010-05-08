@@ -50,7 +50,7 @@ class IRenderable;
 /**
 Rendering engine interface
 */
-class IRenderer : public IUpdatable, public IModule
+class SEED_CORE_API IRenderer : public IUpdatable, public IModule
 {
 	typedef std::vector<IRenderable *> RenderableVector;
 	typedef RenderableVector::iterator RenderableVectorIterator;

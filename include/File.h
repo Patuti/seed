@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,15 +34,12 @@
 	\brief A system event
 */
 
-
 #ifndef __FILE_H__
 #define __FILE_H__
-
 
 #include "Defines.h"
 #include "MemoryManager.h"
 #include "FileSystem.h"
-
 
 namespace Seed {
 
@@ -50,8 +47,7 @@ class IFileSystem;
 class IMemoryPool;
 class Package;
 
-
-class File
+class SEED_CORE_API File
 {
 	friend class IFileSystem;
 	friend class FSNS::FileSystem;
@@ -73,11 +69,7 @@ class File
 		void SetData(const void *data);
 		void SetName(const char *name);
 
-	protected:
-		void *operator new(size_t len);
-		void operator delete(void *ptr);
-		void *operator new [](size_t);
-		void operator delete [](void *);
+		SEED_DISABLE_INSTANCING;
 
 	protected:
 		const char	*pName;
@@ -91,8 +83,6 @@ class File
 		SEED_DISABLE_COPY(File);
 };
 
-
 } // namespace
-
 
 #endif // __FILE_H__

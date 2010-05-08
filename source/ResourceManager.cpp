@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,7 +34,6 @@
 	\brief Resource Manager
 */
 
-
 #include "Defines.h"
 #include "Log.h"
 #include "ResourceManager.h"
@@ -42,7 +41,6 @@
 #include "Base.h"
 
 #define TAG		"[ResourceManager] "
-
 
 #if defined(SEED_LOG_RESOURCEMANAGER)
 	#define LOG		Log
@@ -55,12 +53,9 @@
 	}
 #endif
 
-
 namespace Seed {
 
-
 LoaderMap ResourceManager::mapLoaders;
-
 
 ResourceManager::ResourceManager(const char *name)
 	: bHasUnusedResource(FALSE)
@@ -88,7 +83,7 @@ INLINE void ResourceManager::Reset()
 	for (; it != itEnd; ++it)
 	{
 		//LOG(TAG "Deallocating %s.", (*it).first);
-		delete (*it).second;
+		Delete((*it).second);
 	}
 
 	mapResources.clear();
@@ -128,7 +123,7 @@ void ResourceManager::GarbageCollect()
 
 	LOG(TAG "Starting garbage collection in '%s'...", pcName);
 
-#ifdef DEBUG
+#if defined(DEBUG)
 	u64 begin = pTimer->GetMilliseconds();
 	u64 end = 0;
 #endif // DEBUG
@@ -142,7 +137,7 @@ void ResourceManager::GarbageCollect()
 		{
 			LOG(TAG "\tdeleting %s from [%s].", (*it).first, pcName);
 			mapResources.erase(it++);
-			delete res;
+			Delete(res);
 
 			bHasUnusedResource = TRUE;
 		}
@@ -161,7 +156,7 @@ FIXME: 30-10-2008 | BUG | MAJOR | CORE | Resources sendo liberados que liberarem
 		this->GarbageCollect();
 	}
 
-#ifdef DEBUG
+#if defined(DEBUG)
 	end = pTimer->GetMilliseconds();
 	LOG(TAG "Garbage collection done in %d milliseconds.",  (u32)(end - begin));
 	LOG(TAG "Resources inside '%s': ", pcName);
@@ -290,7 +285,4 @@ INLINE void ResourceManager::Print()
 #endif // DEBUG
 }
 
-
 } // namespace
-
-

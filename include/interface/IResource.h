@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,19 +37,18 @@
 #ifndef __IRESOURCE_H__
 #define __IRESOURCE_H__
 
-
 #include "Defines.h"
 #include "IObject.h"
 
+#define sAcquire(p)		p->Acquire()
+#define sRelease(p)		{ if (p) p->Release(); p = NULL; }
 
 namespace Seed {
-
 
 class ResourceManager;
 class IMemoryPool;
 
-
-class IResource : public IObject
+class SEED_CORE_API IResource : public IObject
 {
 	friend class ResourceManager;
 
@@ -86,9 +85,6 @@ class IResource : public IObject
 		u32				iRefCount;
 };
 
-
 } // namespace
 
-
 #endif // __IRESOURCE_H__
-

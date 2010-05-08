@@ -43,7 +43,7 @@
 
 namespace Seed {
 
-GuiManager GuiManager::instance;
+SEED_SINGLETON_DEFINE(GuiManager);
 
 GuiManager::GuiManager()
 	: pFocused(NULL)
@@ -74,7 +74,7 @@ INLINE BOOL GuiManager::Initialize()
 INLINE BOOL GuiManager::Reset()
 {
 	this->pFocused = NULL;
-	return TRUE;
+	return TRUE; // abstract IModule::Reset();
 }
 
 INLINE BOOL GuiManager::Shutdown()

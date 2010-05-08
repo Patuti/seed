@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,7 +34,7 @@
 	\brief Screen Iphone Implementation
 */
 
-#ifdef _IPHONE_
+#if defined(_IPHONE_)
 
 #include "Defines.h"
 #include "Screen.h"
@@ -46,18 +46,17 @@
 #define FADE_OUT_SOLID  0xff
 #define FADE_OUT_TRANS	0x00
 
-#ifdef DEBUG
+#if defined(DEBUG)
 #define FADE_INCREMENT	0x10
 #else
 #define FADE_INCREMENT	0x10
 #endif // DEBUG
 
-
 #define TAG "[Screen] "
 
 namespace Seed { namespace iPhone {
 
-Screen Screen::instance;
+SEED_SINGLETON_DEFINE(Screen);
 
 Screen::Screen()
 	: renderBuffer()

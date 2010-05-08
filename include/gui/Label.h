@@ -41,11 +41,9 @@
 #include "GuiManager.h"
 #include "../interface/IWidget.h"
 
-
 namespace Seed {
 
-
-class Label : public IWidget
+class SEED_CORE_API Label : public IWidget
 {
 	public:
 		Label();
@@ -60,6 +58,7 @@ class Label : public IWidget
 		virtual void SetText(const WideString str);
 		virtual void SetText(const String &str);
 		virtual void SetFont(const Font *font);
+		virtual void ReleaseText();
 
 		f32 GetTextWidth();
 
@@ -86,9 +85,6 @@ class Label : public IWidget
 		SEED_DISABLE_COPY(Label);
 };
 
-
 } // namespace
 
-
 #endif // __LABEL_H__
-
