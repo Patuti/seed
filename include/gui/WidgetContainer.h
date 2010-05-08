@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,15 +37,12 @@
 #ifndef __GUI_WIDGET_CONTAINER_H__
 #define __GUI_WIDGET_CONTAINER_H__
 
-
 #include "Array.h"
 #include "../interface/IWidget.h"
 #include "interface/IEventInputPointerListener.h"
 #include <vector>
 
-
 namespace Seed {
-
 
 class WidgetContainer : public IWidget
 {
@@ -64,7 +61,6 @@ class WidgetContainer : public IWidget
 		virtual void Remove(IWidget *widget);
 
 		virtual BOOL IsEventConsumed() const;
-
 
 		// ITransformable2D
 		virtual void SetDisabled(BOOL b);
@@ -98,9 +94,6 @@ class WidgetContainer : public IWidget
 		WidgetVector vWidget;
 };
 
-
 } // namespace
 
-
 #endif // __GUI_WIDGET_CONTAINER_H__
-

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -42,7 +42,6 @@ namespace Seed {
 IScreen::IScreen()
 	: bFading(FALSE)
 	, iMode(0)
-	, pRenderer(NULL)
 	, fAspectRatio(static_cast<f32>(PLATFORM_MAX_SCREEN_HEIGHT)/static_cast<f32>(PLATFORM_MAX_SCREEN_WIDTH))
 	, iHeight(PLATFORM_MAX_SCREEN_HEIGHT)
 	, iWidth(PLATFORM_MAX_SCREEN_WIDTH)
@@ -85,13 +84,9 @@ INLINE BOOL IScreen::IsFullscreen() const
 	return TRUE;
 }
 
-INLINE void IScreen::SetRenderer(IRenderer *renderer)
-{
-	this->pRenderer = renderer;
-}
-
 INLINE void IScreen::Update()
 {
+	SEED_ABSTRACT_METHOD;
 }
 
 INLINE u32 IScreen::GetHeight() const

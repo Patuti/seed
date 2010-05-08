@@ -29,52 +29,39 @@
  **
  *****************************************************************************/
 
-/*! \file EventWidget.h
+/*! \file ISceneObject.cpp
 	\author	Danny Angelo Carminati Grein
-	\brief Defines a widget event class
+	\brief Scene Object Interface
 */
 
-#ifndef __EVENT_WIDGET_H__
-#define __EVENT_WIDGET_H__
+#include "interface/ISceneObject.h"
+#include "Defines.h"
+#include "Log.h"
+#include "Enum.h"
 
-#include "interface/IEvent.h"
+#define TAG		"[ISceneObject] "
 
 namespace Seed {
 
-class IWidget;
-
-class EventWidget : public IEvent
+ISceneObject::ISceneObject()
+	: ITransformable2D()
+	, IRenderable()
 {
-	public:
-		virtual ~EventWidget();
-		EventWidget(const IWidget *sender, const IWidget *receiver, eWidgetEventType t, u32 p, f32 x, f32 y, u32 pressed, u32 hold, u32 released);
+}
 
-		const IWidget *GetSender() const;
-		const IWidget *GetReceiver() const;
-		eWidgetEventType GetEventType() const;
+ISceneObject::~ISceneObject()
+{
+}
 
-		f32 GetX() const;
-		f32 GetY() const;
-		u32 GetPlayer() const;
-		u32 GetPressed()  const;
-		u32 GetReleased() const;
-		u32 GetHold() 	 const;
+INLINE void ISceneObject::Update(f32 delta)
+{
+	UNUSED(delta);
+	SEED_ABSTRACT_METHOD;
+}
 
-	private:
-		SEED_DISABLE_COPY(EventWidget);
-
-	private:
-		const IWidget *pSender;
-		const IWidget *pReceiver;
-		eWidgetEventType iType;
-		u32 iPlayer;
-		f32 fX;
-		f32 fY;
-		u32 iPressed;
-		u32 iHold;
-		u32 iReleased;
-};
+INLINE void ISceneObject::Render()
+{
+	SEED_ABSTRACT_METHOD;
+}
 
 } // namespace
-
-#endif // __EVENT_WIDGET_H__

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -49,28 +49,7 @@
 #define SEED_RENDERER_DATA_MAX		(1024 * 100)
 #define SEED_RENDERER_PACKET_MAX	(1024 * 2)
 
-#define PACKET_TYPE_IMMEDIATE		0x01
-#define PACKET_TYPE_DRAWARRAY		0x02
-#define PACKET_TYPE_DISPLAYLIST		0x03
-
-/*
-VBO is better when usign for one large object. It can be used with a lot of tiny objects,
-but they must have the same setings (eg. texture and blending). Even thought vertex,
-texcoord and normal can differ.
-*/ 
-#define PACKET_TYPE_VBO				0x04
-
-
 namespace Seed { namespace OGL {
-
-
-struct RendererPacket
-{
-	GLint	nMeshType;
-	void	*pVertexData;
-	void	*pTexCoordData;
-	u32		iSize;
-};
 
 class Renderer2D : public IRenderer2D, public Renderer
 {
@@ -78,8 +57,8 @@ class Renderer2D : public IRenderer2D, public Renderer
 		Renderer2D();
 		virtual ~Renderer2D();
 
-		virtual void SelectTexture(u32 texId);
-		virtual void SetPacketType(u32 type);
+		virtual void SelectTexture(IImage *texture);
+		virtual void SetPacketType(eRendererPacketType type);
 		virtual void UploadData(void *userData);
 		virtual void CommitData() const;
 
@@ -94,11 +73,11 @@ class Renderer2D : public IRenderer2D, public Renderer
 	private:
 		SEED_DISABLE_COPY(Renderer2D);
 
-		void Enable2D();
-		void Disable2D();
+		void Enable2D() const;
+		void Disable2D() const;
 
-		void Begin(u32 type) const;
-		void End(u32 type) const;
+		void Begin(eRendererPacketType type) const;
+		void End(eRendererPacketType type) const;
 
 		void UseVertexBuffer(RendererPacket *packet);
 		void UseDisplayList(RendererPacket *packet);
@@ -106,15 +85,15 @@ class Renderer2D : public IRenderer2D, public Renderer
 		void UseDrawArray(RendererPacket *packet);
 
 	private:
-		f32			fScreenW;
-		f32			fScreenH;
+		mutable f32	fScreenW;
+		mutable f32	fScreenH;
 
 		mutable BOOL bInsideDisplayList;
 
-		u32			iTextureId;
+		IImage		*pCurrentTexture;
 		mutable u32	iDataCount;
 		mutable u32	iPacketCount;
-		u32			iLastType;
+		eRendererPacketType nLastType;
 
 		GLuint		iVertexVboId;
 		GLuint		iTexCoordVboId;

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -38,9 +38,7 @@
 #include "EventMovie.h"
 #include "Movie.h"
 
-
 namespace Seed {
-
 
 Timeline::Timeline()
 	: pParent(NULL)
@@ -270,7 +268,7 @@ void Timeline::Render()
 		pObject->SetLocalPosition(fCurrLocalPosX, fCurrLocalPosY);
 		pObject->SetRotation(fCurrRot);
 		pObject->SetScale(fCurrScaleX, fCurrScaleY);
-		pObject->SetColor((u8)fCurrR, (u8)fCurrG, (u8)fCurrB, (u8)fCurrA);
+		//pObject->SetColor((u8)fCurrR, (u8)fCurrG, (u8)fCurrB, (u8)fCurrA); // FIXME: Scene Object
 	}
 
 	if ((fBegin / fDuration) >= 1.0f)
@@ -330,18 +328,18 @@ void Timeline::Render()
 	iCurrentFrame++;
 }
 
-INLINE void Timeline::SetObject(ITransformable2D *object)
+INLINE void Timeline::SetObject(ISceneObject *object)
 {
 	if (pObject)
 		pObject->SetParent(NULL);
 
 	pObject = object;
-	
+
 	if (pObject)
 		pObject->SetParent(reinterpret_cast<ITransformable2D *>(pParent));
 }
 
-INLINE ITransformable2D *Timeline::GetObject() const
+INLINE ISceneObject *Timeline::GetObject() const
 {
 	return this->pObject;
 }

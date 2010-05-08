@@ -336,6 +336,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\RendererManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\ResourceGroup.cpp"
 				>
 			</File>
@@ -381,6 +385,10 @@
 			</File>
 			<File
 				RelativePath="..\source\Updater.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\ViewManager.cpp"
 				>
 			</File>
 			<Filter
@@ -743,6 +751,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\source\interface\IViewport.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\source\interface\IWidget.cpp"
 					>
 				</File>
@@ -823,6 +835,10 @@
 					</File>
 					<File
 						RelativePath="..\source\api\ogl\OglSprite.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\source\api\ogl\OglViewport.cpp"
 						>
 					</File>
 				</Filter>
@@ -1056,6 +1072,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\include\RendererManager.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\ResourceGroup.h"
 				>
 			</File>
@@ -1157,6 +1177,14 @@
 			</File>
 			<File
 				RelativePath="..\include\Vector3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\ViewManager.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Viewport.h"
 				>
 			</File>
 			<Filter
@@ -1392,6 +1420,10 @@
 				</File>
 				<File
 					RelativePath="..\include\interface\IUpdatable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\interface\IViewport.h"
 					>
 				</File>
 				<File
@@ -1699,6 +1731,10 @@
 					</File>
 					<File
 						RelativePath="..\include\api\ogl\OglSprite.h"
+						>
+					</File>
+					<File
+						RelativePath="..\include\api\ogl\OglViewport.h"
 						>
 					</File>
 				</Filter>

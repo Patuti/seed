@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -41,14 +41,9 @@
 #include "Point.h"
 #include "interface/IRenderable.h"
 
-/*
-FIXME: 2009-06-25 | WISH | CORE | Utilizar Point para storage dos dados | Danny Angelo Carminati Grein
-*/
-
 namespace Seed {
 
-
-class ITransformable2D : public IRenderable
+class ITransformable2D// : public IRenderable
 {
 	public:
 		ITransformable2D();
@@ -64,8 +59,8 @@ class ITransformable2D : public IRenderable
 
 		virtual void SetPosition(f32 x, f32 y);
 		virtual void AddPosition(f32 x, f32 y);
-		virtual void SetPosition(const Point<f32> &pos);
-		virtual void AddPosition(const Point<f32> &pos);
+		virtual void SetPosition(const Point2f &pos);
+		virtual void AddPosition(const Point2f &pos);
 
 		virtual void SetLocalX(f32 x);
 		virtual void SetLocalY(f32 y);
@@ -74,8 +69,8 @@ class ITransformable2D : public IRenderable
 
 		virtual void SetLocalPosition(f32 x, f32 y);
 		virtual void AddLocalPosition(f32 x, f32 y);
-		virtual void SetLocalPosition(const Point<f32> &pos);
-		virtual void AddLocalPosition(const Point<f32> &pos);
+		virtual void SetLocalPosition(const Point2f &pos);
+		virtual void AddLocalPosition(const Point2f &pos);
 
 		virtual void SetRotation(f32 rot);
 		virtual void AddRotation(f32 rot);
@@ -84,13 +79,13 @@ class ITransformable2D : public IRenderable
 		virtual void SetScaleY(f32 scaleY);
 		virtual void SetScale(f32 scale);
 		virtual void SetScale(f32 scaleX, f32 scaleY);
-		virtual void SetScale(const Point<f32> &scale);
+		virtual void SetScale(const Point2f &scale);
 
 		virtual void AddScaleX(f32 scaleX);
 		virtual void AddScaleY(f32 scaleY);
 		virtual void AddScale(f32 scale);
 		virtual void AddScale(f32 scaleX, f32 scaleY);
-		virtual void AddScale(const Point<f32> &scale);
+		virtual void AddScale(const Point2f &scale);
 
 		// Normalized Width and Height
 		virtual f32 GetWidth() const;
@@ -98,21 +93,19 @@ class ITransformable2D : public IRenderable
 
 		virtual f32 GetX() const;
 		virtual f32 GetY() const;
-		virtual Point<f32> GetPosition() const;
+		virtual Point2f GetPosition() const;
 
 		virtual f32 GetLocalX() const;
 		virtual f32 GetLocalY() const;
-		virtual Point<f32> GetLocal() const;
+		virtual Point2f GetLocal() const;
 
 		virtual f32 GetRotation() const;
 
 		virtual f32 GetScaleX() const;
 		virtual f32 GetScaleY() const;
 
-		virtual u32 GetPriority() const;
-
-		virtual BOOL ContainsPoint(f32 x, f32 y);
-		virtual BOOL ContainsPoint(const Point<f32> &pos);
+		virtual BOOL ContainsPoint(f32 x, f32 y) const;
+		virtual BOOL ContainsPoint(const Point2f &pos) const;
 
 		/// Set a parent for this transformable
 		/**
@@ -128,19 +121,14 @@ class ITransformable2D : public IRenderable
 
 		virtual BOOL IsChanged() const;
 
-		// IObject
-		virtual const char *GetObjectName() const = 0;
-		virtual int GetObjectType() const = 0;
-
 	protected:
 		BOOL bTransformationChanged;
 		ITransformable2D *pParent;
-		Point<f32> ptPos;
-		Point<f32> ptLocalPos;
+		Point2f ptPos;
+		Point2f ptLocalPos;
+		Point2f ptScale;
 		f32 fWidth;
 		f32 fHeight;
-		f32 fScaleX;
-		f32 fScaleY;
 		f32 fRotation;
 
 	private:

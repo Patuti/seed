@@ -61,7 +61,7 @@
 /*
 During load, upload texture to vga and keep it there.
 */
-#define SEED_ENABLE_PRELOAD_TEXTURE			1
+#define SEED_ENABLE_PRELOAD_TEXTURE			1	// TODO: Remove this, we must have a smart texture management system
 
 /*
 Keep a local ram copy of the image uploaded to vram, this is used in SDL and iPhone
@@ -95,6 +95,11 @@ Maxium amount of viewports.
 Maximum amount of renderers.
 */
 #define SEED_RENDERER_MAX	16
+
+/*
+Maximum amount of objects per scene node.
+*/
+#define SEED_SCENENODE_MAX	32
 
 /*
 String Pools - Define the amount of each pool

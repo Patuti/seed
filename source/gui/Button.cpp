@@ -45,7 +45,6 @@ Button::Button()
 	, pPreviousEnabledAnimation("idle")
 	, eButtonCollision(CollisionNone)
 	, bDisableHover(FALSE)
-	//, bSelected(FALSE)
 	, bFrameControl(TRUE)
 	, bSpriteBased(FALSE)
 	, bLabelBased(FALSE)
@@ -59,7 +58,7 @@ Button::Button()
 	, iLabelHoverColor(0)
 	, iLabelDisabledColor(0)
 	, iLabelColor(0)
-	, eLabelBlendOperation(IRenderable::NONE)
+	, eLabelBlendOperation(BlendNone)
 	, fLabelOffsetX(0.0f)
 	, fLabelOffsetY(0.0f)
 	, fLabelPressOffsetX(0.0f)
@@ -176,15 +175,6 @@ BOOL Button::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 		f32 x = 0;
 		f32 y = 0;
 
-#ifndef __WARNING_F32_ALREADY_
-#if !defined(__GNUC__)
-#pragma message("WARNING: f32 endianess not checked on some platforms - need do some testing!")
-#else
-#warning "WARNING: f32 endianess not checked on some platforms - need do some testing!"
-#endif
-#define __WARNING_F32_ALREADY_
-#endif // __WARNING_F32_ALREADY_
-
 		READ_F32(x, ptr);
 		READ_F32(y, ptr);
 
@@ -224,13 +214,13 @@ BOOL Button::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 void Button::Update(f32 dt)
 {
 	UNUSED(dt);
-	//IWidget::Update();
 
 	if (bButtonChanged || bTransformationChanged)
 	{
 		if (bSpriteBased)
 		{
 			this->UpdateSprite();
+			cSprite.Update(dt);
 		}
 
 		if (bLabelBased)
@@ -246,8 +236,6 @@ void Button::Update(f32 dt)
 
 INLINE void Button::UpdateSprite()
 {
-	//this->cSprite.SetX(IWidget::GetX() + fSpriteOffsetX);
-	//this->cSprite.SetY(IWidget::GetY() + fSpriteOffsetY);
 	this->cSprite.SetX(fSpriteOffsetX);
 	this->cSprite.SetY(fSpriteOffsetY);
 
@@ -267,27 +255,23 @@ INLINE void Button::UpdateLabel()
 	{
 		case VerticalAlignTop:
 		{
-			//this->cLabel.SetY(IWidget::GetY());
 			this->cLabel.SetY(0.0f);
 		}
 		break;
 
 		case VerticalAlignCenter:
 		{
-			//this->cLabel.SetY(IWidget::GetY() + ((IWidget::GetHeight() - cLabel.GetHeight()) / 2.0f));
 			this->cLabel.SetY((IWidget::GetHeight() - cLabel.GetHeight()) / 2.0f);
 		}
 		break;
 
 		case VerticalAlignBottom:
 		{
-			//this->cLabel.SetY(IWidget::GetY() + IWidget::GetHeight() - cLabel.GetHeight());
 			this->cLabel.SetY(IWidget::GetHeight() - cLabel.GetHeight());
 		}
 		break;
 
 		default:
-			 //this->cLabel.SetY(IWidget::GetY() + fLabelOffsetY);
 			this->cLabel.SetY(fLabelOffsetY);
 		break;
 	}
@@ -296,27 +280,23 @@ INLINE void Button::UpdateLabel()
 	{
 		case HorizontalAlignLeft:
 		{
-			//this->cLabel.SetX(IWidget::GetX());
 			this->cLabel.SetX(0.0f);
 		}
 		break;
 
 		case HorizontalAlignCenter:
 		{
-			//this->cLabel.SetX(IWidget::GetX() + ((IWidget::GetWidth() - cLabel.GetWidth()) / 2.0f));
 			this->cLabel.SetX((IWidget::GetWidth() - cLabel.GetWidth()) / 2.0f);
 		}
 		break;
 
 		case HorizontalAlignRight:
 		{
-			//this->cLabel.SetX(IWidget::GetX() + IWidget::GetWidth() - cLabel.GetWidth());
 			this->cLabel.SetX(IWidget::GetWidth() - cLabel.GetWidth());
 		}
 		break;
 
 		default:
-			//this->cLabel.SetX(IWidget::GetX() + fLabelOffsetX);
 			this->cLabel.SetX(fLabelOffsetX);
 		break;
 	}
@@ -328,7 +308,12 @@ INLINE void Button::UpdateLabel()
 	this->cLabel.SetLocalY(IWidget::GetLocalY());
 }
 
-INLINE BOOL Button::ContainsPoint(f32 x, f32 y)
+INLINE BOOL Button::ContainsPoint(const Point2f &pos) const
+{
+	return this->ContainsPoint(pos.x, pos.y);
+}
+
+INLINE BOOL Button::ContainsPoint(f32 x, f32 y) const
 {
 	BOOL ret = FALSE;
 
@@ -354,7 +339,7 @@ INLINE BOOL Button::ContainsPoint(f32 x, f32 y)
 	return ret;
 }
 
-void Button::SetBlending(Seed::IRenderable::eBlendMode op)
+void Button::SetBlending(eBlendMode op)
 {
 	this->cSprite.SetBlending(op);
 	this->cLabel.SetBlending(op);
@@ -372,7 +357,7 @@ void Button::SetColor(PIXEL color)
 	this->cLabel.SetColor(color);
 }
 
-INLINE BOOL Button::CheckPixel(f32 x, f32 y)
+INLINE BOOL Button::CheckPixel(f32 x, f32 y) const
 {
 	BOOL ret = FALSE;
 
@@ -408,25 +393,21 @@ void Button::OnWidgetRollOver(const EventWidget *ev)
 {
 	UNUSED(ev);
 
-	if (!bDisableHover && !bSelected)
+	if (!bDisableHover && !bSelected && bFrameControl)
 	{
-		if (bFrameControl)
+		if (bSpriteBased)
 		{
-			if (bSpriteBased)
-			{
-				//this->cSprite.SetCurrentFrame(1);
-				this->cSprite.SetAnimation("rollover");
-				this->cSprite.AddPosition(fSpriteHoverOffsetX, fSpriteHoverOffsetY);
-			}
+			this->cSprite.SetAnimation("rollover");
+			this->cSprite.AddPosition(fSpriteHoverOffsetX, fSpriteHoverOffsetY);
+		}
 
-			if (bLabelBased)
+		if (bLabelBased)
+		{
+			this->cLabel.AddPosition(fLabelHoverOffsetX, fLabelHoverOffsetY);
+			if (iLabelHoverColor)
 			{
-				this->cLabel.AddPosition(fLabelHoverOffsetX, fLabelHoverOffsetY);
-				if (iLabelHoverColor)
-				{
-					this->cLabel.SetColor(this->iLabelHoverColor);
-					this->cLabel.SetBlending(this->eLabelBlendOperation);
-				}
+				this->cLabel.SetColor(this->iLabelHoverColor);
+				this->cLabel.SetBlending(this->eLabelBlendOperation);
 			}
 		}
 	}
@@ -436,16 +417,12 @@ void Button::OnWidgetRollOut(const EventWidget *ev)
 {
 	UNUSED(ev);
 
-	/*if (bDisableHover || bSelected)
-		return IEvent::IGNORED;*/
-
 	if (!bDisableHover && !bSelected)
 	{
 		if (bFrameControl)
 		{
 			if (bSpriteBased)
 			{
-				//this->cSprite.SetCurrentFrame(static_cast<u32>((bSelected ? 1 : 0)));
 				if (!bSelected)
 					this->cSprite.SetAnimation("rollout");
 				else
@@ -459,7 +436,7 @@ void Button::OnWidgetRollOut(const EventWidget *ev)
 				this->cLabel.AddPosition(fLabelHoverOffsetX * -1.0f, fLabelHoverOffsetY * -1.0f);
 				if (iLabelHoverColor)
 				{
-					this->cLabel.SetBlending(IRenderable::NONE);
+					this->cLabel.SetBlending(BlendNone);
 					if (this->iLabelColor)
 					{
 						this->cLabel.SetColor(this->iLabelColor);
@@ -488,14 +465,6 @@ void Button::OnWidgetPress(const EventWidget *ev)
 	{
 		if (bSpriteBased)
 		{
-			/*if (cSprite.GetNumFrames() < 3)
-			{
-				this->cSprite.SetCurrentFrame(1);
-			}
-			else
-			{
-				this->cSprite.SetCurrentFrame(2);
-			}*/
 			bOffsetPressed = TRUE;
 			cSprite.SetAnimation("press");
 			cSprite.AddPosition(fSpritePressOffsetX, fSpritePressOffsetY);
@@ -521,9 +490,6 @@ void Button::OnWidgetRelease(const EventWidget *ev)
 	{
 		this->fDragOffsetX = 0.0f;
 		this->fDragOffsetY = 0.0f;
-		/*this->SetPriority(iOldPriority);
-		this->cSprite.SetPriority(iOldPriority);
-		this->cLabel.SetPriority(iOldPriority + 1);*/
 		this->SetPriority(iOldPriority);
 	}
 
@@ -531,7 +497,6 @@ void Button::OnWidgetRelease(const EventWidget *ev)
 	{
 		if (bSpriteBased)
 		{
-			//this->cSprite.SetCurrentFrame(1);
 			this->cSprite.SetAnimation("release");
 			this->cSprite.AddPosition(fSpritePressOffsetX * -1.0f, fSpritePressOffsetY * -1.0f);
 		}
@@ -541,7 +506,7 @@ void Button::OnWidgetRelease(const EventWidget *ev)
 			this->cLabel.AddPosition(this->fLabelPressOffsetX * -1.0f, this->fLabelPressOffsetY * -1.0f);
 			if (this->iLabelPressColor)
 			{
-				this->cLabel.SetBlending(IRenderable::NONE);
+				this->cLabel.SetBlending(BlendNone);
 				if (this->iLabelColor)
 				{
 					this->cLabel.SetColor(this->iLabelColor);
@@ -558,9 +523,6 @@ void Button::OnWidgetReleaseOut(const EventWidget *ev)
 
 	if (bDraggable)
 	{
-		/*this->SetPriority(iOldPriority);
-		this->cSprite.SetPriority(iOldPriority);
-		this->cLabel.SetPriority(iOldPriority + 1);*/
 		this->fDragOffsetX = 0.0f;
 		this->fDragOffsetY = 0.0f;
 		this->SetPriority(iOldPriority);
@@ -570,7 +532,6 @@ void Button::OnWidgetReleaseOut(const EventWidget *ev)
 	{
 		if (bSpriteBased)
 		{
-			//this->cSprite.SetCurrentFrame(static_cast<u32>((bSelected ? 1 : 0)));
 			if (bSelected)
 				this->cSprite.SetAnimation("selected");
 			else
@@ -583,7 +544,7 @@ void Button::OnWidgetReleaseOut(const EventWidget *ev)
 			this->cLabel.AddPosition(this->fLabelPressOffsetX * -1.0f, this->fLabelPressOffsetY * -1.0f);
 			if (this->iLabelPressColor)
 			{
-				this->cLabel.SetBlending(IRenderable::NONE);
+				this->cLabel.SetBlending(BlendNone);
 				if (this->iLabelColor)
 				{
 					this->cLabel.SetColor(this->iLabelColor);
@@ -656,7 +617,6 @@ INLINE void Button::Select()
 
 	if (bSpriteBased && bFrameControl && !bDisabled)
 	{
-		//this->cSprite.SetCurrentFrame(1);
 		this->cSprite.SetAnimation("selected");
 	}
 
@@ -669,7 +629,6 @@ INLINE void Button::Unselect()
 
 	if (bSpriteBased && bFrameControl && !bDisabled)
 	{
-		//this->cSprite.SetCurrentFrame(0);
 		this->cSprite.SetAnimation("idle");
 	}
 
@@ -706,7 +665,7 @@ INLINE void Button::SetDisabled(BOOL b)
 				{
 					BOOL hasAnim = FALSE;
 					hasAnim = cSprite.SetAnimation("idle");
-					if (hasAnim) 
+					if (hasAnim)
 					{
 						pPreviousEnabledAnimation = "idle";
 					}
@@ -733,7 +692,7 @@ INLINE void Button::SetDisabled(BOOL b)
 			}
 			else
 			{
-				this->cLabel.SetBlending(IRenderable::NONE);
+				this->cLabel.SetBlending(BlendNone);
 				if (iLabelColor)
 				{
 					this->cLabel.SetColor(iLabelColor);
@@ -775,8 +734,6 @@ void Button::SetSprite(const char *spriteName, ResourceManager *res, IMemoryPool
 		cSprite.Load(spriteName, res, pool);
 	}
 
-	//this->cSprite.SetX(IWidget::GetX());
-	//this->cSprite.SetY(IWidget::GetY());
 	cSprite.SetPosition(0.0f, 0.0f);
 
 	if (cSprite.GetWidth() > this->GetWidth())
@@ -1315,7 +1272,7 @@ INLINE IImage *Button::GetSpriteTexture() const
 	return this->cSprite.GetTexture();
 }
 
-INLINE void Button::SetSpriteBlending(Seed::IRenderable::eBlendMode op)
+INLINE void Button::SetSpriteBlending(eBlendMode op)
 {
 	this->cSprite.SetBlending(op);
 }

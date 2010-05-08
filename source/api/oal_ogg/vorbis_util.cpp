@@ -81,7 +81,7 @@ int vorbis_seek(void *datasource, ogg_int64_t offset, int whence)
 		case SEEK_CUR:
 		{
 			spaceToEOF = static_cast<size_t>(vorbisData->dataSize - vorbisData->dataRead);
-			if (offset < spaceToEOF)
+			if (offset < (ogg_int64_t)spaceToEOF)
 				actualOffset = (offset);
 			else
 				actualOffset = spaceToEOF;

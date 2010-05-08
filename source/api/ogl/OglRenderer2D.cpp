@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -47,7 +47,9 @@
 
 
 #include <math.h>
+#if defined(_SDL_)
 #include <SDL/SDL.h>
+#endif // _SDL_
 #if defined(__APPLE_CC__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>
@@ -66,10 +68,10 @@ Renderer2D::Renderer2D()
 	: fScreenW(0)
 	, fScreenH(0)
 	, bInsideDisplayList(FALSE)
-	, iTextureId(0)
+	, pCurrentTexture(NULL)
 	, iDataCount(0)
 	, iPacketCount(0)
-	, iLastType(PACKET_TYPE_IMMEDIATE)
+	, nLastType(Seed::RendererImmediate)
 	, iVertexVboId(0)
 	, iTexCoordVboId(0)
 	, iDisplayList(0)
@@ -137,19 +139,23 @@ INLINE BOOL Renderer2D::Shutdown()
 
 INLINE void Renderer2D::Begin() const
 {
+	this->Enable2D();
+
 	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	Renderer::Begin();
-	this->Begin(iLastType);
+	this->Begin(nLastType);
 }
 
 INLINE void Renderer2D::End() const
 {
 	this->CommitData();
-	this->End(iLastType);
+	this->End(nLastType);
 	Renderer::End();
+
+	this->Disable2D();
 }
 
-INLINE void Renderer2D::Enable2D()
+INLINE void Renderer2D::Enable2D() const
 {
 #if !defined(_QT_)
 	fScreenW = static_cast<f32>(pScreen->GetWidth());
@@ -192,7 +198,7 @@ INLINE void Renderer2D::Enable2D()
 #endif
 }
 
-INLINE void Renderer2D::Disable2D()
+INLINE void Renderer2D::Disable2D() const
 {
 #if !defined(_QT_)
 	// Restore previous Renderer state
@@ -269,36 +275,37 @@ INLINE void Renderer2D::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL f
 	glEnable(GL_BLEND);
 }
 
-INLINE void Renderer2D::SetPacketType(u32 type)
+INLINE void Renderer2D::SetPacketType(eRendererPacketType type)
 {
-	if (iLastType != type)
+	if (type != Seed::RendererLastType && nLastType != type)
 	{
 		this->CommitData();
 
-		this->End(iLastType);
+		this->End(nLastType);
 		this->Begin(type);
 
-		iLastType = type;
+		nLastType = type;
 	}
 }
 
-INLINE void Renderer2D::SelectTexture(u32 texId)
+INLINE void Renderer2D::SelectTexture(IImage *texture)
 {
-	if (texId != iTextureId)
+	if (texture && texture != pCurrentTexture)
 	{
-		if (iLastType == PACKET_TYPE_VBO)
+		if (nLastType == Seed::RendererVertexBuffer)
 			this->CommitData();
 
-		glBindTexture(GL_TEXTURE_2D, texId);
-		iTextureId = texId;
+		Image *tex = static_cast<Image *>((void *)texture);
+		glBindTexture(GL_TEXTURE_2D, tex->LoadTexture());
+		pCurrentTexture = texture;
 	}
 }
 
-INLINE void Renderer2D::End(u32 type) const
+INLINE void Renderer2D::End(eRendererPacketType type) const
 {
 	switch (type)
 	{
-		case PACKET_TYPE_VBO:
+		case Seed::RendererVertexBuffer:
 		{
 			if (bHasVBO && bUseVBO)
 			{
@@ -307,12 +314,12 @@ INLINE void Renderer2D::End(u32 type) const
 			}
 			else
 			{
-				this->End(PACKET_TYPE_DISPLAYLIST);
+				this->End(Seed::RendererDisplayList);
 			}
 		}
 		break;
 
-		case PACKET_TYPE_DISPLAYLIST:
+		case Seed::RendererDisplayList:
 		{
 			if (bInsideDisplayList)
 			{
@@ -324,14 +331,14 @@ INLINE void Renderer2D::End(u32 type) const
 		}
 		break;
 
-		case PACKET_TYPE_DRAWARRAY:
+		case Seed::RendererDrawArray:
 		{
 			glDisableClientState(GL_VERTEX_ARRAY);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		}
 		break;
 
-		case PACKET_TYPE_IMMEDIATE:
+		case Seed::RendererImmediate:
 		{
 			glPopMatrix();
 		}
@@ -344,11 +351,11 @@ INLINE void Renderer2D::End(u32 type) const
 	}
 }
 
-INLINE void Renderer2D::Begin(u32 type) const
+INLINE void Renderer2D::Begin(eRendererPacketType type) const
 {
 	switch (type)
 	{
-		case PACKET_TYPE_VBO:
+		case Seed::RendererVertexBuffer:
 		{
 			if (bHasVBO && bUseVBO)
 			{
@@ -357,12 +364,12 @@ INLINE void Renderer2D::Begin(u32 type) const
 			}
 			else
 			{
-				this->Begin(PACKET_TYPE_DISPLAYLIST);
+				this->Begin(Seed::RendererDisplayList);
 			}
 		}
 		break;
 
-		case PACKET_TYPE_DISPLAYLIST:
+		case Seed::RendererDisplayList:
 		{
 			if (!bInsideDisplayList)
 			{
@@ -374,14 +381,14 @@ INLINE void Renderer2D::Begin(u32 type) const
 		}
 		break;
 
-		case PACKET_TYPE_DRAWARRAY:
+		case Seed::RendererDrawArray:
 		{
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glEnableClientState(GL_VERTEX_ARRAY);
 		}
 		break;
 
-		case PACKET_TYPE_IMMEDIATE:
+		case Seed::RendererImmediate:
 		{
 			glPushMatrix();
 			glLoadIdentity();
@@ -398,27 +405,30 @@ INLINE void Renderer2D::Begin(u32 type) const
 INLINE void Renderer2D::UploadData(void *userData)
 {
 	RendererPacket *packet = static_cast<RendererPacket *>(userData);
-	switch (iLastType)
+	this->SetPacketType(packet->nPacketType);
+	this->SelectTexture(packet->pTexture);
+
+	switch (nLastType)
 	{
-		case PACKET_TYPE_VBO:
+		case Seed::RendererVertexBuffer:
 		{
 			this->UseVertexBuffer(packet);
 		}
 		break;
 
-		case PACKET_TYPE_DISPLAYLIST:
+		case Seed::RendererDisplayList:
 		{
 			this->UseDisplayList(packet);
 		}
 		break;
 
-		case PACKET_TYPE_DRAWARRAY:
+		case Seed::RendererDrawArray:
 		{
 			this->UseDrawArray(packet);
 		}
 		break;
 
-		case PACKET_TYPE_IMMEDIATE:
+		case Seed::RendererImmediate:
 		{
 			this->UseImmediate(packet);
 		}
@@ -450,7 +460,7 @@ INLINE void Renderer2D::UseVertexBuffer(RendererPacket *packet)
 	ptr = &arTexCoordData[iDataCount*2];
 	MEMCOPY(ptr, packet->pTexCoordData, packet->iSize * sizeof(f32) * 2);
 
-	nVboMeshType = packet->nMeshType;
+	nVboMeshType = this->GetOpenGLMeshType(packet->nMeshType);
 	iDataCount += packet->iSize;
 	iPacketCount++;
 }
@@ -461,7 +471,7 @@ INLINE void Renderer2D::UseDrawArray(RendererPacket *packet)
 	glVertexPointer(3, GL_FLOAT, 0, packet->pVertexData);
 	glPushMatrix();
 		glLoadIdentity();
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, packet->iSize);
+		glDrawArrays(this->GetOpenGLMeshType(packet->nMeshType), 0, packet->iSize);
 	glPopMatrix();
 }
 
@@ -475,7 +485,7 @@ INLINE void Renderer2D::UseDisplayList(RendererPacket *packet)
 	glPushMatrix();
 	glLoadIdentity();
 
-	glBegin(GL_TRIANGLE_STRIP);
+	glBegin(this->GetOpenGLMeshType(packet->nMeshType));
 	for (u32 i = 0; i < packet->iSize; i++)
 	{
 		glTexCoord2f(texcoord[i].t[0], texcoord[i].t[1]);
@@ -496,7 +506,8 @@ INLINE void Renderer2D::UseImmediate(RendererPacket *packet)
 	glPushMatrix();
 	glLoadIdentity();
 
-	glBegin(GL_TRIANGLE_STRIP);
+	//glPolygonMode(GL_FRONT, GL_LINE);
+	glBegin(this->GetOpenGLMeshType(packet->nMeshType));
 	for (u32 i = 0; i < packet->iSize; i++)
 	{
 		glTexCoord2f(texcoord[i].t[0], texcoord[i].t[1]);
@@ -509,9 +520,9 @@ INLINE void Renderer2D::UseImmediate(RendererPacket *packet)
 
 INLINE void Renderer2D::CommitData() const
 {
-	switch (iLastType)
+	switch (nLastType)
 	{
-		case PACKET_TYPE_VBO:
+		case Seed::RendererVertexBuffer:
 		{
 			if (iDataCount)
 			{
@@ -548,14 +559,12 @@ INLINE void Renderer2D::CommitData() const
 					glLoadIdentity();
 					//glDrawArrays(GL_TRIANGLE_STRIP, 0, iDataCount);
 
+					for (u32 i = 0; i < iPacketCount; i++)
+					{
+						glDrawArrays(GL_TRIANGLE_STRIP, arPacketIndex[i], arPacketCount[i]);
+					}
 
-					//for (u32 i = 0; i < iPacketCount; i++)
-					//{
-					//	glDrawArrays(GL_TRIANGLE_STRIP, arPacketIndex[i], arPacketCount[i]);
-					//}
-
-
-					glMultiDrawArraysEXT(nVboMeshType, arPacketIndex, arPacketCount, iPacketCount);
+					//glMultiDrawArraysEXT(nVboMeshType, arPacketIndex, arPacketCount, iPacketCount);
 				glPopMatrix();
 
 				glBindBufferARB(GL_ARRAY_BUFFER, 0);
@@ -571,7 +580,7 @@ INLINE void Renderer2D::CommitData() const
 		}
 		break;
 
-		case PACKET_TYPE_DISPLAYLIST:
+		case Seed::RendererDisplayList:
 		{
 			glPopMatrix();
 			glEndList();

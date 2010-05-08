@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -50,12 +50,6 @@ IRenderer::IRenderer()
 	, vRenderablesStatic()
 	, vVisibleRenderables()
 	, vVisibleRenderablesStatic()
-	, vMaskRenderables()
-	, vMaskRenderablesStatic()
-	, vMaskedRenderables()
-	, vMaskedRenderablesStatic()
-	, vSpecialRenderables()
-	, vSpecialRenderablesStatic()
 {
 }
 
@@ -72,24 +66,6 @@ IRenderer::~IRenderer()
 
 	RenderableVector().swap(vVisibleRenderables);
 	RenderableVector().swap(vVisibleRenderablesStatic);
-
-	vMaskRenderables.clear();
-	vMaskRenderablesStatic.clear();
-
-	RenderableVector().swap(vMaskRenderables);
-	RenderableVector().swap(vMaskRenderablesStatic);
-
-	vMaskedRenderables.clear();
-	vMaskedRenderablesStatic.clear();
-
-	RenderableVector().swap(vMaskedRenderables);
-	RenderableVector().swap(vMaskedRenderablesStatic);
-
-	vSpecialRenderables.clear();
-	vSpecialRenderablesStatic.clear();
-
-	RenderableVector().swap(vSpecialRenderables);
-	RenderableVector().swap(vSpecialRenderablesStatic);
 }
 
 INLINE void IRenderer::SetBufferMode(eBufferMode mode)
@@ -119,32 +95,6 @@ INLINE void IRenderer::End() const
 {
 	SEED_ABSTRACT_METHOD;
 }
-
-INLINE void IRenderer::BeginRenderMask() const
-{
-	SEED_ABSTRACT_METHOD;
-}
-
-INLINE void IRenderer::BeginRenderMasked() const
-{
-	SEED_ABSTRACT_METHOD;
-}
-
-INLINE void IRenderer::BeginRenderUnmasked() const
-{
-	SEED_ABSTRACT_METHOD;
-}
-
-INLINE void IRenderer::BeginRenderSpecial() const
-{
-	SEED_ABSTRACT_METHOD;
-}
-
-/*INLINE void IRenderer::ClearScreen(const PIXEL color) const
-{
-	UNUSED(color);
-	SEED_ABSTRACT_METHOD;
-}*/
 
 BOOL IRenderer::Update(f32 delta)
 {
@@ -186,25 +136,11 @@ void IRenderer::Render()
 {
 	if (IModule::IsEnabled())
 	{
-		this->FilterObjects();
 		this->Culler();
 
 		this->Begin();
-			this->BeginRenderMask();
-			this->RenderScene(vMaskRenderables);
-			this->RenderScene(vMaskRenderablesStatic);
-
-			this->BeginRenderMasked();
-			this->RenderScene(vMaskedRenderables);
-			this->RenderScene(vMaskedRenderablesStatic);
-
-			this->BeginRenderUnmasked();
 			this->RenderScene(vVisibleRenderables);
 			this->RenderScene(vVisibleRenderablesStatic);
-
-			this->BeginRenderSpecial();
-			this->RenderScene(vSpecialRenderables);
-			this->RenderScene(vSpecialRenderablesStatic);
 		this->End();
 	}
 }
@@ -236,7 +172,7 @@ INLINE void IRenderer::Culler() // FIXME: Culler(RenderableList, CullingOperatio
 		IRenderable *obj = const_cast<IRenderable *>(*it);
 		ASSERT_NULL(obj);
 
-		if (obj->IsVisible() && /*!obj->IsMasked() &&*/ !obj->IsMask())
+		if (obj->IsVisible())
 			vVisibleRenderables.push_back(obj);
 	}
 
@@ -250,67 +186,11 @@ INLINE void IRenderer::Culler() // FIXME: Culler(RenderableList, CullingOperatio
 		IRenderable *obj = const_cast<IRenderable *>(*it);
 		ASSERT_NULL(obj);
 
-		if (obj->IsVisible() && !obj->IsMasked() && !obj->IsMask())
+		if (obj->IsVisible())
 			vVisibleRenderablesStatic.push_back(obj);
 	}
 
 	this->Sort(vVisibleRenderablesStatic);
-}
-
-INLINE void IRenderer::FilterObjects()
-{
-	vMaskRenderables.clear();
-	vMaskRenderablesStatic.clear();
-
-	vMaskedRenderables.clear();
-	vMaskedRenderablesStatic.clear();
-
-	vSpecialRenderables.clear();
-	vSpecialRenderablesStatic.clear();
-
-	ConstRenderableVectorIterator it = vRenderables.begin();
-	ConstRenderableVectorIterator end = vRenderables.end();
-
-	for (; it != end; ++it)
-	{
-		IRenderable *obj = const_cast<IRenderable *>(*it);
-		ASSERT_NULL(obj);
-
-		if (obj->IsMask())
-			vMaskRenderables.push_back(obj);
-
-		if (obj->IsMasked())
-			vMaskedRenderables.push_back(obj);
-
-		if  (obj->IsSpecial())
-			vSpecialRenderables.push_back(obj);
-	}
-
-	this->Sort(vMaskRenderables);
-	this->Sort(vMaskedRenderables);
-	this->Sort(vSpecialRenderables);
-
-	it = vRenderablesStatic.begin();
-	end = vRenderablesStatic.end();
-
-	for (; it != end; ++it)
-	{
-		IRenderable *obj = const_cast<IRenderable *>(*it);
-		ASSERT_NULL(obj);
-
-		if (obj->IsMask())
-			vMaskRenderablesStatic.push_back(obj);
-
-		if (obj->IsMasked())
-			vMaskedRenderablesStatic.push_back(obj);
-
-		if  (obj->IsSpecial())
-			vSpecialRenderablesStatic.push_back(obj);
-	}
-
-	this->Sort(vMaskRenderablesStatic);
-	this->Sort(vMaskedRenderablesStatic);
-	this->Sort(vSpecialRenderablesStatic);
 }
 
 INLINE void IRenderer::Sort(RenderableVector &vec)

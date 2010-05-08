@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -34,7 +34,6 @@
 	\brief GUI TextArea Widget
 */
 
-
 #include "Defines.h"
 #include "Input.h"
 #include "Log.h"
@@ -44,9 +43,7 @@
 #include "Screen.h"
 #include "Number.h"
 
-
 #define TAG		"[GUI::TextArea] "
-
 
 #if DEBUG_ENABLE_RECT_TEXTAREA == 1
 #define DEBUG_TEXTAREA_RECT DEBUG_RECT(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), DEBUG_RECT_COLOR_TEXTAREA);
@@ -54,9 +51,7 @@
 #define DEBUG_TEXTAREA_RECT
 #endif
 
-
 namespace Seed {
-
 
 TextArea::TextArea()
 	: IWidget()
@@ -94,7 +89,7 @@ void TextArea::Reset()
 	this->iLines			= 0;
 	this->eHAlign 			= HorizontalAlignLeft;
 	this->eVAlign 			= VerticalAlignTop;
-	this->eBlendOperation	= IRenderable::NONE;
+	this->eBlendOperation	= BlendNone;
 
 	this->pLines			= NULL;
 
@@ -132,7 +127,6 @@ void TextArea::Render()
 		this->cText.Draw(pLines[i].iIndex, pLines[i].iSize);
 	}
 }
-
 
 u32 TextArea::GetLineCount() const
 {
@@ -341,7 +335,6 @@ INLINE int TextArea::GetObjectType() const
 {
 	return Seed::ObjectGuiTextArea;
 }
-
 
 } // namespace
 

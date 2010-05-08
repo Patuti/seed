@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -35,20 +35,15 @@
 */
 
 #include "ParticleEmitter.h"
-#include "Enum.h"
-#include "Defines.h"
 #include "Rand.h"
-#include "Sprite.h"
-#include "MathUtil.h"
 #include "Number.h"
+#include "Image.h"
 
 namespace Seed {
-
 
 ParticleEmitter::ParticleEmitter()
 	: pEmitterObject(NULL)
 	, psInfo()
-	//, psInfo(NULL)
 	, pRes(NULL)
 	, pPool(NULL)
 	, pFilename(NULL)
@@ -59,11 +54,9 @@ ParticleEmitter::ParticleEmitter()
 	, fEmissionResidue(0.0f)
 	, fInterval(0.0f)
 	, ptPrevLocation(0.0f, 0.0f)
-	//, ptLocation(0.0f, 0.0f)
 	, fTx(0.0f)
 	, fTy(0.0f)
 	, fScale(1.0f)
-	//, iParticlesAlive(0)
 	, iAnimation(0)
 	, bPaused(FALSE)
 	, bEnabled(TRUE)
@@ -223,8 +216,8 @@ INLINE void ParticleEmitter::Update(f32 deltaTime)
 		par->SetColor(par->fColorR, par->fColorG, par->fColorB, par->fColorA);
 		//par->SetScale(par->fSize);
 		//par->AddPosition(par->ptVelocity * deltaTime);
-		par->fScaleX = par->fSize;
-		par->fScaleY = par->fSize;
+		par->ptScale.x = par->fSize;
+		par->ptScale.y = par->fSize;
 		par->fRotation += par->fSpin;
 		//if (par->fRotation >= 360.0f)
 		//	par->fRotation -= 360.0f;
@@ -320,12 +313,12 @@ INLINE void ParticleEmitter::Update(f32 deltaTime)
 
 			par->SetColor(par->fColorR, par->fColorG, par->fColorB, par->fColorA);
 			if (psInfo.iBlendMode == 6)
-				par->SetBlending(IRenderable::MODULATE);
+				par->SetBlending(BlendModulate);
 			else
-				par->SetBlending(IRenderable::ADDITIVE);
+				par->SetBlending(BlendAdditive);
 			//par->SetScale(par->fSize);
-			par->fScaleX = par->fSize;
-			par->fScaleY = par->fSize;
+			par->ptScale.x = par->fSize;
+			par->ptScale.y = par->fSize;
 			//par->SetPosition(pos);
 			par->ptPos = pos;
 			//par->fRotation = par->fSpin;

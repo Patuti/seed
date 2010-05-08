@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -64,7 +64,7 @@ Text::Text()
 	, fScaleX(1.0f)
 	, fScaleY(1.0f)
 	, iColor(0)
-	, iOperation(IRenderable::NONE)
+	, iOperation(BlendNone)
 {
 }
 
@@ -284,7 +284,7 @@ INLINE void Text::SetFont(Font *f)
 		this->fWidth = this->GetWidth(0, String::Length(pStrData));
 }
 
-INLINE void Text::SetBlending(IRenderable::eBlendMode op)
+INLINE void Text::SetBlending(eBlendMode op)
 {
 	this->iOperation = op;
 }

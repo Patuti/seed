@@ -75,7 +75,6 @@ class Screen : public IScreen
 
 		virtual u32 GetHeight() const;
 		virtual u32 GetWidth() const;
-		virtual void SetRenderer(IRenderer *renderer);
 
 	public:
 		static Screen instance;

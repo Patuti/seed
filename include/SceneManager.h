@@ -29,52 +29,46 @@
  **
  *****************************************************************************/
 
-/*! \file EventWidget.h
+/*! \file SceneManager.h
 	\author	Danny Angelo Carminati Grein
-	\brief Defines a widget event class
+	\brief Scene Manager
 */
 
-#ifndef __EVENT_WIDGET_H__
-#define __EVENT_WIDGET_H__
+#ifndef __SCENE_MANAGER_H__
+#define __SCENE_MANAGER_H__
 
-#include "interface/IEvent.h"
+#include "Array.h"
+#include "Config.h"
+#include "interface/IUpdatable.h"
 
 namespace Seed {
 
-class IWidget;
+class ISceneObject;
 
-class EventWidget : public IEvent
+class SceneManager : public IUpdatable
 {
 	public:
-		virtual ~EventWidget();
-		EventWidget(const IWidget *sender, const IWidget *receiver, eWidgetEventType t, u32 p, f32 x, f32 y, u32 pressed, u32 hold, u32 released);
+		static SceneManager instance;
 
-		const IWidget *GetSender() const;
-		const IWidget *GetReceiver() const;
-		eWidgetEventType GetEventType() const;
+	public:
+		SceneManager();
+		virtual ~SceneManager();
 
-		f32 GetX() const;
-		f32 GetY() const;
-		u32 GetPlayer() const;
-		u32 GetPressed()  const;
-		u32 GetReleased() const;
-		u32 GetHold() 	 const;
+		virtual void Add(ISceneObject *obj);
+		virtual void Remove(ISceneObject *obj);
+
+		// IUpdatable
+		virtual BOOL Update(f32 delta);
 
 	private:
-		SEED_DISABLE_COPY(EventWidget);
+		SEED_DISABLE_COPY(SceneManager);
 
 	private:
-		const IWidget *pSender;
-		const IWidget *pReceiver;
-		eWidgetEventType iType;
-		u32 iPlayer;
-		f32 fX;
-		f32 fY;
-		u32 iPressed;
-		u32 iHold;
-		u32 iReleased;
+		Array<ISceneObject *, 128> arObject;
 };
+
+SceneManager *const pSceneManager = &SceneManager::instance;
 
 } // namespace
 
-#endif // __EVENT_WIDGET_H__
+#endif // __SCENE_MANAGER_H__

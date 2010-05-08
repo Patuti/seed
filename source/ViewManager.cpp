@@ -63,7 +63,7 @@ ViewManager::~ViewManager()
 INLINE BOOL ViewManager::Initialize()
 {
 	IModule::Initialize();
-	
+
 	for (u32 i = 0; i < arViewport.Size(); i++)
 	{
 		arViewport[i]->GetRenderer()->Initialize();
@@ -75,7 +75,7 @@ INLINE BOOL ViewManager::Initialize()
 INLINE BOOL ViewManager::Reset()
 {
 	arViewport.Truncate();
-	return IModule::Reset();
+	return TRUE;
 }
 
 INLINE BOOL ViewManager::Shutdown()
@@ -106,8 +106,7 @@ void ViewManager::Add(IViewport *view)
 
 	if (!found)
 	{
-		arViewport.Add();
-		arViewport[arViewport.Size() - 1] = view;
+		arViewport.Add(view);
 	}
 }
 
@@ -132,7 +131,7 @@ INLINE void ViewManager::Render()
 	if (bEnabled)
 	{
 		u32 len = arViewport.Size();
-		
+
 		Renderer::ClearScreen();
 		for (u32 i = 0; i < len; i++)
 		{
@@ -174,7 +173,7 @@ INLINE IViewport *ViewManager::GetViewportAt(f32 x, f32 y)
 			}
 		}
 	}
-	
+
 	return ret;
 }
 

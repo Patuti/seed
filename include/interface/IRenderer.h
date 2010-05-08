@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,7 +37,6 @@
 #ifndef __IRENDERER_H__
 #define __IRENDERER_H__
 
-
 #include "IUpdatable.h"
 #include "IModule.h"
 
@@ -45,9 +44,7 @@
 
 namespace Seed {
 
-
 class IRenderable;
-
 
 /// Renderer Interface
 /**
@@ -85,13 +82,6 @@ class IRenderer : public IUpdatable, public IModule
 		virtual void End() const;
 		virtual void RenderScene(const RenderableVector &vec) const;
 
-		virtual void BeginRenderMask() const;
-		virtual void BeginRenderMasked() const;
-		virtual void BeginRenderUnmasked() const;
-		virtual void BeginRenderSpecial() const;
-		
-		//static void ClearScreen(const PIXEL color = 0) const;
-
 		virtual void Sort(RenderableVector &vec);
 		virtual void Culler();
 
@@ -113,23 +103,10 @@ class IRenderer : public IUpdatable, public IModule
 		RenderableVector vVisibleRenderables;
 		RenderableVector vVisibleRenderablesStatic;
 
-		RenderableVector vMaskRenderables;
-		RenderableVector vMaskRenderablesStatic;
-
-		RenderableVector vMaskedRenderables;
-		RenderableVector vMaskedRenderablesStatic;
-
-		RenderableVector vSpecialRenderables;
-		RenderableVector vSpecialRenderablesStatic;
-
-		void FilterObjects();
-
 	private:
 		SEED_DISABLE_COPY(IRenderer);
 };
 
-
 } // namespace
-
 
 #endif // __IRENDERER_H__

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -46,12 +46,9 @@
 #include "SeedInit.h"
 #include "MathUtil.h"
 
-
 #include <math.h>
 
-
 namespace Seed { namespace OGL {
-
 
 class Sprite : public ISprite
 {
@@ -63,15 +60,12 @@ class Sprite : public ISprite
 		virtual u32 GetWidthInPixel() const;
 		virtual u32 GetHeightInPixel() const;
 
-		// IUpdatable
-		virtual void Update(f32 delta);
-
 		// IRenderable
+		virtual void Update(f32 delta);
 		virtual void Render();
 
 	private:
 		SEED_DISABLE_COPY(Sprite);
-		virtual void SetupBlendingOperation();
 
 	private:
 		Vector3f vert[4];
@@ -84,13 +78,9 @@ class Sprite : public ISprite
 		GLfloat coords[8];
 };
 
-
 }} // namespace
 
-
 #else // _OGL_
-
 	#error "Include 'Sprite.h' instead 'api/ogl/OglSprite.h' directly."
-
 #endif // _OGL_
 #endif // __OGL_SPRITE_H__

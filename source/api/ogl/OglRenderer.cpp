@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -159,7 +159,7 @@ INLINE BOOL Renderer::Initialize()
 
 INLINE BOOL Renderer::Reset()
 {
-	return IRenderer::Reset();
+	return TRUE; //IRenderer::Reset(); abstract
 }
 
 INLINE void Renderer::SetBufferMode(eBufferMode mode)
@@ -266,6 +266,12 @@ INLINE GLint Renderer::GetOpenGLMeshType(eMeshType type)
 		}
 		break;
 
+		case Seed::Quads:
+		{
+			ret = GL_QUADS;
+		}
+		break;
+
 		case Seed::TriangleStrip:
 		default:
 		{
@@ -276,6 +282,150 @@ INLINE GLint Renderer::GetOpenGLMeshType(eMeshType type)
 	return ret;
 }
 
+INLINE void Renderer::SetBlendingOperation(eBlendMode mode, PIXEL color) const
+{
+	switch (mode)
+	{
+		/* REPLACE */
+		default:
+		case BlendNone:
+		{
+			// http://home.comcast.net/~tom_forsyth/blog.wiki.html#[[Premultiplied%20alpha]]
+			glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		}
+		break;
+
+		/* BLEND */
+		case BlendDefault:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE);
+		}
+		break;
+
+		case BlendMerge:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
+		}
+		break;
+
+		case BlendScreen:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+			glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR);
+			// glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			// glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE); // Morpho
+		}
+		break;
+
+		/* DECAL */
+		case BlendDecalOverlay:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+			glBlendFunc(GL_DST_COLOR, GL_ONE);
+
+			u8 mR = PIXEL_GET_R(color);
+			u8 mG = PIXEL_GET_G(color);
+			u8 mB = PIXEL_GET_B(color);
+			u8 mA = PIXEL_GET_A(color);
+
+			glColor4ub(mR, mG, mB, mA);
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		break;
+
+		/* MODULATE */
+		case BlendAdditive:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+			u8 mR = PIXEL_GET_R(color);
+			u8 mG = PIXEL_GET_G(color);
+			u8 mB = PIXEL_GET_B(color);
+			u8 mA = PIXEL_GET_A(color);
+
+			glColor4ub(mR, mG, mB, mA);
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		break;
+
+		case BlendOverlay:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBlendFunc(GL_DST_COLOR, GL_ONE);
+
+			u8 mR = PIXEL_GET_R(color);
+			u8 mG = PIXEL_GET_G(color);
+			u8 mB = PIXEL_GET_B(color);
+			u8 mA = PIXEL_GET_A(color);
+
+			glColor4ub(mR, mG, mB, mA);
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		break;
+
+		case BlendLighten:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			u8 mR = PIXEL_GET_R(color);
+			u8 mG = PIXEL_GET_G(color);
+			u8 mB = PIXEL_GET_B(color);
+			u8 mA = PIXEL_GET_A(color);
+
+			glColor4ub(mR, mG, mB, mA);
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		break;
+
+		case BlendColorDodge:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBlendFunc(GL_ONE, GL_ONE);
+
+			u8 mR = PIXEL_GET_R(color);
+			u8 mG = PIXEL_GET_G(color);
+			u8 mB = PIXEL_GET_B(color);
+			u8 mA = PIXEL_GET_A(color);
+
+			glColor4ub(mR, mG, mB, mA);
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		break;
+
+		case BlendModulateAlpha:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			u8 mA = PIXEL_GET_A(color);
+
+			glColor4ub(255, 255, 255, mA);
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		break;
+
+		case BlendModulate:
+		{
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			u8 mR = PIXEL_GET_R(color);
+			u8 mG = PIXEL_GET_G(color);
+			u8 mB = PIXEL_GET_B(color);
+			u8 mA = PIXEL_GET_A(color);
+
+			glColor4ub(mR, mG, mB, mA);
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		break;
+	}
+}
 
 }} // namespace
 

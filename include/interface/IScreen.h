@@ -122,9 +122,6 @@ class IScreen : public IModule
 		/// Check if it is fullscreen
 		virtual BOOL IsFullscreen() const;
 
-		/// Sets the actual 2d renderer
-		virtual void SetRenderer(IRenderer *renderer); // FIXME: RenderManager
-
 		///
 		virtual void Update();
 
@@ -137,7 +134,6 @@ class IScreen : public IModule
 	protected:
 		BOOL		bFading;
 		u32			iMode;
-		IRenderer	*pRenderer;
 		f32			fAspectRatio;
 		u32			iHeight;
 		u32			iWidth;

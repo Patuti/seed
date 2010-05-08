@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -78,7 +78,6 @@ class Button : public IWidget, public IResource
 
 		virtual void Select();
 		virtual void Unselect();
-		virtual void Update(f32 delta);
 		virtual void SetDraggable(BOOL b);
 		virtual void SetDraggingPriority(u32 i);
 		virtual u32 GetDraggingPriority() const;
@@ -96,7 +95,7 @@ class Button : public IWidget, public IResource
 		virtual void SetCollisionType(eCollisionType type);
 		virtual eCollisionType GetCollisionType() const;
 
-		virtual void SetBlending(Seed::IRenderable::eBlendMode op);
+		virtual void SetBlending(eBlendMode op);
 		virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
 		virtual void SetColor(PIXEL color);
 
@@ -206,7 +205,7 @@ class Button : public IWidget, public IResource
 		virtual BOOL IsSpriteAutoUpdate() const;
 
 		// Sprite
-		virtual void SetSpriteBlending(Seed::IRenderable::eBlendMode op);
+		virtual void SetSpriteBlending(eBlendMode op);
 		virtual void SetSpriteColor(u8 r, u8 g, u8 b, u8 a);
 		virtual void SetSpriteColor(PIXEL px);
 		virtual PIXEL GetSpriteColor();
@@ -217,7 +216,12 @@ class Button : public IWidget, public IResource
 		// IWidget
 		virtual void SetDisabled(BOOL b);
 
+		// ITransformable2D
+		virtual BOOL ContainsPoint(f32 x, f32 y) const;
+		virtual BOOL ContainsPoint(const Point2f &pos) const;
+
 		// IRenderable
+		virtual void Update(f32 delta);
 		virtual void Render();
 
 		// IResource
@@ -227,8 +231,6 @@ class Button : public IWidget, public IResource
 		// IObject
 		virtual const char *GetObjectName() const;
 		virtual int GetObjectType() const;
-
-		virtual BOOL ContainsPoint(f32 x, f32 y);
 
 	protected:
 		void *operator new(size_t len);
@@ -243,7 +245,7 @@ class Button : public IWidget, public IResource
 	private:
 		SEED_DISABLE_COPY(Button);
 
-		BOOL CheckPixel(f32 x, f32 y);
+		BOOL CheckPixel(f32 x, f32 y) const;
 		void UpdateLabel();
 		void UpdateSprite();
 

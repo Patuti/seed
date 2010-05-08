@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -37,7 +37,6 @@
 #ifndef __PARTICLE_EMITTER_OBJECT_H__
 #define __PARTICLE_EMITTER_OBJECT_H__
 
-
 #include "interface/IResource.h"
 #include "Vector.h"
 #include "Rect.h"
@@ -45,9 +44,7 @@
 #include "SeedInit.h"
 #include "File.h"
 
-
 namespace Seed {
-
 
 struct ParticleEmitterInfo
 {
@@ -103,9 +100,7 @@ struct ParticleEmitterInfo
 	f32					fInterval;
 };
 
-
 IResource *ParticleEmitterObjectResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
-
 
 class ParticleEmitterObject : public IResource
 {
@@ -144,9 +139,6 @@ class ParticleEmitterObject : public IResource
 		u32		iMemory;
 };
 
-
 } // namespace
 
-
 #endif // __PARTICLE_EMITTER_OBJECT_H__
-

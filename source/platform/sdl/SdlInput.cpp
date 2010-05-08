@@ -51,7 +51,9 @@
 #include "ViewManager.h"
 #include "Viewport.h"
 
+#if defined(WIN32)
 #include <SDL/SDL_syswm.h>
+#endif
 
 #define TAG "[Input] "
 

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -38,17 +38,21 @@
 #define __PARTICLE_EMITTER_H__
 
 #include "interface/ITransformable2D.h"
-#include "Point.h"
-#include "Particle.h"
 #include "ParticleEmitterObject.h"
-#include "SeedInit.h"
-#include "MemoryManager.h"
-#include "Array.h"
+
+//#include "Point.h"
+//#include "Particle.h"
+//#include "SeedInit.h"
+//#include "MemoryManager.h"
+//#include "Array.h"
 
 namespace Seed {
 
+class IImage;
+class ResourceManager;
+class IMemoryPool;
 
-class ParticleEmitter : public ITransformable2D
+class ParticleEmitter : public ISceneObject
 {
 	public:
 		ParticleEmitter();

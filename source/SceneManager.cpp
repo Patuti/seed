@@ -29,52 +29,69 @@
  **
  *****************************************************************************/
 
-/*! \file EventWidget.h
+/*! \file SceneManager.cpp
 	\author	Danny Angelo Carminati Grein
-	\brief Defines a widget event class
+	\brief Scene Manager
 */
 
-#ifndef __EVENT_WIDGET_H__
-#define __EVENT_WIDGET_H__
+#include "SceneManager.h"
+#include "Defines.h"
+#include "Log.h"
+#include "Enum.h"
+#include "interface/ISceneObject.h"
 
-#include "interface/IEvent.h"
+#define TAG		"[SceneManager] "
 
 namespace Seed {
 
-class IWidget;
+SceneManager SceneManager::instance;
 
-class EventWidget : public IEvent
+SceneManager::SceneManager()
+	: arObject()
 {
-	public:
-		virtual ~EventWidget();
-		EventWidget(const IWidget *sender, const IWidget *receiver, eWidgetEventType t, u32 p, f32 x, f32 y, u32 pressed, u32 hold, u32 released);
+	arObject.Truncate();
+}
 
-		const IWidget *GetSender() const;
-		const IWidget *GetReceiver() const;
-		eWidgetEventType GetEventType() const;
+SceneManager::~SceneManager()
+{
+	arObject.Truncate();
+}
 
-		f32 GetX() const;
-		f32 GetY() const;
-		u32 GetPlayer() const;
-		u32 GetPressed()  const;
-		u32 GetReleased() const;
-		u32 GetHold() 	 const;
+void SceneManager::Add(ISceneObject *obj)
+{
+	ASSERT_NULL(obj);
 
-	private:
-		SEED_DISABLE_COPY(EventWidget);
+	BOOL found = FALSE;
+	for (u32 i = 0; i < arObject.Size(); i++)
+	{
+		if (arObject[i] == obj)
+		{
+			found = TRUE;
+			break;
+		}
+	}
 
-	private:
-		const IWidget *pSender;
-		const IWidget *pReceiver;
-		eWidgetEventType iType;
-		u32 iPlayer;
-		f32 fX;
-		f32 fY;
-		u32 iPressed;
-		u32 iHold;
-		u32 iReleased;
-};
+	if (!found)
+	{
+		arObject.Add(obj);
+	}
+}
+
+void SceneManager::Remove(ISceneObject *obj)
+{
+	ASSERT_NULL(obj);
+	arObject.Remove(obj);
+}
+
+INLINE BOOL SceneManager::Update(f32 delta)
+{
+	u32 len = arObject.Size();
+	for (u32 i = 0; i < len; i++)
+	{
+		arObject[i]->Update(delta);
+	}
+
+	return TRUE;
+}
 
 } // namespace
-
-#endif // __EVENT_WIDGET_H__

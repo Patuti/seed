@@ -104,8 +104,10 @@ void Screen::PrepareMode()
 		Info(TAG "\tColor fill accelerated.......: %s", videoInfo->blit_fill ? "yes" : "no");
 		Info(TAG "\tDisplay pixel format.........: ");
 		Info(TAG "\t\tBytes per pixel............: %d", videoInfo->vfmt->BytesPerPixel);
-		Info(TAG "\t\tColorkey...................: %x", videoInfo->vfmt->colorkey);
-		Info(TAG "\t\talpha......................: %d", videoInfo->vfmt->alpha);
+#if !defined(_SDL13_)
+		//Info(TAG "\t\tColorkey...................: %x", videoInfo->vfmt->colorkey);
+		//Info(TAG "\t\talpha......................: %d", videoInfo->vfmt->alpha);
+#endif
 		Info(TAG "\t\tRGBA loss..................: %d %d %d %d", videoInfo->vfmt->Rloss, videoInfo->vfmt->Gloss, videoInfo->vfmt->Bloss, videoInfo->vfmt->Aloss);
 		Info(TAG "\tBest resolution..............: %dx%d", videoInfo->current_w, videoInfo->current_h);
 		Info(TAG "\tTotal video memory available.: %d", videoInfo->video_mem);
@@ -409,7 +411,7 @@ INLINE BOOL Screen::InitializeVideo()
 		this->SetupOpenGL();
 	}
 
-#ifdef WIN32
+#if defined(WIN32)
 	BOOL icon = FALSE;
 
 	/*
@@ -450,6 +452,10 @@ INLINE BOOL Screen::InitializeVideo()
 
 	SDL_WM_SetCaption(pSystem->GetApplicationTitle(), pSystem->GetApplicationTitle());//"Seed", "Seed");
 	pSurface = SDL_SetVideoMode(iWidth, iHeight, iBPP, iFlags);
+
+#if defined(SDL13)
+	SDL_GL_SetSwapInterval(1); // 0 - no vsync, 1 - vsync
+#endif
 
 	if (!pSurface)
 	{
@@ -542,7 +548,9 @@ void Screen::SetupOpenGL()
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+#if !defined(_SDL13_)
 	SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1); // Not in SDL 1.3 - 0 no vsync, 1 vsync
+#endif
 	//SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 
 	/*SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -67,6 +67,7 @@
 #include "Cartridge.h"
 #include "ViewManager.h"
 #include "RendererManager.h"
+#include "SceneManager.h"
 
 namespace Seed {
 
@@ -176,6 +177,7 @@ BOOL Initialize()
 	pUpdater->Add(pSystem);
 	pUpdater->Add(pResourceLoader);
 	pUpdater->Add(pParticleManager);
+	pUpdater->Add(pSceneManager);
 
 	ResourceManager::Register(Seed::ObjectImage,			ImageResourceLoader);
 	ResourceManager::Register(Seed::ObjectSprite,			SpriteResourceLoader);
@@ -212,15 +214,15 @@ void Update()
 	if (dt > MAX_FRAME_DELTA)
 		dt = MAX_FRAME_DELTA;
 
-	pUpdater->Run(dt, 1.0f / 60.0f); //60
+	pUpdater->Run(dt, 1.0f / 60.0f);
 
 	Seed::Render();
 }
 
 void Render()
 {
+	// FIXME: Viewport Render and Screen Update must be generic
 #if !defined(_QT_)
-	//Private::pRenderer->Render(delta);
 	pViewManager->Render();
 #endif
 	pScreen->Update();
@@ -233,8 +235,8 @@ void Shutdown()
 
 	Info(SEED_TAG "Shutting down subsystems...");
 	pModuleManager->Shutdown();
-	Private::bInitialized = FALSE;
 
+	Private::bInitialized = FALSE;
 	Private::pApplication = NULL;
 }
 

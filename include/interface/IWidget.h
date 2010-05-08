@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -39,31 +39,18 @@
 
 #include "Defines.h"
 #include "interface/IEventWidgetListener.h"
-#include "interface/ITransformable2D.h"
+#include "interface/ISceneObject.h"
 #include "interface/IInput.h"
 
 #include <vector>
 #include <algorithm>
 
-
 namespace Seed {
 
 class WidgetContainer;
 
-class IWidget : public ITransformable2D, public IEventWidgetListener
+class IWidget : public ISceneObject, public IEventWidgetListener
 {
-	public:
-		enum eState
-		{
-			NONE,
-			FOCUSED,
-			OVER,
-			PRESSED,
-			PRESSED_OVER,
-			PRESSED_OUT,
-			DRAG
-		};
-
 	public:
 		IWidget();
 		IWidget(u32 id, f32 w, f32 h, f32 x, f32 y);
@@ -85,11 +72,11 @@ class IWidget : public ITransformable2D, public IEventWidgetListener
 		virtual void SetDraggable(BOOL b);
 		virtual BOOL IsDraggable() const;
 
-		void SetState(IWidget::eState s);
-		IWidget::eState GetState() const;
+		void SetState(Seed::eWidgetState s);
+		Seed::eWidgetState GetState() const;
 
-		void SetPlayerState(IWidget::eState s, u32 i = 0);
-		IWidget::eState GetPlayerState(u32 i = 0) const;
+		void SetPlayerState(Seed::eWidgetState s, u32 i = 0);
+		Seed::eWidgetState GetPlayerState(u32 i = 0) const;
 
 		u64 GetPlayerStateStartTime(u32 i) const;
 		u64 GetStateStartTime() const;
@@ -109,6 +96,10 @@ class IWidget : public ITransformable2D, public IEventWidgetListener
 		virtual void SendOnDrop(const EventWidget *ev);
 		virtual void SendOnDrag(const EventWidget *ev);
 
+		// IObject
+		virtual const char *GetObjectName() const;
+		virtual int GetObjectType() const;
+
 	protected:
 		void Reset();
 
@@ -126,8 +117,8 @@ class IWidget : public ITransformable2D, public IEventWidgetListener
 		BOOL	bChanged;
 		BOOL	bDraggable;
 
-		IWidget::eState 	iState;
-		IWidget::eState 	iPlayerState[PLATFORM_MAX_INPUT];
+		Seed::eWidgetState 	iState;
+		Seed::eWidgetState 	iPlayerState[PLATFORM_MAX_INPUT];
 		u64					arPlayerStateStartTime[PLATFORM_MAX_INPUT];
 
 		Seed::eInputButton iButton;
@@ -136,8 +127,6 @@ class IWidget : public ITransformable2D, public IEventWidgetListener
 		SEED_DISABLE_COPY(IWidget);
 };
 
-
 } // namespace
-
 
 #endif // __IWIDGET_H__

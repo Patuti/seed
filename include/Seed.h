@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -80,6 +80,7 @@
 #include <interface/IEventFileSystemListener.h>
 #include <interface/IEventMovieListener.h>
 #include <interface/IObject.h>
+#include <interface/ISceneObject.h>
 
 #include <Music.h>
 #include <Mutex.h>
@@ -100,12 +101,14 @@
 #include <Renderer2D.h>
 
 #include <SaveSystem.h>
+#include <SceneNode.h>
 #include <Screen.h>
 #include <Sound.h>
 #include <SoundSystem.h>
 #include <StateMachine.h>
 #include <Sprite.h>
 #include <StringPool.h>
+#include <SceneManager.h>
 #include <System.h>
 #include <Updater.h>
 

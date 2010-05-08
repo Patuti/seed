@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -46,11 +46,9 @@ IViewport::IViewport()
 {
 }
 
-
 IViewport::~IViewport()
 {
 }
-
 
 INLINE void IViewport::SetRenderer(IRenderer *renderer)
 {
@@ -59,60 +57,50 @@ INLINE void IViewport::SetRenderer(IRenderer *renderer)
 	pRenderer = renderer;
 }
 
-
 INLINE void IViewport::SetPosition(f32 x, f32 y)
 {
 	this->cArea.x = x;
 	this->cArea.y = y;
 }
 
-
 INLINE void IViewport::SetWidth(f32 w)
 {
 	this->cArea.width = w;
 }
-
 
 INLINE void IViewport::SetHeight(f32 h)
 {
 	this->cArea.height = h;
 }
 
-
 INLINE IRenderer *IViewport::GetRenderer() const
 {
 	return pRenderer;
 }
-
 
 INLINE f32 IViewport::GetX() const
 {
 	return cArea.x;
 }
 
-
 INLINE f32 IViewport::GetY() const
 {
 	return cArea.y;
 }
-
 
 INLINE f32 IViewport::GetWidth() const
 {
 	return cArea.width;
 }
 
-
 INLINE f32 IViewport::GetHeight() const
 {
 	return cArea.height;
 }
 
-
 INLINE void IViewport::PrepareViewport()
 {
 }
-
 
 INLINE void IViewport::Render()
 {
@@ -123,12 +111,10 @@ INLINE void IViewport::Render()
 	}
 }
 
-
 INLINE BOOL IViewport::Contains(f32 x, f32 y)
 {
 	return cArea.Contains(x, y);
 }
-
 
 INLINE const char *IViewport::GetObjectName() const
 {

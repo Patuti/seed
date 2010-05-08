@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -38,20 +38,14 @@
 #define __ISPRITE_H__
 
 #include "Defines.h"
-#include "interface/IObject.h"
-#include "interface/IRenderable.h"
 #include "interface/IBasicMesh.h"
-#include "ResourceManager.h"
 #include "MemoryManager.h"
-#include "Image.h"
 #include "SeedInit.h"
-#include "MathUtil.h"
 
 #define		SPRITE_GLOBAL_FRAME_TIME		60.0f
 
 namespace Seed {
 
-class ResourceManager;
 class SpriteObject;
 class IImage;
 
@@ -142,7 +136,7 @@ class ISprite : public IBasicMesh
 
 		virtual IImage *GetTexture() const;
 
-		// IRenderable
+		// ISceneObject
 		virtual void Update(f32 delta);
 
 		// IObject

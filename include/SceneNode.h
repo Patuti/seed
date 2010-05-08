@@ -29,92 +29,80 @@
  **
  *****************************************************************************/
 
-/*! \file TextArea.h
-	\author Danny Angelo Carminati Grein
-	\brief GUI TextArea Widget
+/*! \file SceneNode.h
+	\author	Danny Angelo Carminati Grein
+	\brief Scene Node
 */
 
-#ifndef __GUI_TEXTAREA_H__
-#define __GUI_TEXTAREA_H__
+#ifndef __SCENE_NODE_H__
+#define __SCENE_NODE_H__
 
-#include "interface/IWidget.h"
-#include "Text.h"
-#include "GuiManager.h"
+#include "Array.h"
+#include "Config.h"
+#include "interface/ISceneObject.h"
 
 namespace Seed {
 
-class TextArea : public IWidget
+class SceneNodeBase : public ISceneObject
 {
 	public:
-		TextArea();
-		virtual ~TextArea();
-
-		virtual void Reset();
-		virtual void Update(f32 dt);
-
-		virtual void SetText(const WideString str);
-		virtual void SetText(const String &str);
-		virtual void SetFont(const Font *font);
-
-		virtual void SetPriority(u32 p);
-		virtual void SetAlignment(eHorizontalAlignment align);
-		virtual void SetAlignment(eVerticalAlignment align);
-		virtual void SetAutoAdjust(BOOL b);
-
-		virtual u32 GetLineCount() const;
+		SceneNodeBase();
+		virtual ~SceneNodeBase();
 
 		// IRenderable
+		virtual void Update(f32 delta);
 		virtual void Render();
-		virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
-		virtual void SetColor(PIXEL px);
-		virtual PIXEL GetColor() const;
 
-		// IObject
-		virtual const char *GetObjectName() const;
-		virtual int GetObjectType() const;
+	private:
+		SEED_DISABLE_COPY(SceneNodeBase);
+};
 
-	protected:
-		SEED_DISABLE_COPY(TextArea);
-
-		virtual void Rebuild();
-		virtual u32 CalculateLineCount();
-
-		virtual u32 RebuildPosX();
-		virtual void RebuildPosY(u32 usedLines);
-
-	protected:
-		struct sLineInfo
+template <int SIZE> class SceneNode : public SceneNodeBase
+{
+	public:
+		SceneNode()
 		{
-			public:
-				sLineInfo():fPosX(0.0f), fPosY(0.0f), iIndex(0), iSize(0){};
+			arNodes.Truncate();
+		}
 
-			f32 fPosX;
-			f32 fPosY;
-			u32 iIndex;
-			u32 iSize;
-		};
+		virtual ~SceneNode()
+		{
+			arNodes.Truncate();
+		}
 
-	protected:
-		u32			iLines;
+		virtual void Add(ISceneObject *obj)
+		{
+			arNodes.Add(obj);
+		}
 
-		f32			fDiffX;
-		f32			fScaleX;
-		f32			fScaleY;
+		virtual void Remove(ISceneObject *obj)
+		{
+			arNodes.Remove(obj);
+		}
 
-		PIXEL		iColor;
+		virtual void Update(f32 delta)
+		{
+			for (u32 i = 0; i < arNodes.Size(); i++)
+			{
+				arNodes[i]->Update(delta);
+			}
+		}
 
-		eHorizontalAlignment	eHAlign;
-		eVerticalAlignment		eVAlign;
+		virtual void Render()
+		{
+			for (u32 i = 0; i < arNodes.Size(); i++)
+			{
+				arNodes[i]->Render();
+			}
+		}
 
-		const Font	*pFont;
-		sLineInfo	*pLines;
+	private:
+		SEED_DISABLE_COPY(SceneNode);
 
-		Text		cText;
-
-		BOOL		bAutoAdjust;
+	private:
+		Array<ISceneObject *, SIZE> arNodes;
 };
 
 } // namespace
 
-#endif // __GUI_TEXTAREA_H__
-
+#endif // __SCENE_NODE_H__

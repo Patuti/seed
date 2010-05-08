@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -38,14 +38,12 @@
 #include "Formats.h"
 #include "Dictionary.h"
 #include "System.h"
-
+#include "Image.h"
 
 #define FONT_OFFSET		33
 #define FONT_TOTAL		90
 
-
 namespace Seed {
-
 
 IResource *FontResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
@@ -95,7 +93,7 @@ BOOL Font::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 		ObjectHeader *block = NULL;
 		READ_STRUCT(block, ObjectHeader, ptr);
 		SECURITY_CHECK(seed_validate_block(&stFile, block, FONT_OBJECT_MAGIC, FONT_OBJECT_VERSION), "Invalid block header for font.");
-		
+
 		READ_F32(this->fTracking, ptr);
 		READ_F32(this->fSpacing, ptr);
 		READ_F32(this->fSpaceWidth, ptr);
@@ -267,7 +265,7 @@ INLINE const char *Font::GetObjectName() const
 	return "Font";
 }
 
-INLINE void Font::SetBlending(IRenderable::eBlendMode op)
+INLINE void Font::SetBlending(eBlendMode op)
 {
 	mFont.SetBlending(op);
 	mFontExt.SetBlending(op);
