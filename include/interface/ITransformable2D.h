@@ -39,11 +39,10 @@
 
 #include "Defines.h"
 #include "Point.h"
-#include "interface/IRenderable.h"
 
 namespace Seed {
 
-class SEED_CORE_API ITransformable2D : public IRenderable
+class SEED_CORE_API ITransformable2D
 {
 	public:
 		ITransformable2D();

@@ -145,5 +145,5 @@ OBJECTS = \
 ../source/Particle.o \
 ../source/ResourceManager.o \
 ../source/ViewManager.o \
-../source/SceneManager.o
+../source/SceneManager.o \
 ../source/LeakReport.o

@@ -38,6 +38,7 @@
 #define __ISCREEN_H__
 
 #include "IModule.h"
+#include "IUpdatable.h"
 
 namespace Seed {
 

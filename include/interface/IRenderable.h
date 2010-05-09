@@ -50,7 +50,7 @@ class IImage;
 /**
 Interface for renderables objects. Things that will be rendered to the screen.
 */
-class SEED_CORE_API IRenderable : public IObject
+class SEED_CORE_API IRenderable
 {
 	friend struct IRenderableAscendingPrioritySort;
 	friend struct IRenderableDescendingPrioritySort;
