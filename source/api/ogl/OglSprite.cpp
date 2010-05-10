@@ -192,7 +192,7 @@ void Sprite::Render()
 	image->UnloadTexture();
 #endif // SEED_ENABLE_PRELOAD_TEXTURE
 
-	DEBUG_SPRITE_RECT;
+//	DEBUG_SPRITE_RECT;
 }
 
 }} // namespace

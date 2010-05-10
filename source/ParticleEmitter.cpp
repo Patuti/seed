@@ -344,6 +344,14 @@ INLINE void ParticleEmitter::Update(f32 deltaTime)
 
 	ptPrevLocation = location;
 	bTransformationChanged = FALSE;
+
+	for (u32 i = 0; i < SEED_PARTICLES_MAX; i++)
+	{
+		if (!arParticles[i].bActive)
+			continue;
+
+		arParticles[i].Update(1.0f);
+	}
 }
 
 INLINE void ParticleEmitter::Render()

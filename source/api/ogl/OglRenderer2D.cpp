@@ -505,6 +505,8 @@ INLINE void Renderer2D::UseImmediate(RendererPacket *packet)
 	glLoadIdentity();
 
 	//glPolygonMode(GL_FRONT, GL_LINE);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
 	glBegin(this->GetOpenGLMeshType(packet->nMeshType));
 	for (u32 i = 0; i < packet->iSize; i++)
 	{
@@ -512,6 +514,8 @@ INLINE void Renderer2D::UseImmediate(RendererPacket *packet)
 		glVertex3f(vertex[i].x, vertex[i].y, vertex[i].z);
 	}
 	glEnd();
+	glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }

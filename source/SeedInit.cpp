@@ -257,8 +257,6 @@ void Shutdown()
 	Info(SEED_TAG "Shutting down subsystems...");
 	pModuleManager->Shutdown();
 
-	LeakReportPrint;
-
 	Private::bInitialized = FALSE;
 	Private::pApplication = NULL;
 }
