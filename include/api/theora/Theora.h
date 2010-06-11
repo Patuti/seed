@@ -43,7 +43,8 @@
 
 #include "Thread.h"
 #include "Mutex.h"
-#include "interface/IRenderable.h"
+//#include "interface/IRenderable.h"
+#include "interface/ISceneObject.h"
 #include <oggplay/oggplay.h>
 
 /* FIXME: Somebody please create a Semaphore class! */
@@ -115,7 +116,7 @@
 
 namespace Seed {
 
-class SEED_CORE_API Theora : /*public IVideo,*/ public IRenderable, public Thread
+class SEED_CORE_API Theora : public ISceneObject, public Thread // public Thread, public IRenderable /*, public IVideo*/
 {
 	public:
 		Theora();

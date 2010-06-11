@@ -35,7 +35,7 @@
 */
 
 #include "Screen.h"
-#include "interface/IRenderable.h"
+#include "interface/ISceneNode.h"
 #include "interface/IRenderer.h"
 #include "Log.h"
 
@@ -44,34 +44,27 @@
 
 namespace Seed {
 
-
 IRenderer::IRenderer()
 	: vRenderables()
-	, vRenderablesStatic()
+	//, vRenderablesStatic()
 	, vVisibleRenderables()
-	, vVisibleRenderablesStatic()
+	//, vVisibleRenderablesStatic()
 {
 }
 
 IRenderer::~IRenderer()
 {
 	vRenderables.clear();
-	vRenderablesStatic.clear();
+	//vRenderablesStatic.clear();
 
 	RenderableVector().swap(vRenderables);
-	RenderableVector().swap(vRenderablesStatic);
+	//RenderableVector().swap(vRenderablesStatic);
 
 	vVisibleRenderables.clear();
-	vVisibleRenderablesStatic.clear();
+	//vVisibleRenderablesStatic.clear();
 
 	RenderableVector().swap(vVisibleRenderables);
-	RenderableVector().swap(vVisibleRenderablesStatic);
-}
-
-INLINE void IRenderer::SetBufferMode(eBufferMode mode)
-{
-	UNUSED(mode);
-	SEED_ABSTRACT_METHOD;
+	//RenderableVector().swap(vVisibleRenderablesStatic);
 }
 
 INLINE void IRenderer::SelectTexture(u32 texId)
@@ -96,29 +89,50 @@ INLINE void IRenderer::End() const
 	SEED_ABSTRACT_METHOD;
 }
 
-BOOL IRenderer::Update(f32 delta)
+void IRenderer::PushChildNodes(ISceneNode *node, NodeVector &v)
 {
+	for (u32 i = 0; i < node->Size(); i++)
+	{
+		ISceneObject *obj = node->GetChildAt(i);
+		if (obj && obj->IsNode())
+		{
+			v.push_back(static_cast<ISceneNode *>(obj));
+			this->PushChildNodes(static_cast<ISceneNode *>(obj), v);
+		}
+	}
+}
+
+BOOL IRenderer::Update(f32 dt)
+{
+	UNUSED(dt);
+
 	if (!IModule::IsEnabled())
 		return FALSE;
 
-	this->Update(vRenderables, delta);
-	this->Update(vRenderablesStatic, delta);
+	vRenderables.clear();
 
-	return TRUE;
-}
+	NodeVector v;
+	for (u32 i = 0; i < arScenes.Size(); i++)
+	{
+		ISceneNode *node = arScenes[i];
+		v.push_back(node);
+		this->PushChildNodes(node, v);
+	}
 
-INLINE void IRenderer::Update(const RenderableVector &vec, f32 delta) const
-{
-	ConstRenderableVectorIterator it = vec.begin();
-	ConstRenderableVectorIterator end = vec.end();
-
+	NodeVectorIterator it = v.begin();
+	NodeVectorIterator end = v.end();
 	for (; it != end; ++it)
 	{
-		IRenderable *obj = const_cast<IRenderable *>(*it);
-		ASSERT_NULL(obj);
+		ISceneNode *node = (*it);
 
-		obj->Update(delta);
+		for (u32 i = 0; i < node->Size(); i++)
+		{
+			ISceneObject *obj = node->GetChildAt(i);
+			vRenderables.push_back(obj);
+		}
 	}
+
+	return TRUE;
 }
 
 INLINE void IRenderer::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill) const
@@ -139,37 +153,36 @@ void IRenderer::Render()
 		this->Culler();
 
 		this->Begin();
-			this->RenderScene(vVisibleRenderables);
-			this->RenderScene(vVisibleRenderablesStatic);
+			this->RenderObjects(vVisibleRenderables);
 		this->End();
 	}
 }
 
-INLINE void IRenderer::RenderScene(const RenderableVector &vec) const
+INLINE void IRenderer::RenderObjects(const RenderableVector &vec) const
 {
 	ConstRenderableVectorIterator it = vec.begin();
 	ConstRenderableVectorIterator end = vec.end();
 
 	for (; it != end; ++it)
 	{
-		IRenderable *obj = const_cast<IRenderable *>(*it);
+		ISceneObject *obj = const_cast<ISceneObject *>(*it);
 		ASSERT_NULL(obj);
 
 		obj->Render();
 	}
 }
 
-INLINE void IRenderer::Culler() // FIXME: Culler(RenderableList, CullingOperation)
+// FIXME: Culler(SceneNode, CullingOperation)
+INLINE void IRenderer::Culler()
 {
 	vVisibleRenderables.clear();
-	vVisibleRenderablesStatic.clear();
 
 	ConstRenderableVectorIterator it = vRenderables.begin();
 	ConstRenderableVectorIterator end = vRenderables.end();
 
 	for (; it != end; ++it)
 	{
-		IRenderable *obj = const_cast<IRenderable *>(*it);
+		ISceneObject *obj = const_cast<ISceneObject *>(*it);
 		ASSERT_NULL(obj);
 
 		if (obj->IsVisible())
@@ -177,89 +190,25 @@ INLINE void IRenderer::Culler() // FIXME: Culler(RenderableList, CullingOperatio
 	}
 
 	this->Sort(vVisibleRenderables);
-
-	it = vRenderablesStatic.begin();
-	end = vRenderablesStatic.end();
-
-	for (; it != end; ++it)
-	{
-		IRenderable *obj = const_cast<IRenderable *>(*it);
-		ASSERT_NULL(obj);
-
-		if (obj->IsVisible())
-			vVisibleRenderablesStatic.push_back(obj);
-	}
-
-	this->Sort(vVisibleRenderablesStatic);
 }
 
 INLINE void IRenderer::Sort(RenderableVector &vec)
 {
 #if !SEED_ENABLE_DEPTH_TEST
-	std::sort(vec.begin(), vec.end(), IRenderableAscendingPrioritySort());
+	std::sort(vec.begin(), vec.end(), ISceneObjectAscendingPrioritySort());
 #else
 	UNUSED(vec)
 #endif
 }
 
-INLINE void IRenderer::Add(IRenderable *obj)
+INLINE void IRenderer::Add(ISceneNode *node)
 {
-	ASSERT_NULL(obj);
-
-	ConstRenderableVectorIterator p = std::find(vRenderables.begin(), vRenderables.end(), obj);
-	if (p == vRenderables.end())
-	{
-		vRenderables.push_back(obj);
-	}
+	arScenes.Add(node);
 }
 
-INLINE void IRenderer::Remove(const IRenderable *obj)
+INLINE void IRenderer::Remove(ISceneNode *node)
 {
-	ASSERT_NULL(obj);
-
-	RenderableVectorIterator p = std::find(vRenderables.begin(), vRenderables.end(), obj);
-	if (p != vRenderables.end())
-	{
-		vRenderables.erase(p);
-	}
-
-	RenderableVector(vRenderables).swap(vRenderables);
-}
-
-INLINE void IRenderer::AddStatic(IRenderable *obj)
-{
-	ASSERT_NULL(obj);
-
-	ConstRenderableVectorIterator p = std::find(vRenderablesStatic.begin(), vRenderablesStatic.end(), obj);
-	if (p == vRenderablesStatic.end())
-	{
-		vRenderablesStatic.push_back(obj);
-	}
-}
-
-INLINE void IRenderer::RemoveStatic(const IRenderable *obj)
-{
-	ASSERT_NULL(obj);
-
-	RenderableVectorIterator p = std::find(vRenderablesStatic.begin(), vRenderablesStatic.end(), obj);
-	if (p != vRenderablesStatic.end())
-	{
-		vRenderablesStatic.erase(p);
-	}
-
-	RenderableVector(vRenderablesStatic).swap(vRenderablesStatic);
-}
-
-INLINE void IRenderer::Clear()
-{
-	vRenderables.clear();
-	RenderableVector().swap(vRenderables);
-}
-
-INLINE void IRenderer::ClearStatic()
-{
-	vRenderablesStatic.clear();
-	RenderableVector().swap(vRenderablesStatic);
+	arScenes.Remove(node);
 }
 
 } // namespace

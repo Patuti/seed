@@ -52,8 +52,8 @@ Interface for renderables objects. Things that will be rendered to the screen.
 */
 class SEED_CORE_API IRenderable
 {
-	friend struct IRenderableAscendingPrioritySort;
-	friend struct IRenderableDescendingPrioritySort;
+	//friend struct IRenderableAscendingPrioritySort;
+	//friend struct IRenderableDescendingPrioritySort;
 
 	public:
 		IRenderable();
@@ -65,20 +65,20 @@ class SEED_CORE_API IRenderable
 		virtual void SetColor(f32 r, f32 g, f32 b, f32 a);
 		virtual void SetColor(PIXEL px);
 		virtual PIXEL GetColor() const;
-
+/*
 		virtual void SetPriority(u32 prio);
 		virtual u32 GetPriority() const;
-
+*/
 		virtual void SetBlending(eBlendMode op);
 		virtual void SetVisible(BOOL b);
 		BOOL IsVisible() const;
 
 	protected:
 		eBlendMode	eBlendOperation;
-		u32			iPriority;
+		//u32			iPriority;
 		PIXEL		iColor;
 		BOOL		bVisible;
-		f32			fPriority;
+		//f32			fPriority;
 
 		virtual void Reset();
 
@@ -86,11 +86,13 @@ class SEED_CORE_API IRenderable
 		SEED_DISABLE_COPY(IRenderable);
 };
 
+/*
 struct SEED_CORE_API IRenderableAscendingPrioritySort
 {
 	bool operator()(IRenderable * const &left, IRenderable * const &right)
 	{
-		return (left->iPriority < right->iPriority);
+		//return (left->iPriority < right->iPriority);
+		return (left->GetPriority() < right->GetPriority());
 	}
 };
 
@@ -98,9 +100,11 @@ struct SEED_CORE_API IRenderableDescendingPrioritySort
 {
 	bool operator()(IRenderable * const &left, IRenderable * const &right)
 	{
-		return (left->iPriority > right->iPriority);
+		//return (left->iPriority > right->iPriority);
+		return (left->GetPriority() > right->GetPriority());
 	}
 };
+*/
 
 } // namespace
 

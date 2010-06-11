@@ -29,44 +29,40 @@
  **
  *****************************************************************************/
 
-/*! \file ISceneObject.cpp
+/*! \file ISceneNode.h
 	\author	Danny Angelo Carminati Grein
-	\brief Scene Object Interface
+	\brief Scene Node Interface
 */
 
-#include "interface/ISceneObject.h"
-#include "Defines.h"
-#include "Log.h"
-#include "Enum.h"
+#ifndef __ISCENE_NODE_H__
+#define __ISCENE_NODE_H__
 
-#define TAG		"[ISceneObject] "
+#include "interface/ISceneObject.h"
 
 namespace Seed {
 
-ISceneObject::ISceneObject()
-	: ITransformable2D()
-	, IRenderable()
+class SEED_CORE_API ISceneNode : public ISceneObject
 {
-}
+	public:
+		ISceneNode();
+		virtual ~ISceneNode();
 
-ISceneObject::~ISceneObject()
-{
-}
+		virtual BOOL IsNode() const;
 
-INLINE void ISceneObject::Update(f32 delta)
-{
-	UNUSED(delta);
-	SEED_ABSTRACT_METHOD;
-}
+		// IRenderable
+		virtual void Update(f32 dt);
+		virtual void Render();
 
-INLINE void ISceneObject::Render()
-{
-	SEED_ABSTRACT_METHOD;
-}
+		virtual void Reset() = 0;
+		virtual void Add(ISceneObject *obj) = 0;
+		virtual void Remove(ISceneObject *obj) = 0;
+		virtual u32 Size() const = 0;
+		virtual ISceneObject *GetChildAt(u32 i) = 0;
 
-INLINE BOOL ISceneObject::IsNode() const
-{
-	return FALSE;
-}
+	private:
+		SEED_DISABLE_COPY(ISceneNode);
+};
 
 } // namespace
+
+#endif // __ISCENE_NODE_H__

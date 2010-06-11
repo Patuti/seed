@@ -40,21 +40,17 @@
 #include "Array.h"
 #include "Config.h"
 #include "interface/IModule.h"
+#include "Singleton.h"
 
 namespace Seed {
 
 class IViewport;
 class IRenderer;
 
-class ViewManager : public IModule
+class SEED_CORE_API ViewManager : public IModule
 {
+	SEED_SINGLETON_DECLARE(ViewManager);
 	public:
-		static ViewManager instance;
-
-	public:
-		ViewManager();
-		virtual ~ViewManager();
-
 		virtual void Add(IViewport *view);
 		virtual void Remove(IViewport *view);
 
@@ -86,7 +82,7 @@ class ViewManager : public IModule
 		BOOL bEnabled;
 };
 
-ViewManager *const pViewManager = &ViewManager::instance;
+#define pViewManager ViewManager::GetInstance()
 
 } // namespace
 

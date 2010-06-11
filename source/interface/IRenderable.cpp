@@ -42,10 +42,10 @@ namespace Seed {
 
 IRenderable::IRenderable()
 	: eBlendOperation(BlendNone)
-	, iPriority(0)
-	, iColor(0)
+//	, iPriority(0)
+	, iColor(0xffffffff)
 	, bVisible(TRUE)
-	, fPriority(0.0f)
+//	, fPriority(0.0f)
 {
 }
 
@@ -57,7 +57,7 @@ IRenderable::~IRenderable()
 INLINE void IRenderable::Reset()
 {
 	eBlendOperation = BlendNone;
-	iPriority = 0;
+	//iPriority = 0;
 	iColor = 0;
 	bVisible = TRUE;
 }
@@ -73,6 +73,7 @@ INLINE void IRenderable::Update(f32 delta)
 	SEED_ABSTRACT_METHOD;
 }
 
+/*
 INLINE void IRenderable::SetPriority(u32 prio)
 {
 	iPriority = prio;
@@ -83,6 +84,7 @@ INLINE u32 IRenderable::GetPriority() const
 {
 	return iPriority;
 }
+*/
 
 INLINE void IRenderable::SetBlending(eBlendMode op)
 {

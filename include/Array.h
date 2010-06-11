@@ -58,7 +58,7 @@ template <class TYPE, int SIZE> class SEED_CORE_API Array
 			return SIZE;
 		}
 
-		inline u32 Size()
+		inline u32 Size() const
 		{
 			return used;
 		}

@@ -40,22 +40,20 @@
 #include "Array.h"
 #include "Config.h"
 #include "interface/IUpdatable.h"
+#include "Singleton.h"
 
 namespace Seed {
 
 class ISceneObject;
 
-class SceneManager : public IUpdatable
+class SEED_CORE_API SceneManager : public IUpdatable
 {
+	SEED_SINGLETON_DECLARE(SceneManager);
 	public:
-		static SceneManager instance;
-
-	public:
-		SceneManager();
-		virtual ~SceneManager();
-
 		virtual void Add(ISceneObject *obj);
 		virtual void Remove(ISceneObject *obj);
+
+		virtual void Reset();
 
 		// IUpdatable
 		virtual BOOL Update(f32 delta);
@@ -67,7 +65,7 @@ class SceneManager : public IUpdatable
 		Array<ISceneObject *, 128> arObject;
 };
 
-SceneManager *const pSceneManager = &SceneManager::instance;
+#define pSceneManager SceneManager::GetInstance()
 
 } // namespace
 

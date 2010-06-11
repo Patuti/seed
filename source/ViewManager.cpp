@@ -45,7 +45,7 @@
 
 namespace Seed {
 
-ViewManager ViewManager::instance;
+SEED_SINGLETON_DEFINE(ViewManager);
 
 ViewManager::ViewManager()
 	: arViewport()

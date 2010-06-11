@@ -80,7 +80,8 @@ TextArea::~TextArea()
 
 void TextArea::Reset()
 {
-	pMemoryManager->Free(pLines);
+	if (pLines)
+		pMemoryManager->Free(pLines);
 
 	this->iId				= 0;
 	this->bDisabled			= TRUE;
@@ -308,7 +309,7 @@ INLINE void TextArea::SetFont(const Font *font)
 
 INLINE void TextArea::SetPriority(u32 p)
 {
-	IRenderable::iPriority = p;
+	ITransformable2D::iPriority = p;
 	IWidget::iPriority = p;
 }
 

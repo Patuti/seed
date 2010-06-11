@@ -48,7 +48,7 @@ class IRenderer;
 /**
 Interface for working with viewports.
 */
-class IViewport
+class SEED_CORE_API IViewport
 {
 	public:
 		IViewport();

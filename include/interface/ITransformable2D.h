@@ -106,6 +106,9 @@ class SEED_CORE_API ITransformable2D
 		virtual BOOL ContainsPoint(f32 x, f32 y) const;
 		virtual BOOL ContainsPoint(const Point2f &pos) const;
 
+		virtual void SetPriority(u32 prio);
+		virtual u32 GetPriority() const;
+
 		/// Set a parent for this transformable
 		/**
 		When a Transformable2D has a parent it will inherit all it's properies.
@@ -129,9 +132,28 @@ class SEED_CORE_API ITransformable2D
 		f32 fWidth;
 		f32 fHeight;
 		f32 fRotation;
+		u32	iPriority;
 
 	private:
 		SEED_DISABLE_COPY(ITransformable2D);
+};
+
+struct SEED_CORE_API ITransformable2DAscendingPrioritySort
+{
+	bool operator()(ITransformable2D * const &left, ITransformable2D * const &right)
+	{
+		//return (left->iPriority < right->iPriority);
+		return (left->GetPriority() < right->GetPriority());
+	}
+};
+
+struct SEED_CORE_API ITransformable2DDescendingPrioritySort
+{
+	bool operator()(ITransformable2D * const &left, ITransformable2D * const &right)
+	{
+		//return (left->iPriority > right->iPriority);
+		return (left->GetPriority() > right->GetPriority());
+	}
 };
 
 } // namespace

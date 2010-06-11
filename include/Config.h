@@ -113,7 +113,7 @@ Maximum amount of objects per scene node.
 /*
 Toggle between instancing Singleton classes in the (0) Stack or in the (1) Heap
 */
-#define SEED_SINGLETON_HEAP					1
+#define SEED_SINGLETON_HEAP					0
 
 /*
 String Pools - Define the amount of each pool

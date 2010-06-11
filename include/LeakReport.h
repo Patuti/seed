@@ -50,7 +50,7 @@
 #define SEED_LEAK_MAX			2048
 
 #define New(T)					pLeakReport->LogNew((new T), #T, __FILE__, __LINE__, __FUNC__)
-#define Delete(ptr)				pLeakReport->LogDelete(ptr);
+#define Delete(ptr)				{ if (ptr) pLeakReport->LogDelete(ptr); ptr = NULL; }
 
 #define LeakReportPrint			pLeakReport->Print();
 
@@ -129,18 +129,18 @@ class LeakReport
 		PointerInfo arInfo[SEED_LEAK_MAX];
 };
 
-extern "C" {
-SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(LeakReport);
-}
+//extern "C" {
+//SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(LeakReport);
+//}
+
+#define pLeakReport LeakReport::GetInstance()
 
 }; // namespace
 
 #else
 
 #define New(T)					new T
-#define Delete(ptr)				if (ptr) \
-									delete ptr; \
-								ptr = NULL;
+#define Delete(ptr)				{ if (ptr) delete ptr; ptr = NULL; }
 
 #define LeakReportPrint
 

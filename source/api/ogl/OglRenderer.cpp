@@ -72,8 +72,7 @@ PFNGLMULTIDRAWARRAYSEXTPROC glMultiDrawArraysEXT = 0;
 namespace Seed { namespace OGL {
 
 Renderer::Renderer()
-	: bufferMode()
-	, bUseVBO(FALSE)
+	: bUseVBO(FALSE)
 	, bHasVBO(FALSE)
 {
 	Log(TAG "Initializing...");
@@ -157,11 +156,6 @@ INLINE BOOL Renderer::Initialize()
 INLINE BOOL Renderer::Reset()
 {
 	return TRUE; // abstract IRenderer::Reset();
-}
-
-INLINE void Renderer::SetBufferMode(eBufferMode mode)
-{
-	this->bufferMode = mode;
 }
 
 INLINE void Renderer::ClearScreen(const PIXEL color)

@@ -39,27 +39,9 @@
 #include "Log.h"
 #include "Enum.h"
 
-#define TAG		"[SceneNodeBase] "
+#define TAG		"[SceneNode] "
 
 namespace Seed {
 
-SceneNodeBase::SceneNodeBase()
-{
-}
-
-SceneNodeBase::~SceneNodeBase()
-{
-}
-
-INLINE void SceneNodeBase::Update(f32 delta)
-{
-	UNUSED(delta);
-	SEED_ABSTRACT_METHOD;
-}
-
-INLINE void SceneNodeBase::Render()
-{
-	SEED_ABSTRACT_METHOD;
-}
 
 } // namespace

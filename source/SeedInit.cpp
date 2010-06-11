@@ -104,7 +104,7 @@ INLINE void CommandLineParse(int argc, char **argv)
 	while (i < argc)
 	{
 		const char *param = argv[i];
-		CommandLineParameter(param);
+		Seed::CommandLineParameter(param);
 		i++;
 	}
 }
@@ -118,7 +118,7 @@ INLINE void SetGameApp(IGameApp *app, int argc, char **argv)
 	pConfiguration  = app->GetConfiguration();
 	pResourceManager = app->GetResourceManager();
 
-	CommandLineParse(argc, argv);
+	Seed::CommandLineParse(argc, argv);
 }
 
 INLINE void WriteOut(const char *msg)
@@ -190,7 +190,7 @@ BOOL Initialize()
 
 	pUpdater->Add(Private::pApplication);
 	pUpdater->Add(pInput);
-	pUpdater->Add(pGuiManager);
+	//pUpdater->Add(pGuiManager);
 
 	if (!Private::bDisableSound)
 		pUpdater->Add(pSoundSystem);
@@ -198,6 +198,7 @@ BOOL Initialize()
 	pUpdater->Add(pSystem);
 	pUpdater->Add(pResourceLoader);
 	pUpdater->Add(pParticleManager);
+	pUpdater->Add(pRendererManager);
 	pUpdater->Add(pSceneManager);
 
 	ResourceManager::Register(Seed::ObjectImage,			ImageResourceLoader);
@@ -256,6 +257,26 @@ void Shutdown()
 
 	Info(SEED_TAG "Shutting down subsystems...");
 	pModuleManager->Shutdown();
+
+	pParticleManager->DestroyInstance();
+	pStringCache->DestroyInstance();
+	pDictionary->DestroyInstance();
+	pSceneManager->DestroyInstance();
+	pInput->DestroyInstance();
+	pResourceLoader->DestroyInstance();
+	pGuiManager->DestroyInstance();
+	pSoundSystem->DestroyInstance();
+	pRendererManager->DestroyInstance();
+	pViewManager->DestroyInstance();
+	pScreen->DestroyInstance();
+	pCartridge->DestroyInstance();
+	pFileSystem->DestroyInstance();
+	pPackageManager->DestroyInstance();
+	pTimer->DestroyInstance();
+	pMemoryManager->DestroyInstance();
+	pSystem->DestroyInstance();
+
+	LeakReportPrint;
 
 	Private::bInitialized = FALSE;
 	Private::pApplication = NULL;

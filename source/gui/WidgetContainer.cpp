@@ -112,8 +112,6 @@ void WidgetContainer::Reset()
 
 void WidgetContainer::Update(f32 dt)
 {
-	UNUSED(dt);
-
 	WidgetIterator it = vWidget.begin();
 	WidgetIterator end = vWidget.end();
 	for (; it != end; ++it)
@@ -124,7 +122,7 @@ void WidgetContainer::Update(f32 dt)
 		w->Update(dt);
 	}
 
-	std::sort(vWidget.begin(), vWidget.end(), IRenderableDescendingPrioritySort());
+	std::sort(vWidget.begin(), vWidget.end(), ITransformable2DDescendingPrioritySort());
 }
 
 INLINE void WidgetContainer::SetVisible(BOOL b)
@@ -159,6 +157,15 @@ INLINE void WidgetContainer::SetDisabled(BOOL b)
 
 INLINE void WidgetContainer::Render()
 {
+	WidgetIterator it = vWidget.begin();
+	WidgetIterator end = vWidget.end();
+	for (; it != end; ++it)
+	{
+		IWidget *w = (*it);
+		ASSERT_NULL(w);
+
+		w->Render();
+	}
 }
 
 INLINE void WidgetContainer::Add(IWidget *widget)
@@ -172,7 +179,7 @@ INLINE void WidgetContainer::Add(IWidget *widget)
 		//widget->SetVisible(this->IsVisible());
 		//widget->SetDisabled(this->IsDisabled());
 		vWidget.push_back(widget);
-		std::sort(vWidget.begin(), vWidget.end(), IRenderableDescendingPrioritySort());
+		std::sort(vWidget.begin(), vWidget.end(), ITransformable2DDescendingPrioritySort());
 	}
 }
 

@@ -83,6 +83,7 @@
 #include <interface/IEventMovieListener.h>
 #include <interface/IObject.h>
 #include <interface/ISceneObject.h>
+#include <interface/ISceneNode.h>
 
 #include <Music.h>
 #include <Mutex.h>
@@ -138,5 +139,7 @@
 		#include <platform/wii/WiiAiLive.h>
 	#endif // USE_AILIVE
 #endif // _WII_
+
+namespace Seed {};
 
 #endif // __SEED_H__

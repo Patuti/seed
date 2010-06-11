@@ -37,14 +37,18 @@
 #ifndef __IRENDERER_H__
 #define __IRENDERER_H__
 
-#include "IUpdatable.h"
-#include "IModule.h"
+#include "Array.h"
+#include "interface/IUpdatable.h"
+#include "interface/IModule.h"
 
 #include <vector>
 
+#define RENDERER_MAX_SCENES 32
+
 namespace Seed {
 
-class IRenderable;
+class ISceneObject;
+class ISceneNode;
 
 /// Renderer Interface
 /**
@@ -52,58 +56,46 @@ Rendering engine interface
 */
 class SEED_CORE_API IRenderer : public IUpdatable, public IModule
 {
-	typedef std::vector<IRenderable *> RenderableVector;
+	typedef std::vector<ISceneNode *> NodeVector;
+	typedef NodeVector::iterator NodeVectorIterator;
+	typedef NodeVector::const_iterator ConstNodeVectorIterator;
+
+	typedef std::vector<ISceneObject *> RenderableVector;
 	typedef RenderableVector::iterator RenderableVectorIterator;
 	typedef RenderableVector::const_iterator ConstRenderableVectorIterator;
-
-	public:
-		enum eBufferMode
-		{
-			ZBufferMode, /*!< ZBuffer mode */
-			WBufferMode	 /*!< WBuffer mode */
-		};
 
 	public:
 		IRenderer();
 		virtual ~IRenderer();
 
-		virtual void Update(const RenderableVector &vec, f32 delta) const;
 		virtual void Render();
-
 		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
-
-		/// Set the buffer mode for this rendering engine
-		virtual void SetBufferMode(eBufferMode mode);
 
 		virtual void SelectTexture(u32 texId);
 		virtual void UploadData(void *userData);
 
 		virtual void Begin() const;
 		virtual void End() const;
-		virtual void RenderScene(const RenderableVector &vec) const;
 
 		virtual void Sort(RenderableVector &vec);
 		virtual void Culler();
 
-		void Add(IRenderable *obj);
-		void Remove(const IRenderable *obj);
-		void Clear();
-
-		void AddStatic(IRenderable *obj);
-		void RemoveStatic(const IRenderable *obj);
-		void ClearStatic();
+		void Add(ISceneNode *node);
+		void Remove(ISceneNode *node);
 
 		// IUpdatable
+		//virtual BOOL Reset();
 		virtual BOOL Update(f32 delta);
 
 	protected:
+		Array<ISceneNode *, RENDERER_MAX_SCENES> arScenes;
 		RenderableVector vRenderables;
-		RenderableVector vRenderablesStatic;
-
 		RenderableVector vVisibleRenderables;
-		RenderableVector vVisibleRenderablesStatic;
 
 	private:
+		void RenderObjects(const RenderableVector &vec) const;
+		void PushChildNodes(ISceneNode *, NodeVector &vec);
+
 		SEED_DISABLE_COPY(IRenderer);
 };
 

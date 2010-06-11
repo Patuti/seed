@@ -48,6 +48,7 @@ ITransformable2D::ITransformable2D()
 	, fWidth(0.0f)
 	, fHeight(0.0f)
 	, fRotation(0.0f)
+	, iPriority(0)
 {
 }
 
@@ -484,6 +485,21 @@ INLINE BOOL ITransformable2D::ContainsPoint(f32 x, f32 y) const
 INLINE BOOL ITransformable2D::ContainsPoint(const Point2f &pos) const
 {
 	return this->ContainsPoint(pos.x, pos.y);
+}
+
+INLINE void ITransformable2D::SetPriority(u32 prio)
+{
+	iPriority = prio;
+}
+
+INLINE u32 ITransformable2D::GetPriority() const
+{
+	u32 prio = iPriority;
+
+	if (pParent)
+		prio += pParent->GetPriority();
+
+	return prio;
 }
 
 INLINE void ITransformable2D::SetParent(ITransformable2D *parent)

@@ -97,7 +97,6 @@ class SEED_CORE_API Renderer : public IRenderer
 		Renderer();
 		virtual ~Renderer();
 
-		virtual void SetBufferMode(eBufferMode mode);
 		virtual BOOL Reset();
 		virtual void Begin() const;
 		virtual void End() const;
@@ -115,7 +114,6 @@ class SEED_CORE_API Renderer : public IRenderer
 		BOOL Initialize();
 
 	protected:
-		eBufferMode bufferMode;
 		BOOL bUseVBO;
 		BOOL bHasVBO;
 

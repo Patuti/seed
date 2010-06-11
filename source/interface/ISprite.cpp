@@ -256,6 +256,7 @@ INLINE void ISprite::ReconfigureFrame()
 	#endif
 
 	this->bChanged = TRUE;
+	//this->Update(0.0f);
 }
 
 INLINE BOOL ISprite::SetAnimation(u32 index)
@@ -481,10 +482,14 @@ void ISprite::Update(f32 delta)
 			else
 				iCurrentFrame++;
 
+			u32 oldId = pFrame->iFileId;
 			pFrame = &pAnimationFrames[iCurrentFrame];
 
-			sRelease(pFrameImage);
-			pFrameImage = static_cast<IImage *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectImage, pPool));
+			if (oldId != pFrame->iFileId)
+			{
+				sRelease(pFrameImage);
+				pFrameImage = static_cast<IImage *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectImage, pPool));
+			}
 
 			this->ReconfigureFrame();
 		}

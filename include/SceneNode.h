@@ -39,25 +39,11 @@
 
 #include "Array.h"
 #include "Config.h"
-#include "interface/ISceneObject.h"
+#include "interface/ISceneNode.h"
 
 namespace Seed {
 
-class SceneNodeBase : public ISceneObject
-{
-	public:
-		SceneNodeBase();
-		virtual ~SceneNodeBase();
-
-		// IRenderable
-		virtual void Update(f32 delta);
-		virtual void Render();
-
-	private:
-		SEED_DISABLE_COPY(SceneNodeBase);
-};
-
-template <int SIZE> class SceneNode : public SceneNodeBase
+template <int NODES> class SEED_CORE_API SceneNode : public ISceneNode
 {
 	public:
 		SceneNode()
@@ -72,12 +58,19 @@ template <int SIZE> class SceneNode : public SceneNodeBase
 
 		virtual void Add(ISceneObject *obj)
 		{
-			arNodes.Add(obj);
+			if (obj)
+			{
+				obj->SetParent(this);
+				arNodes.Add(obj);
+			}
 		}
 
 		virtual void Remove(ISceneObject *obj)
 		{
-			arNodes.Remove(obj);
+			if (obj)
+			{
+				arNodes.Remove(obj);
+			}
 		}
 
 		virtual void Update(f32 delta)
@@ -96,11 +89,26 @@ template <int SIZE> class SceneNode : public SceneNodeBase
 			}
 		}
 
+		virtual void Reset()
+		{
+			arNodes.Truncate();
+		}
+
+		virtual u32 Size() const
+		{
+			return arNodes.Size();
+		}
+
+		virtual ISceneObject *GetChildAt(u32 i)
+		{
+			return arNodes[i];
+		}
+
 	private:
 		SEED_DISABLE_COPY(SceneNode);
 
 	private:
-		Array<ISceneObject *, SIZE> arNodes;
+		Array<ISceneObject *, NODES> arNodes;
 };
 
 } // namespace

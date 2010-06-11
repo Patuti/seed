@@ -46,7 +46,7 @@
 
 namespace Seed { namespace OGL {
 
-class Viewport : public IViewport
+class SEED_CORE_API Viewport : public IViewport
 {
 	public:
 		Viewport();

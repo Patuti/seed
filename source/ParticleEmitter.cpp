@@ -350,7 +350,7 @@ INLINE void ParticleEmitter::Update(f32 deltaTime)
 		if (!arParticles[i].bActive)
 			continue;
 
-		arParticles[i].Update(1.0f);
+		arParticles[i].Update(deltaTime);
 	}
 }
 

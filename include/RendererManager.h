@@ -40,20 +40,17 @@
 #include "Array.h"
 #include "Config.h"
 #include "interface/IModule.h"
+#include "interface/IUpdatable.h"
+#include "Singleton.h"
 
 namespace Seed {
 
 class IRenderer;
 
-class RendererManager : public IModule
+class SEED_CORE_API RendererManager : public IModule, public IUpdatable
 {
+	SEED_SINGLETON_DECLARE(RendererManager);
 	public:
-		static RendererManager instance;
-
-	public:
-		RendererManager();
-		virtual ~RendererManager();
-
 		virtual void Add(IRenderer *renderer);
 		virtual void Remove(IRenderer *renderer);
 
@@ -64,6 +61,9 @@ class RendererManager : public IModule
 
 		virtual void Disable();
 		virtual void Enable();
+
+		// IUpdatable
+		virtual BOOL Update(f32 dt);
 
 		// IObject
 		virtual const char *GetObjectName() const;
@@ -76,7 +76,7 @@ class RendererManager : public IModule
 		BOOL bEnabled;
 };
 
-RendererManager *const pRendererManager = &RendererManager::instance;
+#define pRendererManager RendererManager::GetInstance()
 
 } // namespace
 

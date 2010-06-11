@@ -283,6 +283,7 @@ INLINE void Font::Draw()
 		return;
 
 	// TODO: remove delta
+	pFont->Update(0.0f);
 	pFont->Render();
 }
 

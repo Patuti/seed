@@ -29,44 +29,38 @@
  **
  *****************************************************************************/
 
-/*! \file ISceneObject.cpp
+/*! \file ISceneNode.cpp
 	\author	Danny Angelo Carminati Grein
-	\brief Scene Object Interface
+	\brief Scene Node Interface
 */
 
-#include "interface/ISceneObject.h"
+#include "interface/ISceneNode.h"
 #include "Defines.h"
-#include "Log.h"
-#include "Enum.h"
 
-#define TAG		"[ISceneObject] "
+#define TAG		"[ISceneNode] "
 
 namespace Seed {
 
-ISceneObject::ISceneObject()
-	: ITransformable2D()
-	, IRenderable()
+ISceneNode::ISceneNode()
 {
 }
 
-ISceneObject::~ISceneObject()
+ISceneNode::~ISceneNode()
 {
 }
 
-INLINE void ISceneObject::Update(f32 delta)
+INLINE BOOL ISceneNode::IsNode() const
 {
-	UNUSED(delta);
-	SEED_ABSTRACT_METHOD;
+	return TRUE;
 }
 
-INLINE void ISceneObject::Render()
+INLINE void ISceneNode::Update(f32 dt)
 {
-	SEED_ABSTRACT_METHOD;
+	UNUSED(dt);
 }
 
-INLINE BOOL ISceneObject::IsNode() const
+INLINE void ISceneNode::Render()
 {
-	return FALSE;
 }
 
 } // namespace

@@ -44,7 +44,7 @@
 
 namespace Seed {
 
-RendererManager RendererManager::instance;
+SEED_SINGLETON_DEFINE(RendererManager);
 
 RendererManager::RendererManager()
 	: arRenderer()
@@ -86,6 +86,17 @@ INLINE BOOL RendererManager::Shutdown()
 	this->Reset();
 
 	return IModule::Shutdown();
+}
+
+INLINE BOOL RendererManager::Update(f32 dt)
+{
+	BOOL ret = TRUE;
+	for (u32 i = 0; i < arRenderer.Size(); i++)
+	{
+		ret &= arRenderer[i]->Update(dt);
+	}
+
+	return ret;
 }
 
 void RendererManager::Add(IRenderer *renderer)

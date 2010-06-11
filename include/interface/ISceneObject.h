@@ -44,7 +44,7 @@
 
 namespace Seed {
 
-class ISceneObject : public ITransformable2D, public IRenderable
+class SEED_CORE_API ISceneObject : public ITransformable2D, public IRenderable
 {
 	public:
 		ISceneObject();
@@ -54,9 +54,28 @@ class ISceneObject : public ITransformable2D, public IRenderable
 		virtual void Update(f32 delta);
 		virtual void Render();
 
+		virtual BOOL IsNode() const;
+
 	private:
 		SEED_DISABLE_COPY(ISceneObject);
 };
+
+struct SEED_CORE_API ISceneObjectAscendingPrioritySort
+{
+	bool operator()(ISceneObject * const &left, ISceneObject * const &right)
+	{
+		return (left->GetPriority() < right->GetPriority());
+	}
+};
+
+struct SEED_CORE_API ISceneObjectDescendingPrioritySort
+{
+	bool operator()(ISceneObject * const &left, ISceneObject * const &right)
+	{
+		return (left->GetPriority() > right->GetPriority());
+	}
+};
+
 
 } // namespace
 

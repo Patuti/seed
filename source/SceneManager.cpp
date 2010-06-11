@@ -44,7 +44,7 @@
 
 namespace Seed {
 
-SceneManager SceneManager::instance;
+SEED_SINGLETON_DEFINE(SceneManager);
 
 SceneManager::SceneManager()
 	: arObject()
@@ -53,6 +53,11 @@ SceneManager::SceneManager()
 }
 
 SceneManager::~SceneManager()
+{
+	arObject.Truncate();
+}
+
+void SceneManager::Reset()
 {
 	arObject.Truncate();
 }

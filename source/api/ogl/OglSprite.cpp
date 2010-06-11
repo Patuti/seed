@@ -122,10 +122,10 @@ void Sprite::Update(f32 delta)
 			vert[1] = Vector3f(+fAspectHalfWidth, -fAspectHalfHeight, fPriority);
 			vert[2] = Vector3f(-fAspectHalfWidth, +fAspectHalfHeight, fPriority);
 			vert[3] = Vector3f(+fAspectHalfWidth, +fAspectHalfHeight, fPriority);*/
-			vert[0] = Vector3f(-fAspectHalfWidth, -fAspectHalfHeight, fPriority);
-			vert[1] = Vector3f(+fAspectHalfWidth, -fAspectHalfHeight, fPriority);
-			vert[2] = Vector3f(-fAspectHalfWidth, +fAspectHalfHeight, fPriority);
-			vert[3] = Vector3f(+fAspectHalfWidth, +fAspectHalfHeight, fPriority);
+			vert[0] = Vector3f(-fAspectHalfWidth, -fAspectHalfHeight, (f32)iPriority);
+			vert[1] = Vector3f(+fAspectHalfWidth, -fAspectHalfHeight, (f32)iPriority);
+			vert[2] = Vector3f(-fAspectHalfWidth, +fAspectHalfHeight, (f32)iPriority);
+			vert[3] = Vector3f(+fAspectHalfWidth, +fAspectHalfHeight, (f32)iPriority);
 		#endif
 	}
 	else
