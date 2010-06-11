@@ -113,7 +113,6 @@ void TextArea::ReleaseText()
 
 void TextArea::Update(f32 dt)
 {
-	//IWidget::Update(dt);
 	UNUSED(dt);
 
 	if (this->bChanged)
