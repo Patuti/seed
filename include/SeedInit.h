@@ -41,7 +41,7 @@
 #include "StringPool.h"
 #include "interface/IGameApp.h"
 #include "interface/IInput.h"
-#include "interface/IRenderer.h"
+#include "interface/IRendererDevice.h"
 #include "Timer.h"
 
 extern "C" {

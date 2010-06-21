@@ -65,19 +65,6 @@
 #define SEED_USE_3D							0
 #define SEED_USE_UNSTABLE					0
 #define SEED_ENABLE_DEPTH_TEST				0
-//#define SEED_USE_REAL_COORDINATE_SYSTEM		1
-
-/*
-During load, upload texture to vga and keep it there.
-*/
-#define SEED_ENABLE_PRELOAD_TEXTURE			1	// TODO: Remove this, we must have a smart texture management system
-
-/*
-Keep a local ram copy of the image uploaded to vram, this is used in SDL and iPhone
-only. On SDL so that we can see memory consumption, and on iPhone and SDL so we can
-use Alpha test per-pixel.
-*/
-#define SEED_ENABLE_KEEP_IMAGE_DATA			0
 
 /*
 If the Seed will be added to the game project.
@@ -159,9 +146,5 @@ Try to keep these values at a minimum.
 #else
 	#define INLINE
 #endif // SEED_BUILTIN
-
-#if SEED_ENABLE_KEEP_IMAGE_DATA == 1 && defined(RELEASE)
-#warning "SEED_ENABLE_KEEP_IMAGE_DATA is on!"
-#endif // SEED_ENABLE_KEEP_IMAGE_DATA
 
 #endif // __CONFIG_H__

@@ -39,7 +39,9 @@
 #include "Log.h"
 #include "Enum.h"
 #include "Viewport.h"
+#include "RendererDevice.h"
 #include "Renderer.h"
+#include "SeedInit.h"
 
 #define TAG		"[ViewManager] "
 
@@ -132,7 +134,7 @@ INLINE void ViewManager::Render()
 	{
 		u32 len = arViewport.Size();
 
-		Renderer::ClearScreen();
+		pRendererDevice->BackbufferClear();
 		for (u32 i = 0; i < len; i++)
 		{
 			pCurrentViewport = arViewport[i];

@@ -620,6 +620,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\source\platform\pc\PcRendererDevice.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\source\platform\pc\posix.cpp"
 						>
 					</File>
@@ -789,7 +793,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\source\interface\IRenderer2D.cpp"
+					RelativePath="..\source\interface\IRendererDevice.cpp"
 					>
 				</File>
 				<File
@@ -920,19 +924,11 @@
 					Name="ogl"
 					>
 					<File
+						RelativePath="..\source\api\ogl\Ogl14RendererDevice.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\source\api\ogl\OglRenderer.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\source\api\ogl\OglRenderer2D.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\source\api\ogl\OglSprite.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\source\api\ogl\OglViewport.cpp"
 						>
 					</File>
 				</Filter>
@@ -1162,11 +1158,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\include\Renderer2D.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\Renderer3D.h"
+				RelativePath="..\include\RendererDevice.h"
 				>
 			</File>
 			<File
@@ -1283,6 +1275,10 @@
 			</File>
 			<File
 				RelativePath="..\include\Vector3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Vertex.h"
 				>
 			</File>
 			<File
@@ -1477,7 +1473,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\include\interface\IRenderer2D.h"
+					RelativePath="..\include\interface\IRendererDevice.h"
 					>
 				</File>
 				<File
@@ -1684,6 +1680,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\include\platform\pc\PcRendererDevice.h"
+						>
+					</File>
+					<File
 						RelativePath="..\include\platform\pc\platform.h"
 						>
 					</File>
@@ -1832,19 +1832,7 @@
 					Name="ogl"
 					>
 					<File
-						RelativePath="..\include\api\ogl\OglRenderer.h"
-						>
-					</File>
-					<File
-						RelativePath="..\include\api\ogl\OglRenderer2D.h"
-						>
-					</File>
-					<File
-						RelativePath="..\include\api\ogl\OglSprite.h"
-						>
-					</File>
-					<File
-						RelativePath="..\include\api\ogl\OglViewport.h"
+						RelativePath="..\include\api\ogl\Ogl14RendererDevice.h"
 						>
 					</File>
 				</Filter>
@@ -1888,6 +1876,10 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
+		<File
+			RelativePath=".\ClassDiagram1.cd"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

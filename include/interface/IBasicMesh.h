@@ -41,6 +41,7 @@
 #include "Enum.h"
 #include "MathUtil.h"
 #include "interface/ISceneObject.h"
+#include "Vertex.h"
 
 namespace Seed {
 
@@ -53,8 +54,7 @@ class SEED_CORE_API IBasicMesh : public ISceneObject
 		IBasicMesh();
 		virtual ~IBasicMesh();
 
-		virtual void SetCustomVertexDataArray(Vector3f *myVertexData, u32 qty, eMeshType type = Seed::TriangleStrip);
-		virtual void SetCustomCoordsDataArray(f32 *myCoordsData, u32 qty);
+		virtual void SetCustomVertexDataArray(sVertex *myVertexData, u32 qty, eMeshType type = Seed::TriangleStrip);
 
 		// IRenderable
 		virtual void Update(f32 dt);
@@ -70,18 +70,10 @@ class SEED_CORE_API IBasicMesh : public ISceneObject
 		IMemoryPool		*pPool;
 
 		//Custom vertex and uv map
-		Vector3f *arCustomVertexData; // user vertex data
-		Vector3f *arCurrentVertexData; // transformed vertex data
-
-		f32 *arCustomCoordsData; // tex coords user data
-
-		f32 fTexS0;
-		f32 fTexS1;
-		f32 fTexT0;
-		f32 fTexT1;
+		sVertex *arCustomVertexData; // user vertex data
+		sVertex *arCurrentVertexData; // transformed vertex data
 
 		u32 iNumVertices;
-		u32 iNumCustomCoords;
 
 		eMeshType	nMeshType;
 };

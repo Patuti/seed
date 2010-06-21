@@ -72,6 +72,9 @@ class SEED_CORE_API Configuration : public IObject
 		void SetWarningMultipleInstances(BOOL warnUser);
 		BOOL GetWarningMultipleInstances() const;
 
+		void SetRendererDeviceType(eRendererDeviceType deviceType);
+		eRendererDeviceType GetRendererDeviceType() const;
+
 		void SetMemorySize(u32 memsize);
 		u32 GetMemorySize() const;
 
@@ -102,6 +105,7 @@ class SEED_CORE_API Configuration : public IObject
 
 		// General
 		ePlatformSimulation iPlatformSimulation;
+		eRendererDeviceType iRendererDeviceType;
 };
 
 } // namespace

@@ -293,10 +293,6 @@ FIXME: 08-11-2008 | IPHONE | GRAPHICS | WISH | Use glLists to optimize rendering
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, &cur);
 	Log(">>>>>>>>>>>>>>>>>>>>>>>>>> Image: %s Image Texture: %d  Current Texture: %d", pFrame->pImageFile, pImage->iTextureId, cur);
 	*/
-
-#if SEED_ENABLE_PRELOAD_TEXTURE == 0
-	image->UnloadTexture();
-#endif // SEED_ENABLE_PRELOAD_TEXTURE
 }
 
 }} // namespace

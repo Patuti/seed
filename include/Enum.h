@@ -117,6 +117,20 @@ enum ePlatformSimulation
 	SimulateN900
 };
 
+enum eRendererDeviceType
+{
+	RendererDeviceWii,
+	RendererDeviceOpenGLES,
+	RendererDeviceOpenGL14,
+	RendererDeviceOpenGL20,
+	RendererDeviceOpenGL30,
+	RendererDeviceOpenGL40,
+	RendererDeviceDirectX8,
+	RendererDeviceDirectX9,
+	RendererDeviceDirectX10,
+	RendererDeviceDirectX11
+};
+
 /// Widget Alignment
 enum eHorizontalAlignment
 {
@@ -413,21 +427,6 @@ enum eMeshType
 	Triangles,
 	LineStrip,
 	Quads
-};
-
-enum eRendererPacketType
-{
-	RendererLastType,
-	RendererImmediate,
-	RendererDrawArray,
-	RendererDisplayList,
-
-	/*
-	VertexBuffer/VBO is better when using one large object/mesh.
-	It can be used with a lot of tiny objects, but they must have the same setings (eg. texture and blending).
-	Even thought vertex, texcoord and normal can differ.
-	*/
-	RendererVertexBuffer
 };
 
 /*

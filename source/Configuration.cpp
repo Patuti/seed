@@ -47,6 +47,7 @@ Configuration::Configuration()
 	, pcDescription(NULL)
 	, iMemorySize(20 * 1024 * 1024)
 	, iPlatformSimulation(Seed::SimulateNothing)
+	, iRendererDeviceType(Seed::RendererDeviceOpenGL14)
 {
 }
 
@@ -186,6 +187,16 @@ INLINE void Configuration::SetPlatformSimulation(ePlatformSimulation platform)
 INLINE ePlatformSimulation Configuration::GetPlatformSimulation() const
 {
 	return this->iPlatformSimulation;
+}
+
+INLINE void Configuration::SetRendererDeviceType(eRendererDeviceType deviceType)
+{
+	iRendererDeviceType = deviceType;
+}
+
+INLINE eRendererDeviceType Configuration::GetRendererDeviceType() const
+{
+	return iRendererDeviceType;
 }
 
 INLINE const char *Configuration::GetObjectName() const

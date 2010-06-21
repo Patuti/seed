@@ -14,17 +14,10 @@
 #include "Screen.h"
 #include "Formats.h"
 #include "CollisionMask.h"
-#include "Renderer2D.h"
 
 #include <math.h>
 
 #define ROUND(x) ((x - static_cast<u32>(x)) > 0.5 ? static_cast<u32>(x) + 1 : static_cast<u32>(x))
-
-#if DEBUG_ENABLE_RECT_BUTTON == 1
-#define DEBUG_BUTTON_RECT DEBUG_RECT(IWidget::GetX(), IWidget::GetY(), IWidget::GetWidth(), IWidget::GetHeight(), DEBUG_RECT_COLOR_BUTTON);
-#else
-#define DEBUG_BUTTON_RECT
-#endif
 
 namespace Seed {
 
@@ -86,7 +79,7 @@ Button::Button()
 Button::~Button()
 {
 	this->Unload();
-	if(Private::bInitialized)
+	if (Private::bInitialized)
 		pGuiManager->Remove(this);
 }
 
@@ -218,7 +211,6 @@ void Button::Update(f32 dt)
 		if (bSpriteBased)
 		{
 			this->UpdateSprite();
-			cSprite.Update(dt);
 		}
 
 		if (bLabelBased)
@@ -230,6 +222,7 @@ void Button::Update(f32 dt)
 	}
 
 	bTransformationChanged = FALSE;
+	cSprite.Update(dt);
 }
 
 INLINE void Button::UpdateSprite()

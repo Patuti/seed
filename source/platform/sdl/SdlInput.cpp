@@ -202,17 +202,9 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 			case SDL_MOUSEMOTION:
 			{
 				f32 x, y;
-				#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
-					this->fX = (f32)event.motion.x;
-					this->fY = (f32)event.motion.y;
-				#else
-					this->fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
-					this->fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
-				#endif
-				
-				x = fX;
-				y = fY;
-				
+				x = fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
+				y = fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
+
 				Viewport *viewport = static_cast<Viewport*>(pViewManager->GetViewportAt(fX, fY));
 				f32 fw = 1.0f;
 				f32 fh = 1.0f;
@@ -234,17 +226,9 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 			case SDL_MOUSEBUTTONUP:
 			{
 				f32 x, y;
-				#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
-					this->fX = (f32)event.motion.x;
-					this->fY = (f32)event.motion.y;
-				#else
-					this->fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
-					this->fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
-				#endif
-				
-				x = fX;
-				y = fY;
-				
+				x = fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
+				y = fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
+
 				Viewport *viewport = static_cast<Viewport*>(pViewManager->GetViewportAt(fX, fY));
 				f32 fw = 1.0f;
 				f32 fh = 1.0f;
@@ -266,17 +250,9 @@ FIXME: 2009-02-17 | BUG | Usar polling? Isso deve ferrar com o frame rate config
 			case SDL_MOUSEBUTTONDOWN:
 			{
 				f32 x, y;
-				#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
-					this->fX = (f32)event.motion.x;
-					this->fY = (f32)event.motion.y;
-				#else
-					this->fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
-					this->fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
-				#endif
-				
-				x = fX;
-				y = fY;
-				
+				x = fX = (f32)event.motion.x / (f32)pScreen->GetWidth();
+				y = fY = (f32)event.motion.y / (f32)pScreen->GetHeight();
+
 				Viewport *viewport = static_cast<Viewport*>(pViewManager->GetViewportAt(fX, fY));
 				f32 fw = 1.0f;
 				f32 fh = 1.0f;

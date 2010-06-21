@@ -49,6 +49,7 @@ namespace Seed {
 
 class ISceneObject;
 class ISceneNode;
+class IImage;
 
 /// Renderer Interface
 /**
@@ -71,11 +72,11 @@ class SEED_CORE_API IRenderer : public IUpdatable, public IModule
 		virtual void Render();
 		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
 
-		virtual void SelectTexture(u32 texId);
-		virtual void UploadData(void *userData);
-
 		virtual void Begin() const;
 		virtual void End() const;
+
+		virtual void Enable2D() const;
+		virtual void Disable2D() const;
 
 		virtual void Sort(RenderableVector &vec);
 		virtual void Culler();

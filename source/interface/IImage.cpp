@@ -34,6 +34,7 @@
 	\brief Defines the Image class interface
 */
 
+#include "interface/IFileSystem.h"
 #include "interface/IImage.h"
 #include "Enum.h"
 #include "Log.h"
@@ -41,7 +42,8 @@
 namespace Seed {
 
 IImage::IImage()
-	: nMinFilter(Seed::TextureFilterLinear)
+	: stFile()
+	, nMinFilter(Seed::TextureFilterLinear)
 	, nMagFilter(Seed::TextureFilterNearest)
 	, iWidth(0)
 	, iHeight(0)
@@ -52,17 +54,32 @@ IImage::IImage()
 
 IImage::~IImage()
 {
+	this->Reset();
+}
+
+INLINE void IImage::Reset()
+{
+	stFile.Close();
+
 	iWidth = 0;
 	iHeight = 0;
 
 	fWidth = 0.0f;
 	fHeight = 0.0f;
+
+	nMinFilter = Seed::TextureFilterLinear;
+	nMagFilter = Seed::TextureFilterNearest;
+}
+
+INLINE File *IImage::GetFile()
+{
+	return &stFile;
 }
 
 INLINE const void *IImage::GetData() const
 {
-	SEED_ABSTRACT_METHOD;
 	return NULL;
+	SEED_ABSTRACT_METHOD;
 }
 
 INLINE void IImage::PutPixel(u32 x, u32 y, PIXEL px)
@@ -122,20 +139,37 @@ INLINE f32 IImage::GetHeight() const
 	return fHeight;
 }
 
+INLINE void IImage::Close()
+{
+	stFile.Close();
+}
+
 INLINE BOOL IImage::Unload()
 {
-	SEED_ABSTRACT_METHOD
+	stFile.Close();
+
 	return TRUE;
 }
 
 INLINE BOOL IImage::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
-	UNUSED(filename)
-	UNUSED(res)
-	UNUSED(pool)
+	ASSERT_NULL(filename);
+	ASSERT_NULL(pool);
+	ASSERT_NULL(res);
 
-	SEED_ABSTRACT_METHOD
-	return TRUE;
+	BOOL ret = FALSE;
+	if (this->Unload())
+	{
+		pPool = pool;
+		pRes = res;
+		pFilename = filename;
+
+		pFileSystem->Open(filename, &stFile, pool);
+
+		ret = (stFile.GetData() != NULL);
+	}
+
+	return ret;
 }
 
 INLINE BOOL IImage::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
@@ -155,6 +189,26 @@ INLINE void IImage::SetFilter(eTextureFilterType type, eTextureFilter filter)
 		nMinFilter = filter;
 	else
 		nMagFilter = filter;
+}
+
+INLINE eTextureFilter IImage::GetFilter(eTextureFilterType type) const
+{
+	eTextureFilter filter = nMinFilter;
+
+	if (type == Seed::TextureFilterTypeMag)
+		filter = nMagFilter;
+
+	return filter;
+}
+
+INLINE u32 IImage::GetBytesPerPixel() const
+{
+	return 0;
+}
+
+INLINE void *IImage::GetTextureName() const
+{
+	return NULL;
 }
 
 INLINE void IImage::Update()

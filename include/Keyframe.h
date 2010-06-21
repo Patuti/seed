@@ -56,9 +56,9 @@ class SEED_CORE_API Keyframe
 	public:
 		const char *pstrName;
 		f32 		fRotation;
-		Point<f32> 	ptPos;
-		Point<f32> 	ptLocalPos;
-		Point<f32> 	ptScale;
+		Point2f 	ptPos;
+		Point2f 	ptLocalPos;
+		Point2f 	ptScale;
 
 		u32 		iEvent;
 		s32 		iFrameToJump;

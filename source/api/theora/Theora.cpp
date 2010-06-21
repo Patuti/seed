@@ -458,15 +458,6 @@ void Theora::ConfigureRendering()
 	u32 po2_width = 0;
 	u32 po2_height = 0;
 
-	glGenTextures(1, &iTextureId);
-	glBindTexture(GL_TEXTURE_2D, iTextureId);
-
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 	oggplay_get_video_y_size(pPlayer, iTrack, reinterpret_cast<int *>(&iWidth), reinterpret_cast<int *>(&iHeight));
 	oggplay_get_video_uv_size(pPlayer, iTrack, reinterpret_cast<int *>(&iUVWidth), reinterpret_cast<int *>(&iUVHeight));
 
@@ -488,17 +479,15 @@ void Theora::ConfigureRendering()
 		iTexWidth = po2_width;
 		iTexHeight = po2_height;
 	}
-	/*
-	else if (iTexWidth != po2_width || iTexHeight != po2_height)
-	{
-		//free(pTexData);
-		//pTexData = reinterpret_cast<u8 *>(calloc(1, po2_width * po2_height * 4));
-		pMemoryManager->Free(pTexData);
-		pTexData = reinterpret_cast<u8 *>(pMemoryManager->Alloc(po2_width * po2_height * 4));
-		iTexWidth = po2_width;
-		iTexHeight = po2_height;
-	}
-	*/
+
+	glGenTextures(1, &iTextureId);
+	glBindTexture(GL_TEXTURE_2D, iTextureId);
+
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	coords[0] = 0.0f;
 	coords[1] = 0.0f;
@@ -509,41 +498,23 @@ void Theora::ConfigureRendering()
 	coords[6] = 0.0f;
 	coords[7] = fTexScaleY;
 
-	#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
-		// A
-		vertices[0] = 0.0f;
-		vertices[1] = 0.0f;
+	f32 y = 1.0f * pScreen->GetAspectRatio();
 
-		// B
-		vertices[2] = (f32)pScreen->GetWidth();
-		vertices[3] = 0.0f;
+	// A
+	vertices[0] = 0.0f;
+	vertices[1] = 0.0f;
 
-		// C
-		vertices[4] = (f32)pScreen->GetWidth();
-		vertices[5] = (f32)pScreen->GetHeight();
+	// B
+	vertices[2] = 1.0f;
+	vertices[3] = 0.0f;
 
-		// D
-		vertices[6] = 0.0f;
-		vertices[7] = (f32)pScreen->GetHeight();
-	#else
-		f32 y = 1.0f * pScreen->GetAspectRatio();
+	// C
+	vertices[4] = 1.0f;
+	vertices[5] = y;
 
-		// A
-		vertices[0] = 0.0f;
-		vertices[1] = 0.0f;
-
-		// B
-		vertices[2] = 1.0f;
-		vertices[3] = 0.0f;
-
-		// C
-		vertices[4] = 1.0f;
-		vertices[5] = y;
-
-		// D
-		vertices[6] = 0.0f;
-		vertices[7] = y;
-	#endif
+	// D
+	vertices[6] = 0.0f;
+	vertices[7] = y;
 }
 
 void Theora::Render(f32 delta)

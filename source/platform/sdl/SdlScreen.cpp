@@ -41,7 +41,7 @@
 #include "System.h"
 #include "Log.h"
 #include "MemoryManager.h"
-#include "Renderer.h"
+#include "RendererDevice.h"
 #include "SeedInit.h"
 #include "RendererManager.h"
 
@@ -542,36 +542,8 @@ void Screen::ApplyFade()
 		}
 	}
 
-	glPushAttrib(GL_TEXTURE_BIT | GL_ENABLE_BIT | GL_CURRENT_BIT | GL_COLOR_BUFFER_BIT);
-
 	u8 c = static_cast<u8>(iFadeStatus & 0xff);
-
-	const GLfloat vertices[] =
-	{
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-	};
-
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glDisable(GL_TEXTURE_2D);
-
-	glEnable(GL_BLEND);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glColor4ub(0, 0, 0, c);
-
-	glPushMatrix();
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-
-	//glEnable(GL_TEXTURE_2D);
-
-	glPopAttrib();
+	pRendererDevice->BackbufferFill(PIXEL_COLOR(0u, 0u, 0u, c));
 }
 
 }} // namespace

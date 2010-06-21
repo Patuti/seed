@@ -34,7 +34,6 @@
 	\brief Seed Initialization / Shutdown
 */
 
-
 #include "SeedInit.h"
 #include "Config.h"
 #include "ResourceManager.h"
@@ -68,6 +67,7 @@
 #include "ViewManager.h"
 #include "RendererManager.h"
 #include "SceneManager.h"
+#include "RendererDevice.h"
 
 namespace Seed {
 
@@ -175,6 +175,7 @@ BOOL Initialize()
 	ret = ret && pModuleManager->Add(pFileSystem);
 	ret = ret && pModuleManager->Add(pCartridge);
 	ret = ret && pModuleManager->Add(pScreen);
+	ret = ret && pModuleManager->Add(pRendererDevice);
 	ret = ret && pModuleManager->Add(pViewManager);
 	ret = ret && pModuleManager->Add(pRendererManager);
 

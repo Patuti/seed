@@ -50,16 +50,10 @@ Movie::~Movie()
 	this->Reset();
 }
 
-INLINE void Movie::AddTimeline(Timeline *pTimeline)
+INLINE void Movie::AddTimeline(Timeline *timeline)
 {
-	arTimelines.Add(pTimeline);
-	pTimeline->SetParent(this);
-/*
-	pTimeline->SetLocalPosition(GetLocalX(), GetLocalY());
-	pTimeline->SetPosition(GetX(), GetY());
-	pTimeline->SetScale(GetScaleX(), GetScaleY());
-	pTimeline->SetRotation(GetRotation());
-*/
+	arTimelines.Add(timeline);
+	timeline->SetParent(this);
 }
 
 INLINE void Movie::Update(f32 delta)
@@ -69,12 +63,12 @@ INLINE void Movie::Update(f32 delta)
 
 INLINE void Movie::Play()
 {
-	this->bPlaying = TRUE;
+	bPlaying = TRUE;
 }
 
 INLINE void Movie::Stop()
 {
-	this->bPlaying = FALSE;
+	bPlaying = FALSE;
 }
 
 INLINE void Movie::Rewind()
@@ -95,7 +89,7 @@ INLINE void Movie::Reset()
 
 INLINE void Movie::Render()
 {
-	if (!this->bPlaying)
+	if (!bPlaying)
 		return;
 
 	for (u32 i = 0; i < arTimelines.Size(); i++)

@@ -38,6 +38,7 @@
 #include "interface/ISceneNode.h"
 #include "interface/IRenderer.h"
 #include "Log.h"
+#include "RendererDevice.h"
 
 #include <algorithm>
 #include <vector>
@@ -46,47 +47,17 @@ namespace Seed {
 
 IRenderer::IRenderer()
 	: vRenderables()
-	//, vRenderablesStatic()
 	, vVisibleRenderables()
-	//, vVisibleRenderablesStatic()
 {
 }
 
 IRenderer::~IRenderer()
 {
 	vRenderables.clear();
-	//vRenderablesStatic.clear();
-
 	RenderableVector().swap(vRenderables);
-	//RenderableVector().swap(vRenderablesStatic);
 
 	vVisibleRenderables.clear();
-	//vVisibleRenderablesStatic.clear();
-
 	RenderableVector().swap(vVisibleRenderables);
-	//RenderableVector().swap(vVisibleRenderablesStatic);
-}
-
-INLINE void IRenderer::SelectTexture(u32 texId)
-{
-	UNUSED(texId);
-	SEED_ABSTRACT_METHOD;
-}
-
-INLINE void IRenderer::UploadData(void *userData)
-{
-	UNUSED(userData);
-	SEED_ABSTRACT_METHOD;
-}
-
-INLINE void IRenderer::Begin() const
-{
-	SEED_ABSTRACT_METHOD;
-}
-
-INLINE void IRenderer::End() const
-{
-	SEED_ABSTRACT_METHOD;
 }
 
 void IRenderer::PushChildNodes(ISceneNode *node, NodeVector &v)
@@ -148,7 +119,7 @@ INLINE void IRenderer::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fi
 
 void IRenderer::Render()
 {
-	if (IModule::IsEnabled())
+	if (pRendererDevice && pRendererDevice->IsEnabled() && IModule::IsEnabled())
 	{
 		this->Culler();
 
@@ -199,6 +170,22 @@ INLINE void IRenderer::Sort(RenderableVector &vec)
 #else
 	UNUSED(vec)
 #endif
+}
+
+INLINE void IRenderer::Begin() const
+{
+}
+
+INLINE void IRenderer::End() const
+{
+}
+
+INLINE void IRenderer::Enable2D() const
+{
+}
+
+INLINE void IRenderer::Disable2D() const
+{
 }
 
 INLINE void IRenderer::Add(ISceneNode *node)

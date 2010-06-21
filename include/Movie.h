@@ -50,7 +50,7 @@ class SEED_CORE_API Movie : public ISceneObject
 		Movie();
 		virtual ~Movie();
 
-		void AddTimeline(Timeline *pTimeline);
+		void AddTimeline(Timeline *timeline);
 		void Play();
 		void Stop();
 		void Rewind();

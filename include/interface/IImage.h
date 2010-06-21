@@ -38,9 +38,10 @@
 #define __IIMAGE_H__
 
 #include "Defines.h"
-#include "IResource.h"
+#include "interface/IResource.h"
 #include "MemoryManager.h"
 #include "Enum.h"
+#include "File.h"
 
 namespace Seed {
 
@@ -94,6 +95,16 @@ class SEED_CORE_API IImage : public IResource
 		*/
 		virtual void SetFilter(eTextureFilterType type, eTextureFilter filter);
 
+		virtual eTextureFilter GetFilter(eTextureFilterType type) const;
+
+		virtual File *GetFile();
+		virtual u32 GetBytesPerPixel() const;
+		virtual void *GetTextureName() const;
+
+		/// Close/free RAM texture data without unloading VRAM texture.
+		virtual void Close();
+		virtual void Reset();
+
 		// IResource
 		virtual BOOL Unload();
 		virtual BOOL Load(const char *filename, ResourceManager *res, IMemoryPool *pool);
@@ -132,6 +143,8 @@ class SEED_CORE_API IImage : public IResource
 		SEED_DISABLE_INSTANCING;
 
 	protected:
+		File	stFile;
+
 		eTextureFilter		nMinFilter;
 		eTextureFilter		nMagFilter;
 

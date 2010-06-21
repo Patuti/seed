@@ -42,17 +42,11 @@
 #include "gui/Label.h"
 #include "ViewManager.h"
 #include "Screen.h"
+#include "RendererDevice.h"
 
 #define TAG		"[GUI::Label] "
 
-#if DEBUG_ENABLE_RECT_LABEL == 1
-#define DEBUG_LABEL_RECT DEBUG_RECT(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), DEBUG_RECT_COLOR_LABEL);
-#else
-#define DEBUG_LABEL_RECT
-#endif
-
 namespace Seed {
-
 
 Label::Label()
 	: iAlign(Seed::HorizontalAlignLeft)
@@ -155,8 +149,6 @@ void Label::Render()
 	}
 
 	cText.Draw();
-
-	DEBUG_LABEL_RECT;
 }
 
 INLINE void Label::SetAutoAdjust(BOOL b)

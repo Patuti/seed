@@ -42,14 +42,9 @@
 #include "ViewManager.h"
 #include "Screen.h"
 #include "Number.h"
+#include "RendererDevice.h"
 
 #define TAG		"[GUI::TextArea] "
-
-#if DEBUG_ENABLE_RECT_TEXTAREA == 1
-#define DEBUG_TEXTAREA_RECT DEBUG_RECT(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), DEBUG_RECT_COLOR_TEXTAREA);
-#else
-#define DEBUG_TEXTAREA_RECT
-#endif
 
 namespace Seed {
 
@@ -126,8 +121,6 @@ void TextArea::Update(f32 dt)
 
 void TextArea::Render()
 {
-	DEBUG_TEXTAREA_RECT;
-
 	this->cText.SetBlending(this->eBlendOperation);
 	this->cText.SetColor(this->iColor);
 	this->cText.SetScale(this->GetScaleX(), this->GetScaleY());

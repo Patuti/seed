@@ -443,19 +443,17 @@ void Image::LoadPNG(const char *file)
 	this->fWidth = imageSize.width / pScreen->GetWidth();
 	this->fHeight = imageSize.height / pScreen->GetHeight();
 
-#if ENABLE_PRELOAD_TEXTURE == 1
-	this->LoadTexture();
-#endif // ENABLE_PRELOAD_TEXTURE
+	//this->LoadTexture();
 
 	CGContextRelease(context);
 
 	//Log(">>>>>>>>>>>> MEM: %s == %d == Texture ID: %d", file, (width * height * 4), iTextureId);
 
 	//pImage = data;
-#if SEED_ENABLE_KEEP_IMAGE_DATA == 0 // Release texture memory?
-	pMemoryManager->Free(const_cast<void *>(pImage), pPool);
-	pImage = NULL;
-#endif // SEED_ENABLE_KEEP_IMAGE_DATA
+//#if SEED_ENABLE_KEEP_IMAGE_DATA == 0 // Release texture memory?
+//	pMemoryManager->Free(const_cast<void *>(pImage), pPool);
+//	pImage = NULL;
+//#endif // SEED_ENABLE_KEEP_IMAGE_DATA
 }
 
 }} // namespace

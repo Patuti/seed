@@ -261,10 +261,4 @@ typedef u16  WideChar;
 #define WideString 	u16*
 #define WideChar	u16
 
-#if defined(DEBUG)
-#define DEBUG_RECT(x, y, w, h, c) pViewManager->GetCurrentRenderer()->DrawRect(x, y, w, h, c);
-#else
-#define DEBUG_RECT(x, y, w, h, c)
-#endif
-
 #endif // __SEED_DEFINES_H__

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
- 
+
  ** This file is part of the Seed Framework.
- 
+
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
- 
+
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -29,29 +29,58 @@
  **
  *****************************************************************************/
 
-/*! \file Renderer2D.h
+/*! \file IRendererDevice.h
 	\author	Danny Angelo Carminati Grein
-	\brief Include selector
+	\brief Renderer Device interfacve
 */
 
-#ifndef __RENDERER2D_H__
-#define __RENDERER2D_H__
+#ifndef __IRENDERER_DEVICE_H__
+#define __IRENDERER_DEVICE_H__
 
-#include "Config.h"
+#include "interface/IModule.h"
+#include "Enum.h"
+#include "Array.h"
+#include "Rect.h"
 
-#if defined(_WII_)
-	#include "platform/wii/WiiRenderer2D.h"
-	using namespace Seed::WII;
-#endif // _WII_
+namespace Seed {
 
-#if defined(_SDL_) || defined(_QT_)
-	#include "api/ogl/OglRenderer2D.h"
-	using namespace Seed::OGL;
-#endif // _SDL_ || _QT_
+class IRenderer;
+class IImage;
 
-#if defined(_IPHONE_)
-	#include "platform/iphone/IphRenderer2D.h"
-	using namespace Seed::iPhone;
-#endif // _IPHONE_
+class SEED_CORE_API IRendererDevice : public IModule
+{
+	public:
+		IRendererDevice();
+		~IRendererDevice();
 
-#endif // __RENDERER2D_H__
+		virtual void TextureRequest(IImage *texture, void **texName);
+		virtual void TextureRequestAbort(IImage *texture, void **texName);
+		virtual void TextureRequestProcess() const;
+
+		virtual void UnloadTexture(IImage *tex);
+		virtual void UpdateTextureFilter(IImage *texture);
+
+		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
+		virtual void UploadData(void *userData);
+		virtual void BackbufferClear(const PIXEL color = 0);
+		virtual void BackbufferFill(const PIXEL color = 0);
+
+		virtual void SetViewport(const Rect<f32> &area) const;
+		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
+		virtual void Enable2D() const;
+		virtual void Disable2D() const;
+
+		virtual void Begin() const;
+		virtual void End() const;
+
+		virtual BOOL IsRequired() const;
+
+		virtual IRenderer *CreateRenderer() const;
+
+	private:
+		SEED_DISABLE_COPY(IRendererDevice);
+};
+
+} // namespace
+
+#endif // __IRENDERER_DEVICE_H__

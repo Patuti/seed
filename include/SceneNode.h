@@ -60,6 +60,12 @@ template <int NODES> class SEED_CORE_API SceneNode : public ISceneNode
 		{
 			if (obj)
 			{
+				for (u32 i = 0; i < arNodes.Size(); i++)
+				{
+					if (arNodes[i] == obj)
+						return;
+				}
+
 				obj->SetParent(this);
 				arNodes.Add(obj);
 			}

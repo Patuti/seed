@@ -43,9 +43,6 @@
 #include "File.h"
 #include "interface/IImage.h"
 #include "SeedInit.h"
-#include "Renderer2D.h"
-
-namespace Seed { namespace OGL { class Sprite; }}
 
 namespace Seed { namespace SDL {
 
@@ -54,8 +51,6 @@ IResource *ImageResourceLoader(const char *filename, ResourceManager *res = pRes
 class SEED_CORE_API Image : public IImage
 {
 	friend IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
-	friend class OGL::Sprite;
-	friend class OGL::Renderer2D;
 
 	public:
 		Image();
@@ -68,6 +63,8 @@ class SEED_CORE_API Image : public IImage
 		virtual u8 GetPixelAlpha(u32 x, u32 y) const;
 
 		virtual void SetFilter(eTextureFilterType type, eTextureFilter filter);
+		virtual u32 GetBytesPerPixel() const;
+		virtual void *GetTextureName() const;
 
 		virtual void Update();
 		virtual void Reset();
@@ -83,7 +80,6 @@ class SEED_CORE_API Image : public IImage
 
 	protected:
 		int LoadTexture();
-		int GetTexture();
 		void UnloadTexture();
 
 	private:
@@ -92,11 +88,7 @@ class SEED_CORE_API Image : public IImage
 	private:
 		SDL_Surface *pSurface;
 		void *pData;
-
-#if defined(DEBUG)
-		File stFile;
-#endif
-		GLuint iTextureId;
+		void *pTextureId;
 
 		u32 iBytesPerPixel;
 		u32 iPitch;

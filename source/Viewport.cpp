@@ -29,64 +29,93 @@
  **
  *****************************************************************************/
 
-/*! \file IViewport.h
+/*! \file Viewport.h
 	\author	Everton Fernando Patitucci da Silva
-	\brief Defines the Viewport interface.
+	\brief Viewport implementation.
 */
 
-#ifndef __IVIEWPORT_H__
-#define __IVIEWPORT_H__
-
-#include "Defines.h"
-#include "Rect.h"
+#include "Viewport.h"
+#include "Log.h"
+#include "interface/IRenderer.h"
+#include "RendererDevice.h"
 
 namespace Seed {
 
-class IRenderer;
-
-/// Viewport Interface
-/**
-Interface for working with viewports.
-*/
-class SEED_CORE_API IViewport
+Viewport::Viewport()
+	: cArea(0.0f, 0.0f, 1.0f, 1.0f)
+	, pRenderer(NULL)
 {
-	public:
-		IViewport();
-		virtual ~IViewport();
+}
 
-		virtual void Render();
+Viewport::~Viewport()
+{
+}
 
-		virtual void SetRenderer(IRenderer *renderer);
-		virtual IRenderer *GetRenderer() const;
+INLINE void Viewport::SetRenderer(IRenderer *renderer)
+{
+	ASSERT_NULL(renderer);
 
-		virtual void SetPosition(f32 x, f32 y);
-		virtual void SetWidth(f32 w);
-		virtual void SetHeight(f32 h);
+	pRenderer = renderer;
+}
 
-		virtual f32 GetX() const;
-		virtual f32 GetY() const;
-		virtual f32 GetWidth() const;
-		virtual f32 GetHeight() const;
+INLINE void Viewport::SetPosition(f32 x, f32 y)
+{
+	this->cArea.x = x;
+	this->cArea.y = y;
+}
 
-		virtual BOOL Contains(f32 x, f32 y);
+INLINE void Viewport::SetWidth(f32 w)
+{
+	this->cArea.width = w;
+}
 
-		// IObject
-		virtual const char *GetObjectName() const;
+INLINE void Viewport::SetHeight(f32 h)
+{
+	this->cArea.height = h;
+}
 
-	protected:
-		virtual void PrepareViewport();
+INLINE IRenderer *Viewport::GetRenderer() const
+{
+	return pRenderer;
+}
 
-	protected:
-		Rect<f32> cArea;
+INLINE f32 Viewport::GetX() const
+{
+	return cArea.x;
+}
 
-	private:
-		SEED_DISABLE_COPY(IViewport);
+INLINE f32 Viewport::GetY() const
+{
+	return cArea.y;
+}
 
-	private:
-		IRenderer *pRenderer;
-};
+INLINE f32 Viewport::GetWidth() const
+{
+	return cArea.width;
+}
+
+INLINE f32 Viewport::GetHeight() const
+{
+	return cArea.height;
+}
+
+INLINE void Viewport::Render()
+{
+	if (pRenderer)
+	{
+		pRendererDevice->SetViewport(cArea);
+		pRenderer->Render();
+	}
+}
+
+INLINE BOOL Viewport::Contains(f32 x, f32 y)
+{
+	return cArea.Contains(x, y);
+}
+
+INLINE const char *Viewport::GetObjectName() const
+{
+	return "Viewport";
+}
 
 } // namespace
-
-#endif // __IVIEWPORT_H__
-

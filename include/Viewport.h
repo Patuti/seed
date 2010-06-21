@@ -31,22 +31,59 @@
 
 /*! \file Viewport.h
 	\author	Everton Fernando Patitucci da Silva
-	\brief Include selector
+	\brief Viewport
 */
 
 #ifndef __VIEWPORT_H__
 #define __VIEWPORT_H__
 
-#include "Config.h"
+#include "Defines.h"
+#include "Rect.h"
 
-#if defined(_WII_)
-	#include "platform/wii/WiiViewport.h"
-	using namespace Seed::WII;
-#endif // _WII_
+namespace Seed {
 
-#if defined(_SDL_) || defined(_QT_) || defined(_IPHONE_)
-	#include "api/ogl/OglViewport.h"
-	using namespace Seed::OGL;
-#endif // _SDL_ _QT_ _IPHONE_
+class IRenderer;
+
+/// Viewport Interface
+/**
+Interface for working with viewports.
+*/
+class SEED_CORE_API Viewport
+{
+	public:
+		Viewport();
+		virtual ~Viewport();
+
+		virtual void Render();
+
+		virtual void SetRenderer(IRenderer *renderer);
+		virtual IRenderer *GetRenderer() const;
+
+		virtual void SetPosition(f32 x, f32 y);
+		virtual void SetWidth(f32 w);
+		virtual void SetHeight(f32 h);
+
+		virtual f32 GetX() const;
+		virtual f32 GetY() const;
+		virtual f32 GetWidth() const;
+		virtual f32 GetHeight() const;
+
+		virtual BOOL Contains(f32 x, f32 y);
+
+		// IObject
+		virtual const char *GetObjectName() const;
+
+	protected:
+		Rect<f32> cArea;
+
+	private:
+		SEED_DISABLE_COPY(Viewport);
+
+	private:
+		IRenderer *pRenderer;
+};
+
+} // namespace
+
 
 #endif // __VIEWPORT_H__

@@ -45,8 +45,9 @@
 #endif // _WII_
 
 #if defined(_SDL_) || defined(_QT_)
-	#include "api/ogl/OglSprite.h"
-	using namespace Seed::OGL;
+	#include "interface/ISprite.h"
+	using namespace Seed;
+	typedef ISprite Sprite;
 #endif // _SDL_
 
 #if defined(_IPHONE_)

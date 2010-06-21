@@ -138,6 +138,7 @@ class SEED_CORE_API ISprite : public IBasicMesh
 
 		// ISceneObject
 		virtual void Update(f32 delta);
+		virtual void Render();
 
 		// IObject
 		virtual const char *GetObjectName() const;
@@ -181,20 +182,17 @@ class SEED_CORE_API ISprite : public IBasicMesh
 		s32 iHalfHeight; // half height in pixel
 		u32 iWidth; // width in pixel
 		u32 iHeight; // height in pixel
-/*
-		//Custom vertex and uv map
-		u32 iNumVertices;
-		Vector3f *arCustomVertexData;
-		Vector3f *arCurrentVertexData;
 
-		u32 iNumCustomCoords;
-		f32 *arCustomCoordsData;
+		f32 fTexS0;
+		f32 fTexS1;
+		f32 fTexT0;
+		f32 fTexT1;
 
-		eMeshType	nMeshType;
-*/
 		ResourceManager *pRes;
 		IMemoryPool		*pPool;
 		const char		*pFilename;
+
+		sVertex vert[4];
 
 	private:
 		SEED_DISABLE_COPY(ISprite);

@@ -73,7 +73,7 @@ INLINE BOOL RendererManager::Initialize()
 INLINE BOOL RendererManager::Reset()
 {
 	arRenderer.Truncate();
-	return TRUE; 
+	return TRUE;
 }
 
 INLINE BOOL RendererManager::Shutdown()

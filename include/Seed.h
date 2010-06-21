@@ -101,7 +101,7 @@
 #include <ResourceLoader.h>
 #include <ResourceGroup.h>
 #include <Renderer.h>
-#include <Renderer2D.h>
+#include <RendererDevice.h>
 
 #include <SaveSystem.h>
 #include <SceneNode.h>

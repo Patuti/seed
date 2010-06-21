@@ -29,60 +29,54 @@
  **
  *****************************************************************************/
 
-/*! \file OglViewport.cpp
-	\author	Everton Fernando Patitucci da Silva
-	\brief Viewport OpenGL Implementation
+/*! \file Vertex.h
+	\author	Danny Angelo Carminati Grein
+	\brief Vertex format
 */
 
+#ifndef __VERTEX_H__
+#define __VERTEX_H__
 
-#include "Viewport.h"
-#include "Screen.h"
+#include "Defines.h"
+#include "Vector3.h"
+#include "Point.h"
 
-#ifdef _OGL_
+namespace Seed {
 
-#if defined(__APPLE_CC__)
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-
-#define TAG		"[Viewport] "
-
-//#if DEBUG_ENABLE_RECT_VIEWPORT == 1
-#define DEBUG_VIEWPORT_RECT DEBUG_RECT(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), DEBUG_RECT_COLOR_SPRITE);
-//#else
-//#define DEBUG_VIEWPORT_RECT
-//#endif
-
-
-namespace Seed { namespace OGL {
-
-
-Viewport::Viewport()
+struct sVertex
 {
-}
+	Vector3f	cVertex;
+	PIXEL		iColor;
+	Point2f		cCoords;
 
+	sVertex()
+		: cVertex(0.0f, 0.0f, 0.0f)
+		, iColor(PIXEL_COLOR(255, 255, 255, 255))
+		, cCoords(0.0f, 0.0f)
+	{
+	}
+};
 
-Viewport::~Viewport()
+struct RendererPacket
 {
-}
+	eMeshType				nMeshType;
+	eBlendMode				nBlendMode;
+	PIXEL					iColor;
+	IImage					*pTexture;
+	void					*pVertexData;
+	u32						iSize;
 
+	RendererPacket()
+		: nMeshType(Seed::TriangleStrip)
+		, nBlendMode(Seed::BlendNone)
+		, iColor(PIXEL_COLOR(0, 0, 0, 255))
+		, pTexture(NULL)
+		, pVertexData(NULL)
+		, iSize(0)
+	{
+	}
+};
 
-void Viewport::PrepareViewport()
-{
-	GLint x, y;
-	GLsizei width, height;
-	x = static_cast<GLint>(cArea.x * pScreen->GetWidth());
-	y = static_cast<GLint>(cArea.y * pScreen->GetHeight());
-	width = static_cast<GLsizei>(cArea.width * pScreen->GetWidth());
-	height = static_cast<GLsizei>(cArea.height * pScreen->GetHeight());
+} // namespace
 
-	//glViewport(x, height - y, width, height);
-	glViewport(x, pScreen->GetHeight() - y - height, width, height);
-}
-
-
-}} // namespace
-
-
-#endif // _OGL_
+#endif // __VERTEX_H__

@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
-
+ 
  ** This file is part of the Seed Framework.
-
+ 
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
-
+ 
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -29,96 +29,64 @@
  **
  *****************************************************************************/
 
-/*! \file IViewport.h
-	\author	Everton Fernando Patitucci da Silva
-	\brief Defines the Viewport interface.
+/*! \file RendererDevice.h
+	\author	Danny Angelo Carminati Grein
+	\brief Include selector
 */
 
-#include "interface/IViewport.h"
-#include "Log.h"
-#include "interface/IRenderer.h"
+#ifndef __RENDERER_DEVICE_H__
+#define __RENDERER_DEVICE_H__
 
-namespace Seed {
+#include "Config.h"
 
-IViewport::IViewport()
-	: cArea(0.0f, 0.0f, 1.0f, 1.0f)
-	, pRenderer(NULL)
-{
-}
+#if defined(_WII_)
+	#include "platform/wii/WiiRendererDevice.h"
+	using namespace Seed::WII;
+#endif // _WII_
 
-IViewport::~IViewport()
-{
-}
+#if defined(_SDL_)
+	#include "platform/pc/PcRendererDevice.h"
+	#include "api/ogl/Ogl14RendererDevice.h"
 
-INLINE void IViewport::SetRenderer(IRenderer *renderer)
-{
-	ASSERT_NULL(renderer);
+	#if defined(SEED_ENABLE_OGL20)
+	#include "api/ogl/Ogl20RendererDevice.h"
+	#endif
 
-	pRenderer = renderer;
-}
+	#if defined(SEED_ENABLE_OGL30)
+	#include "api/ogl/Ogl30RendererDevice.h"
+	#endif
 
-INLINE void IViewport::SetPosition(f32 x, f32 y)
-{
-	this->cArea.x = x;
-	this->cArea.y = y;
-}
+	#if defined(SEED_ENABLE_OGL40)
+	#include "api/ogl/Ogl40RendererDevice.h"
+	#endif
 
-INLINE void IViewport::SetWidth(f32 w)
-{
-	this->cArea.width = w;
-}
+	#if defined(SEED_ENABLE_D3D8)
+	#include "api/d3d8/D3D8RendererDevice.h"
+	#endif
 
-INLINE void IViewport::SetHeight(f32 h)
-{
-	this->cArea.height = h;
-}
+	#if defined(SEED_ENABLE_D3D9)
+	#include "api/d3d9/D3D9RendererDevice.h"
+	#endif
 
-INLINE IRenderer *IViewport::GetRenderer() const
-{
-	return pRenderer;
-}
+	#if defined(SEED_ENABLE_D3D10)
+	#include "api/d3d10/D3D10RendererDevice.h"
+	#endif
 
-INLINE f32 IViewport::GetX() const
-{
-	return cArea.x;
-}
+	#if defined(SEED_ENABLE_D3D11)
+	#include "api/d3d11/D3D11RendererDevice.h"
+	#endif
 
-INLINE f32 IViewport::GetY() const
-{
-	return cArea.y;
-}
+	using namespace Seed::PC;
+#endif // _SDL_
 
-INLINE f32 IViewport::GetWidth() const
-{
-	return cArea.width;
-}
+#if defined(_QT_)
+	#include "platform/qt/QtRendererDevice.h"
+	using namespace Seed::QT;
+#endif
 
-INLINE f32 IViewport::GetHeight() const
-{
-	return cArea.height;
-}
+#if defined(_IPHONE_)
+	#include "platform/iphone/IphRendererDevice.h"
+	using namespace Seed::iPhone;
+#endif // _IPHONE_
 
-INLINE void IViewport::PrepareViewport()
-{
-}
-
-INLINE void IViewport::Render()
-{
-	if (pRenderer)
-	{
-		this->PrepareViewport();
-		pRenderer->Render();
-	}
-}
-
-INLINE BOOL IViewport::Contains(f32 x, f32 y)
-{
-	return cArea.Contains(x, y);
-}
-
-INLINE const char *IViewport::GetObjectName() const
-{
-	return "Viewport";
-}
-
-} // namespace
+#endif // __RENDERER_DEVICE_H__

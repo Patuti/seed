@@ -41,7 +41,6 @@
 #include "Input.h"
 #include "Log.h"
 #include "Rect.h"
-#include "Renderer2D.h"
 #include "Screen.h"
 #include "Timer.h"
 #include "Enum.h"
@@ -49,12 +48,6 @@
 
 #define TAG						"[GUI::WidgetContainer] "
 #define DRAG_START_THRESHOLD	30
-
-#if DEBUG_ENABLE_RECT_WidgetContainer == 1
-#define DEBUG_WIDGETCONTAINER_RECT DEBUG_RECT(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), DEBUG_RECT_COLOR_WIDGETCONTAINER);
-#else
-#define DEBUG_WIDGETCONTAINER_RECT
-#endif
 
 #if defined(SEED_LOG_GUIMANAGER)
 	#define LOG		Log
@@ -92,13 +85,8 @@ void WidgetContainer::Reset()
 
 	IWidget::Reset();
 
-#if defined(SEED_USE_REAL_COORDINATE_SYSTEM)
-	this->SetWidth(1024.0f); //f32(pScreen->GetWidth()));
-	this->SetHeight(768.0f); //f32(pScreen->GetHeight()));
-#else
 	this->SetWidth(1.0f);
 	this->SetHeight(1.0f);
-#endif
 
 	bVisible			= TRUE;
 	bChanged			= TRUE;
@@ -175,9 +163,7 @@ INLINE void WidgetContainer::Add(IWidget *widget)
 	WidgetIterator p = std::find(vWidget.begin(), vWidget.end(), widget);
 	if (p == vWidget.end())
 	{
-		widget->SetParent(this);
-		//widget->SetVisible(this->IsVisible());
-		//widget->SetDisabled(this->IsDisabled());
+		//widget->SetParent(this);
 		vWidget.push_back(widget);
 		std::sort(vWidget.begin(), vWidget.end(), ITransformable2DDescendingPrioritySort());
 	}
@@ -190,8 +176,8 @@ INLINE void WidgetContainer::Remove(IWidget *widget)
 	WidgetIterator p = std::find(vWidget.begin(), vWidget.end(), widget);
 	if (p != vWidget.end())
 	{
-		IWidget *widget = (*p);
-		widget->SetParent(NULL);
+		//IWidget *widget = (*p);
+		//widget->SetParent(NULL);
 
 		vWidget.erase(p);
 	}

@@ -52,17 +52,10 @@
 #define FADE_INCREMENT	0x04
 #endif // DEBUG
 
-namespace Seed { namespace OGL { class Renderer; class Renderer2D; }}
-
 namespace Seed { namespace SDL {
-
-class IRenderer;
 
 class SEED_CORE_API Screen : public IScreen
 {
-	friend class OGL::Renderer;
-	friend class OGL::Renderer2D;
-
 	SEED_SINGLETON_DECLARE(Screen);
 	public:
 		enum eMode

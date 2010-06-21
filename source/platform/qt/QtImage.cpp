@@ -119,10 +119,6 @@ BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 
 		fWidth = (f32)iWidth / (f32)pScreen->GetWidth();
 		fHeight = (f32)iHeight / (f32)pScreen->GetHeight();
-
-#if SEED_ENABLE_PRELOAD_TEXTURE == 1
-		//this->LoadTexture();
-#endif // SEED_ENABLE_PRELOAD_TEXTURE
 	}
 
 	return TRUE;
@@ -153,10 +149,6 @@ BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 
 		fWidth = (f32)iWidth / (f32)pScreen->GetWidth();
 		fHeight = (f32)iHeight / (f32)pScreen->GetHeight();
-
-#if SEED_ENABLE_PRELOAD_TEXTURE == 1
-		//this->LoadTexture();
-#endif // SEED_ENABLE_PRELOAD_TEXTURE
 	}
 
 	return TRUE;

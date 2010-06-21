@@ -29,86 +29,66 @@
  **
  *****************************************************************************/
 
-/*! \file OglRenderer2D.h
+/*! \file PcRendererDevice.h
 	\author	Danny Angelo Carminati Grein
-	\brief 2D Renderer OpenGL implementation
+	\brief Renderer device factory
 */
 
-#ifndef __OGL_RENDERER2D_H__
-#define __OGL_RENDERER2D_H__
+#ifndef __PC_RENDERER_DEVICE_H__
+#define __PC_RENDERER_DEVICE_H__
 
 #include "Defines.h"
 
-#if defined(_OGL_)
+#if defined(_PC_)
 
-#include "Renderer.h"
-#include "interface/IRenderer2D.h"
-#include "Matrix4x4.h"
+#include "Singleton.h"
+#include "interface/IRendererDevice.h"
 
-#define SEED_RENDERER_DATA_MAX		(1024 * 100)
-#define SEED_RENDERER_PACKET_MAX	(1024 * 2)
+namespace Seed { namespace PC {
 
-namespace Seed { namespace OGL {
-
-class SEED_CORE_API Renderer2D : public IRenderer2D, public Renderer
+class RendererDevice : public IRendererDevice
 {
+	SEED_SINGLETON_DECLARE(RendererDevice);
 	public:
-		Renderer2D();
-		virtual ~Renderer2D();
+		// IRendererDevice
+		virtual void UnloadTexture(IImage *tex);
+		virtual void UpdateTextureFilter(IImage *texture);
 
-		virtual void SelectTexture(IImage *texture);
-		virtual void SetPacketType(eRendererPacketType type);
+		virtual void TextureRequest(IImage *texture, void **texName);
+		virtual void TextureRequestAbort(IImage *texture, void **texName);
+		virtual void TextureRequestProcess() const;
+
+		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
 		virtual void UploadData(void *userData);
-		virtual void CommitData() const;
-
-		virtual BOOL Initialize();
-		virtual BOOL Shutdown();
+		virtual void BackbufferClear(const PIXEL color = 0);
+		virtual void BackbufferFill(const PIXEL color = 0);
 
 		virtual void Begin() const;
 		virtual void End() const;
 
+		virtual void SetViewport(const Rect<f32> &area) const;
 		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
+		virtual void Enable2D() const;
+		virtual void Disable2D() const;
+
+		virtual IRenderer *CreateRenderer() const;
+
+		// IModule
+		virtual BOOL Initialize();
+		virtual BOOL Reset();
+		virtual BOOL Shutdown();
 
 	private:
-		SEED_DISABLE_COPY(Renderer2D);
+		SEED_DISABLE_COPY(RendererDevice);
 
-		void Enable2D() const;
-		void Disable2D() const;
-
-		void Begin(eRendererPacketType type) const;
-		void End(eRendererPacketType type) const;
-
-		void UseVertexBuffer(RendererPacket *packet);
-		void UseDisplayList(RendererPacket *packet);
-		void UseImmediate(RendererPacket *packet);
-		void UseDrawArray(RendererPacket *packet);
-
-	private:
-		mutable f32	fScreenW;
-		mutable f32	fScreenH;
-
-		mutable BOOL bInsideDisplayList;
-
-		IImage		*pCurrentTexture;
-		mutable u32	iDataCount;
-		mutable u32	iPacketCount;
-		eRendererPacketType nLastType;
-
-		GLuint		iVertexVboId;
-		GLuint		iTexCoordVboId;
-		GLuint		iDisplayList;
-		GLint		nVboMeshType;
-
-		mutable Vector3f	arVertexData[SEED_RENDERER_DATA_MAX];
-		mutable f32			arTexCoordData[SEED_RENDERER_DATA_MAX * 2];
-
-		mutable GLint		arPacketIndex[SEED_RENDERER_PACKET_MAX];
-		mutable GLsizei		arPacketCount[SEED_RENDERER_PACKET_MAX];
+		IRendererDevice cNull;
+		IRendererDevice	*pApiDevice;
 };
+
+#define pRendererDevice RendererDevice::GetInstance()
 
 }} // namespace
 
-#else // _OGL_
-	#error "Include 'Renderer2D.h' instead 'api/ogl/OglRenderer2D.h' directly."
-#endif // _OGL_
-#endif // __OGL_RENDERER2D_H__
+#endif // _PC_
+
+#endif // __PC_RENDERER_DEVICE_H__
