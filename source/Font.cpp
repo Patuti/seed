@@ -38,7 +38,7 @@
 #include "Formats.h"
 #include "Dictionary.h"
 #include "System.h"
-#include "Image.h"
+#include "Texture.h"
 
 #define FONT_OFFSET		33
 #define FONT_TOTAL		90
@@ -301,7 +301,7 @@ INLINE void Font::SetScale(f32 x, f32 y)
 
 INLINE void Font::SetFilter(eTextureFilterType type, eTextureFilter filter)
 {
-	IImage *img = mFont.GetTexture();
+	ITexture *img = mFont.GetTexture();
 	if (img)
 		img->SetFilter(type, filter);
 

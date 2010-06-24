@@ -44,7 +44,7 @@
 namespace Seed {
 
 class IRenderer;
-class IImage;
+class ITexture;
 
 /// Drawable Interface
 /**

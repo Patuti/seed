@@ -443,7 +443,7 @@ INLINE void Theora::ProcessVideoData(OggPlayVideoData *data)
 
 	if (pTexData)
 	{
-		cImage.Update(static_cast<PIXEL *>((void *)pTexData));
+		cTexture.Update(static_cast<PIXEL *>((void *)pTexData));
 	}
 }
 
@@ -494,7 +494,7 @@ void Theora::ConfigureRendering()
 		iTexHeight = po2_height;
 	}
 
-	cImage.Load(iTexWidth, iTexHeight, static_cast<PIXEL *>((void *)pTexData));
+	cTexture.Load(iTexWidth, iTexHeight, static_cast<PIXEL *>((void *)pTexData));
 
 /*
 	glGenTextures(1, &iTextureId);

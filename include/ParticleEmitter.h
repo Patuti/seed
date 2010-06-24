@@ -42,7 +42,7 @@
 
 namespace Seed {
 
-class IImage;
+class ITexture;
 class ResourceManager;
 class IMemoryPool;
 

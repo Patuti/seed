@@ -29,39 +29,40 @@
  **
  *****************************************************************************/
 
-/*! \file IphImage.h
+/*! \file WiiTexture.h
 	\author	Danny Angelo Carminati Grein
-	\brief Image Iphone Implementation
+	\brief Texture implementation
 */
 
-#ifndef __IPH_IMAGE_H__
-#define __IPH_IMAGE_H__
-
-#if defined(_IPHONE_)
+#ifndef __WII_TEXTURE_H__
+#define __WII_TEXTURE_H__
 
 #include "Defines.h"
-#include "SeedInit.h"
+
+#if defined(_WII_)
+
+#include "interface/ITexture.h"
+#include "ResourceManager.h"
+#include "MemoryManager.h"
+#include "Screen.h"
 #include "File.h"
-#include "interface/IImage.h"
-#include <OpenGLES/ES1/gl.h>
+#include "SeedInit.h"
 
-namespace Seed { namespace iPhone {
+namespace Seed { namespace WII {
 
-IResource *ImageResourceLoader(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+IResource *TextureResourceLoader(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
 
-class Image : public IImage
+class Texture : public ITexture
 {
-	friend IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
+	friend IResource *TextureResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool = pDefaultPool);
 	friend class Sprite;
 
 	public:
-		Image();
-		virtual ~Image();
+		Texture();
+		virtual ~Texture();
 
-		// IImage
-		virtual void Load(const char *filename, IMemoryPool *pool = pDefaultPool);
-		virtual void Load(u16 width, u16 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
-		virtual void Unload();
+		// ITexture
+		//virtual void Load(u16 width, u16 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
 
 		virtual const void *GetData() const;
 		virtual void PutPixel(u32 x, u32 y, PIXEL px);
@@ -76,34 +77,21 @@ class Image : public IImage
 		virtual void Reset();
 
 		// IResource
+		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Unload();
 		virtual u32 GetUsedMemory() const;
 
 	protected:
-		int LoadTexture();
-		int GetTexture();
-		void UnloadTexture();
+		File 	stFile;
 
 	private:
-		SEED_DISABLE_COPY(Image);
-
-		void LoadPVRTC(const char *file);
-		void LoadPNG(const char *file);
+		SEED_DISABLE_COPY(Texture);
+		void LoadPalette(const char *name);
 
 	private:
-		enum eTextureFormat
-		{
-			kTexture2DPixelFormat_Automatic = 0,
-			kTexture2DPixelFormat_RGBA8888,
-			kTexture2DPixelFormat_RGB565,
-			kTexture2DPixelFormat_A8,
-			kTexture2DPixelFormat_RGBA2,
-		};
+		WiiTexObj pImage;
 
-	private:
-		const void	*pImage;
-		File		stFile;
-
-		GLuint iTextureId;
+		u8 	*pImageBuffer;
 
 		f32 fWidth;
 		f32 fHeight;
@@ -113,15 +101,11 @@ class Image : public IImage
 
 		u16 iWidth;
 		u16 iHeight;
-
-		BOOL bCompressed;
-
-		eTextureFormat pixelFormat;
 };
 
 }} // namespace
 
-#else // _IPHONE_
-	#error "Include 'Image.h' instead 'platform/iphone/IphImage.h' directly."
-#endif // _IPHONE_
-#endif // __IPH_IMAGE_H__
+#else // _WII_
+	#error "Include 'Texture.h' instead 'platform/wii/WiiTexture.h' directly."
+#endif // _WII_
+#endif // __WII_TEXTURE_H__

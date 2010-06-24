@@ -160,12 +160,12 @@ INLINE BOOL RendererDevice::Shutdown()
 	return ret;
 }
 
-INLINE void RendererDevice::TextureRequest(IImage *texture, void **texName)
+INLINE void RendererDevice::TextureRequest(ITexture *texture, void **texName)
 {
 	pApiDevice->TextureRequest(texture, texName);
 }
 
-INLINE void RendererDevice::TextureRequestAbort(IImage *texture, void **texName)
+INLINE void RendererDevice::TextureRequestAbort(ITexture *texture, void **texName)
 {
 	pApiDevice->TextureRequestAbort(texture, texName);
 }
@@ -175,17 +175,17 @@ INLINE void RendererDevice::TextureRequestProcess() const
 	pApiDevice->TextureRequestProcess();
 }
 
-INLINE void RendererDevice::TextureUnload(IImage *tex)
+INLINE void RendererDevice::TextureUnload(ITexture *tex)
 {
 	pApiDevice->TextureUnload(tex);
 }
 
-INLINE void RendererDevice::TextureFilterUpdate(IImage *texture)
+INLINE void RendererDevice::TextureFilterUpdate(ITexture *texture)
 {
 	pApiDevice->TextureFilterUpdate(texture);
 }
 
-INLINE void RendererDevice::TextureDataUpdate(IImage *texture)
+INLINE void RendererDevice::TextureDataUpdate(ITexture *texture)
 {
 	pApiDevice->TextureDataUpdate(texture);
 }

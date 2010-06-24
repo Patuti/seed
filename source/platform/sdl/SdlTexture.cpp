@@ -29,14 +29,14 @@
  **
  *****************************************************************************/
 
-/*! \file SdlImage.cpp
+/*! \file SdlTexture.cpp
 	\author	Danny Angelo Carminati Grein
-	\brief Image SDL Implementation
+	\brief Texture SDL Implementation
 */
 
 #if defined(_SDL_)
 
-#include "Image.h"
+#include "Texture.h"
 #include "FileSystem.h"
 #include "MemoryManager.h"
 #include "ResourceManager.h"
@@ -44,7 +44,7 @@
 #include "Screen.h"
 #include "RendererDevice.h"
 
-#define TAG "[Image] "
+#define TAG "[Texture] "
 
 namespace Seed { namespace SDL {
 
@@ -56,15 +56,15 @@ enum eImageFormat
 	JPG
 };
 
-IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
+IResource *TextureResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
-	Image *image = New(Image());
+	Texture *image = New(Texture());
 	image->Load(filename, res, pool);
 
 	return image;
 }
 
-Image::Image()
+Texture::Texture()
 	: pSurface(NULL)
 	, pData(NULL)
 	, pTextureId(NULL)
@@ -73,14 +73,14 @@ Image::Image()
 {
 }
 
-Image::~Image()
+Texture::~Texture()
 {
 	this->Reset();
 }
 
-INLINE void Image::Reset()
+INLINE void Texture::Reset()
 {
-	IImage::Reset();
+	ITexture::Reset();
 
 	this->UnloadTexture();
 
@@ -99,9 +99,9 @@ INLINE void Image::Reset()
 	fHeight = 0.0f;
 }
 
-BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
+BOOL Texture::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
-	if (IImage::Load(filename, res, pool))
+	if (ITexture::Load(filename, res, pool))
 	{
 		SDL_RWops *rwops = SDL_RWFromConstMem(stFile.GetData(), stFile.GetSize());
 
@@ -162,7 +162,7 @@ BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 
 			if (width != iWidth || height != iHeight)
 			{
-				Log(TAG "WARNING: Image size not optimal, changing from %dx%d to %dx%d", iWidth, iHeight, width, height);
+				Log(TAG "WARNING: texture size not optimal, changing from %dx%d to %dx%d", iWidth, iHeight, width, height);
 
 				SDL_Surface *pTempSurface = NULL;
 				Uint32 rmask, gmask, bmask, amask;
@@ -216,18 +216,18 @@ BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 	return bLoaded;
 }
 
-BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
+BOOL Texture::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 {
 	ASSERT_NULL(buffer);
 	//ASSERT_NULL(pool);
 
-	ASSERT_MSG(ALIGN_FLOOR(buffer, 32) == (u8 *)buffer, "ERROR: User image buffer MUST BE 32bits aligned!");
-	ASSERT_MSG(ROUND_UP(width, 32) == width, "ERROR: User image scanline MUST BE 32bits aligned - pitch/stride!");
+	ASSERT_MSG(ALIGN_FLOOR(buffer, 32) == (u8 *)buffer, "ERROR: User texture buffer MUST BE 32bits aligned!");
+	ASSERT_MSG(ROUND_UP(width, 32) == width, "ERROR: User texture scanline MUST BE 32bits aligned - pitch/stride!");
 
 	if (this->Unload())
 	{
 		pPool = pool;
-		pFilename = "[dynamic sdl image]";
+		pFilename = "[dynamic sdl texture]";
 
 		fWidth = (f32)width / (f32)pScreen->GetWidth();
 		fHeight = (f32)height / (f32)pScreen->GetHeight();
@@ -244,7 +244,7 @@ BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 	return bLoaded;
 }
 
-void Image::Update(PIXEL *data)
+void Texture::Update(PIXEL *data)
 {
 	//this->UnloadTexture();
 	//pRendererDevice->TextureRequest(this, &pTextureId);
@@ -252,7 +252,7 @@ void Image::Update(PIXEL *data)
 	pRendererDevice->TextureDataUpdate(this);
 }
 
-BOOL Image::Unload()
+BOOL Texture::Unload()
 {
 	this->UnloadTexture();
 
@@ -265,22 +265,22 @@ BOOL Image::Unload()
 	return TRUE;
 }
 
-INLINE const void *Image::GetData() const
+INLINE const void *Texture::GetData() const
 {
 	return pData;
 }
 
-INLINE u32 Image::GetAtlasWidthInPixel() const
+INLINE u32 Texture::GetAtlasWidthInPixel() const
 {
 	return pSurface->w;
 }
 
-INLINE u32 Image::GetAtlasHeightInPixel() const
+INLINE u32 Texture::GetAtlasHeightInPixel() const
 {
 	return pSurface->h;
 }
 
-INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
+INLINE void Texture::PutPixel(u32 x, u32 y, PIXEL px)
 {
 	if (!pSurface)
 		return;
@@ -323,7 +323,7 @@ INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
 	}
 }
 
-INLINE PIXEL Image::GetPixel(u32 x, u32 y) const
+INLINE PIXEL Texture::GetPixel(u32 x, u32 y) const
 {
 	if (!pSurface)
 		return 0;
@@ -353,7 +353,7 @@ INLINE PIXEL Image::GetPixel(u32 x, u32 y) const
 	}
 }
 
-INLINE u8 Image::GetPixelAlpha(u32 x, u32 y) const
+INLINE u8 Texture::GetPixelAlpha(u32 x, u32 y) const
 {
 	if (!pSurface)
 		return 0;
@@ -382,12 +382,12 @@ INLINE u8 Image::GetPixelAlpha(u32 x, u32 y) const
 	return a;
 }
 
-INLINE u32 Image::GetUsedMemory() const
+INLINE u32 Texture::GetUsedMemory() const
 {
 	return IResource::GetUsedMemory() + sizeof(this) + (iHeight * iWidth * iBytesPerPixel);
 }
 
-INLINE void Image::SetFilter(eTextureFilterType type, eTextureFilter filter)
+INLINE void Texture::SetFilter(eTextureFilterType type, eTextureFilter filter)
 {
 	if (type == Seed::TextureFilterTypeMin && filter == nMinFilter)
 		return;
@@ -407,17 +407,17 @@ INLINE void Image::SetFilter(eTextureFilterType type, eTextureFilter filter)
 	}
 }
 
-INLINE u32 Image::GetBytesPerPixel() const
+INLINE u32 Texture::GetBytesPerPixel() const
 {
 	return pSurface->format->BytesPerPixel;
 }
 
-INLINE void *Image::GetTextureName() const
+INLINE void *Texture::GetTextureName() const
 {
 	return pTextureId;
 }
 
-INLINE void Image::UnloadTexture()
+INLINE void Texture::UnloadTexture()
 {
 	if (pTextureId)
 	{

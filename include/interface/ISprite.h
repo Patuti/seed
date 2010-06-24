@@ -47,7 +47,7 @@
 namespace Seed {
 
 class SpriteObject;
-class IImage;
+class ITexture;
 
 class SEED_CORE_API ISprite : public IBasicMesh
 {
@@ -71,7 +71,7 @@ class SEED_CORE_API ISprite : public IBasicMesh
 			u32		iFileId;
 			//char	*pName;
 			//char	*pImageFile;
-			//IImage	*pImage;
+			//ITexture	*pImage;
 
 			//Frame() : iTime(0), iX(0), iY(0), iWidth(0), iHeight(0), iId(0), pName(NULL), pImageFile(NULL), pImage(NULL) {}
 		};
@@ -97,7 +97,7 @@ class SEED_CORE_API ISprite : public IBasicMesh
 		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual BOOL Unload();
 
-		virtual const IImage *GetImage() const;
+		virtual ITexture *GetTexture() const;
 		virtual const void *GetData() const;
 
 		//virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
@@ -134,8 +134,6 @@ class SEED_CORE_API ISprite : public IBasicMesh
 		virtual void Reset();
 		virtual void Initialize();
 
-		virtual IImage *GetTexture() const;
-
 		// ISceneObject
 		virtual void Update(f32 delta);
 		virtual void Render();
@@ -155,7 +153,7 @@ class SEED_CORE_API ISprite : public IBasicMesh
 		const Animation	 *pAnimation;
 		const Frame		 *pAnimationFrames;
 		const Frame		 *pFrame;
-		IImage	 		 *pFrameImage;
+		ITexture		 *pFrameImage;
 
 		BOOL bInitialized;
 		BOOL bChanged;

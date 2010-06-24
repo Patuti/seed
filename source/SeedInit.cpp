@@ -38,7 +38,7 @@
 #include "SeedInit.h"
 #include "ResourceManager.h"
 #include "ResourceLoader.h"
-#include "Image.h"
+#include "Texture.h"
 #include "MemoryManager.h"
 #include "Timer.h"
 #include "Package.h"
@@ -205,7 +205,7 @@ BOOL Initialize()
 	pUpdater->Add(pRendererManager);
 	pUpdater->Add(pSceneManager);
 
-	ResourceManager::Register(Seed::ObjectImage,			ImageResourceLoader);
+	ResourceManager::Register(Seed::ObjectTexture,			TextureResourceLoader);
 	ResourceManager::Register(Seed::ObjectSprite,			SpriteResourceLoader);
 	ResourceManager::Register(Seed::ObjectFont,				FontResourceLoader);
 	ResourceManager::Register(Seed::ObjectPackage,			PackageResourceLoader);

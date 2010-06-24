@@ -43,7 +43,7 @@
 
 #include "Thread.h"
 #include "Mutex.h"
-#include "Image.h"
+#include "Texture.h"
 //#include "interface/IRenderable.h"
 #include "interface/ISceneObject.h"
 #include <oggplay/oggplay.h>
@@ -212,7 +212,7 @@ class SEED_CORE_API Theora : public ISceneObject, public Thread // public Thread
 		float		vertices[8];
 		float		coords[8];
 
-		Image		cImage;
+		Texture		cTexture;
 };
 
 } // namespace

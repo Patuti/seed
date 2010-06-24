@@ -45,7 +45,7 @@
 namespace Seed {
 
 class IRenderer;
-class IImage;
+class ITexture;
 
 class SEED_CORE_API IRendererDevice : public IModule
 {
@@ -53,12 +53,12 @@ class SEED_CORE_API IRendererDevice : public IModule
 		IRendererDevice();
 		~IRendererDevice();
 
-		virtual void TextureRequest(IImage *texture, void **texName);
-		virtual void TextureRequestAbort(IImage *texture, void **texName);
+		virtual void TextureRequest(ITexture *texture, void **texName);
+		virtual void TextureRequestAbort(ITexture *texture, void **texName);
 		virtual void TextureRequestProcess() const;
-		virtual void TextureDataUpdate(IImage *texture);
-		virtual void TextureUnload(IImage *tex);
-		virtual void TextureFilterUpdate(IImage *texture);
+		virtual void TextureDataUpdate(ITexture *texture);
+		virtual void TextureUnload(ITexture *tex);
+		virtual void TextureFilterUpdate(ITexture *texture);
 
 		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
 		virtual void UploadData(void *userData);

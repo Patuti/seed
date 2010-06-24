@@ -61,7 +61,7 @@
 
 namespace Seed {
 
-class IImage;
+class ITexture;
 
 namespace DirectX {
 
@@ -77,12 +77,12 @@ class SEED_CORE_API D3D8RendererDevice : public IRendererDevice
 		virtual void End() const;
 
 		// IRendererDevice
-		virtual void TextureFilterUpdate(IImage *texture);
-		virtual void TextureUnload(IImage *texture);
-		virtual void TextureRequest(IImage *texture, void **texName);
-		virtual void TextureRequestAbort(IImage *texture, void **texName);
+		virtual void TextureFilterUpdate(ITexture *texture);
+		virtual void TextureUnload(ITexture *texture);
+		virtual void TextureRequest(ITexture *texture, void **texName);
+		virtual void TextureRequestAbort(ITexture *texture, void **texName);
 		virtual void TextureRequestProcess() const;
-		virtual void TextureDataUpdate(IImage *texture);
+		virtual void TextureDataUpdate(ITexture *texture);
 
 		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
 		virtual void UploadData(void *userData);
@@ -105,7 +105,7 @@ class SEED_CORE_API D3D8RendererDevice : public IRendererDevice
 		virtual const char *GetObjectName() const;
 
 	protected:
-		mutable Array<IImage *, 128> arTexture;
+		mutable Array<ITexture *, 128> arTexture;
 		mutable Array<void **, 128> arTextureName;
 
 	private:

@@ -42,7 +42,7 @@
 #include "SeedInit.h"
 #include "MemoryManager.h"
 #include "Screen.h"
-#include "Image.h"
+#include "Texture.h"
 #include "System.h"
 #include "RendererManager.h"
 #include "api/directx/DirectXVersion.h"
@@ -339,13 +339,13 @@ INLINE void D3D8RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL colo
 	}
 }
 
-INLINE void D3D8RendererDevice::TextureRequestAbort(IImage *texture, void **texName)
+INLINE void D3D8RendererDevice::TextureRequestAbort(ITexture *texture, void **texName)
 {
 	arTexture.Remove(texture);
 	arTextureName.Remove(texName);
 }
 
-INLINE void D3D8RendererDevice::TextureRequest(IImage *texture, void **texName)
+INLINE void D3D8RendererDevice::TextureRequest(ITexture *texture, void **texName)
 {
 	arTexture.Add(texture);
 	arTextureName.Add(texName);
@@ -355,7 +355,7 @@ INLINE void D3D8RendererDevice::TextureRequestProcess() const
 {
 	for (u32 i = 0; i < arTexture.Size(); i++)
 	{
-		IImage *texture = arTexture[i];
+		ITexture *texture = arTexture[i];
 		IDirect3DTexture8 **tex = (IDirect3DTexture8 **)arTextureName[i];
 
 		File *file = texture->GetFile();
@@ -392,12 +392,12 @@ INLINE void D3D8RendererDevice::TextureRequestProcess() const
 	arTextureName.Truncate();
 }
 
-INLINE void D3D8RendererDevice::TextureFilterUpdate(IImage *texture)
+INLINE void D3D8RendererDevice::TextureFilterUpdate(ITexture *texture)
 {
 	UNUSED(texture);
 }
 
-INLINE void D3D8RendererDevice::TextureUnload(IImage *texture)
+INLINE void D3D8RendererDevice::TextureUnload(ITexture *texture)
 {
 	void *texId = texture->GetTextureName();
 	if (texId)
@@ -407,7 +407,7 @@ INLINE void D3D8RendererDevice::TextureUnload(IImage *texture)
 	}
 }
 
-INLINE void D3D8RendererDevice::TextureDataUpdate(IImage *texture)
+INLINE void D3D8RendererDevice::TextureDataUpdate(ITexture *texture)
 {
 	for (u32 i = 0; i < arTexture.Size(); i++)
 	{
@@ -435,7 +435,7 @@ INLINE void D3D8RendererDevice::UploadData(void *userData)
 
 	this->SetBlendingOperation(packet->nBlendMode, packet->iColor);
 
-	IImage *texture = packet->pTexture;
+	ITexture *texture = packet->pTexture;
 	IDirect3DTexture8 *t = static_cast<IDirect3DTexture8 *>(texture->GetTextureName());
 
 	mDevice->SetTexture(0, t);
@@ -565,10 +565,10 @@ INLINE void D3D8RendererDevice::Update()
 				{
 					Info(TAG "WARNING: DirectX Device Reset.");
 
-					pResourceManager->Unload(Seed::ObjectImage);
+					pResourceManager->Unload(Seed::ObjectTexture);
 					this->Shutdown();
 					this->Initialize();
-					pResourceManager->Reload(Seed::ObjectImage);
+					pResourceManager->Reload(Seed::ObjectTexture);
 
 					pRendererManager->Enable();
 					bLost = FALSE;

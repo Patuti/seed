@@ -29,40 +29,39 @@
  **
  *****************************************************************************/
 
-/*! \file QtImage.h
+/*! \file IphTexture.h
 	\author	Danny Angelo Carminati Grein
-	\brief Image QT Implementation
+	\brief Texture Iphone Implementation
 */
 
-#ifndef __QT_IMAGE_H__
-#define __QT_IMAGE_H__
+#ifndef __IPH_TEXTURE_H__
+#define __IPH_TEXTURE_H__
 
-#if defined(_QT_)
+#if defined(_IPHONE_)
 
 #include "Defines.h"
-#include "File.h"
-#include "interface/IImage.h"
 #include "SeedInit.h"
+#include "File.h"
+#include "interface/ITexture.h"
+#include <OpenGLES/ES1/gl.h>
 
-#include <QImage>
+namespace Seed { namespace iPhone {
 
-namespace Seed { namespace QT {
+IResource *TextureResourceLoader(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
 
-IResource *ImageResourceLoader(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
-
-class Image : public IImage
+class Texture : public ITexture
 {
-	friend IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
+	friend IResource *TextureResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 	friend class Sprite;
 
 	public:
-		Image();
-		virtual ~Image();
+		Texture();
+		virtual ~Texture();
 
-		// IImage
-		virtual BOOL Load(const char *filename, ResourceManager *res, IMemoryPool *pool);
-		virtual BOOL Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
-		virtual BOOL Unload();
+		// ITexture
+		virtual void Load(const char *filename, IMemoryPool *pool = pDefaultPool);
+		virtual void Load(u16 width, u16 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
+		virtual void Unload();
 
 		virtual const void *GetData() const;
 		virtual void PutPixel(u32 x, u32 y, PIXEL px);
@@ -74,32 +73,55 @@ class Image : public IImage
 		virtual u32 GetWidthInPixel() const;
 		virtual u32 GetHeightInPixel() const;
 
-		virtual BOOL Reset();
+		virtual void Reset();
 
 		// IResource
 		virtual u32 GetUsedMemory() const;
-		int LoadTexture();
 
 	protected:
+		int LoadTexture();
 		int GetTexture();
 		void UnloadTexture();
 
 	private:
-		SEED_DISABLE_COPY(Image);
+		SEED_DISABLE_COPY(Texture);
+
+		void LoadPVRTC(const char *file);
+		void LoadPNG(const char *file);
 
 	private:
-		IMemoryPool *pPool;
-		QImage image;
+		enum eTextureFormat
+		{
+			kTexture2DPixelFormat_Automatic = 0,
+			kTexture2DPixelFormat_RGBA8888,
+			kTexture2DPixelFormat_RGB565,
+			kTexture2DPixelFormat_A8,
+			kTexture2DPixelFormat_RGBA2,
+		};
 
-		u32 iTextureId;
+	private:
+		const void	*pImage;
+		File		stFile;
+
+		GLuint iTextureId;
+
+		f32 fWidth;
+		f32 fHeight;
 
 		s32 iHalfWidth;
 		s32 iHalfHeight;
+
+		u16 iWidth;
+		u16 iHeight;
+
+		BOOL bCompressed;
+
+		eTextureFormat pixelFormat;
 };
 
 }} // namespace
 
-#else // _QT_
-	#error "Include 'Image.h' instead 'platform/qt/QtImage.h' directly."
-#endif // _QT_
-#endif // __QT_IMAGE__
+#else // _IPHONE_
+	#error "Include 'Texture.h' instead 'platform/iphone/IphTexture.h' directly."
+#endif // _IPHONE_
+#endif // __IPH_TEXTURE_H__

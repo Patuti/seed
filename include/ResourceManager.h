@@ -62,7 +62,7 @@ class SEED_CORE_API ResourceManager
 		~ResourceManager();
 
 		void Reset();
-		IResource *Get(const char *filename, Seed::eObjectType resourceType = Seed::ObjectImage, IMemoryPool *pool = pDefaultPool);
+		IResource *Get(const char *filename, Seed::eObjectType resourceType = Seed::ObjectTexture, IMemoryPool *pool = pDefaultPool);
 		void GarbageCollect();
 
 		u32 GetTotalUsedMemory();

@@ -29,32 +29,32 @@
  **
  *****************************************************************************/
 
-/*! \file Image.h
+/*! \file Texture.h
 	\author	Danny Angelo Carminati Grein
 	\brief Include selector
 */
 
-#ifndef __IMAGE_H__
-#define __IMAGE_H__
+#ifndef __TEXTURE_H__
+#define __TEXTURE_H__
 
 #if defined(_WII_)
-	#include "platform/wii/WiiImage.h"
+	#include "platform/wii/WiiTexture.h"
 	using namespace Seed::WII;
 #endif // _WII_
 
 #if defined(_SDL_)
-	#include "platform/sdl/SdlImage.h"
+	#include "platform/sdl/SdlTexture.h"
 	using namespace Seed::SDL;
 #endif // _SDL_
 
 #if defined(_IPHONE_)
-	#include "platform/iphone/IphImage.h"
+	#include "platform/iphone/IphTexture.h"
 	using namespace Seed::iPhone;
 #endif // _IPHONE_
 
 #if defined(_QT_)
-	#include "platform/qt/QtImage.h"
+	#include "platform/qt/QtTexture.h"
 	using namespace Seed::QT;
 #endif // _QT_
 
-#endif // __IMAGE_H__
+#endif // __TEXTURE_H__

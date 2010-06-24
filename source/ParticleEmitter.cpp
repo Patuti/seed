@@ -37,7 +37,7 @@
 #include "ParticleEmitter.h"
 #include "Rand.h"
 #include "Number.h"
-#include "Image.h"
+#include "Texture.h"
 
 namespace Seed {
 
@@ -332,7 +332,7 @@ INLINE void ParticleEmitter::Update(f32 deltaTime)
 		}
 	}
 
-	IImage *img = arParticles[0].GetTexture();
+	ITexture *img = arParticles[0].GetTexture();
 	if (img)
 	{
 		img->SetFilter(TextureFilterTypeMag, nMagFilter);

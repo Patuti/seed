@@ -47,19 +47,19 @@ IRendererDevice::~IRendererDevice()
 {
 }
 
-INLINE void IRendererDevice::TextureFilterUpdate(IImage *tex)
+INLINE void IRendererDevice::TextureFilterUpdate(ITexture *tex)
 {
 	UNUSED(tex);
 	SEED_ABSTRACT_METHOD;
 }
 
-INLINE void IRendererDevice::TextureUnload(IImage *tex)
+INLINE void IRendererDevice::TextureUnload(ITexture *tex)
 {
 	UNUSED(tex);
 	SEED_ABSTRACT_METHOD;
 }
 
-INLINE void IRendererDevice::TextureDataUpdate(IImage *tex)
+INLINE void IRendererDevice::TextureDataUpdate(ITexture *tex)
 {
 	UNUSED(tex);
 	SEED_ABSTRACT_METHOD;
@@ -100,14 +100,14 @@ INLINE BOOL IRendererDevice::IsRequired() const
 	return TRUE;
 }
 
-INLINE void IRendererDevice::TextureRequestAbort(IImage *texture, void **texName)
+INLINE void IRendererDevice::TextureRequestAbort(ITexture *texture, void **texName)
 {
 	UNUSED(texture);
 	UNUSED(texName);
 	SEED_ABSTRACT_METHOD;
 }
 
-INLINE void IRendererDevice::TextureRequest(IImage *texture, void **texName)
+INLINE void IRendererDevice::TextureRequest(ITexture *texture, void **texName)
 {
 	UNUSED(texture);
 	UNUSED(texName);

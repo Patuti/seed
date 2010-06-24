@@ -170,11 +170,6 @@ INLINE void ISprite::Initialize()
 	bInitialized = TRUE;
 }
 
-INLINE const IImage *ISprite::GetImage() const
-{
-	return pFrameImage; //pFrame->pImage;
-}
-
 INLINE void ISprite::ReconfigureAnimation()
 {
 	iFrames = pAnimation->iFrames;
@@ -185,7 +180,7 @@ INLINE void ISprite::ReconfigureAnimation()
 	pFrame = &pAnimationFrames[iCurrentFrame];
 
 	sRelease(pFrameImage);
-	pFrameImage = static_cast<IImage *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectImage, pPool));
+	pFrameImage = static_cast<ITexture *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectTexture, pPool));
 
 	this->ReconfigureFrame();
 
@@ -471,7 +466,7 @@ void ISprite::Update(f32 delta)
 			if (oldId != pFrame->iFileId)
 			{
 				sRelease(pFrameImage);
-				pFrameImage = static_cast<IImage *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectImage, pPool));
+				pFrameImage = static_cast<ITexture *>(pRes->Get(_F(pFrame->iFileId), Seed::ObjectTexture, pPool));
 			}
 
 			this->ReconfigureFrame();
@@ -566,7 +561,7 @@ INLINE const void *ISprite::GetData() const
 	return pFrameImage->GetData();
 }
 
-INLINE IImage *ISprite::GetTexture() const
+INLINE ITexture *ISprite::GetTexture() const
 {
 	return pFrameImage;
 }

@@ -49,7 +49,7 @@ namespace Seed {
 
 class ISceneObject;
 class ISceneNode;
-class IImage;
+class ITexture;
 
 /// Renderer Interface
 /**

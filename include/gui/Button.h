@@ -194,7 +194,7 @@ class SEED_CORE_API Button : public IWidget, public IResource
 		virtual f32 GetSpriteScaleY() const;
 
 		virtual const char *GetSpriteFilename() const;
-		virtual IImage *GetSpriteTexture() const;
+		virtual ITexture *GetSpriteTexture() const;
 
 		virtual void SetSpriteAutoUpdate(BOOL b);
 		virtual BOOL IsSpriteAutoUpdate() const;

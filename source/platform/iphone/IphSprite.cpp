@@ -82,12 +82,12 @@ Sprite::~Sprite()
 
 INLINE u32 Sprite::GetWidthInPixel() const
 {
-	return static_cast<Image *>(pFrame->pImage)->GetWidthInPixel();
+	return static_cast<Texture *>(pFrame->pImage)->GetWidthInPixel();
 }
 
 INLINE u32 Sprite::GetHeightInPixel() const
 {
-	return static_cast<Image *>(pFrame->pImage)->GetHeightInPixel();
+	return static_cast<Texture *>(pFrame->pImage)->GetHeightInPixel();
 }
 
 void Sprite::Update(f32 delta)
@@ -128,7 +128,7 @@ void Sprite::Update(f32 delta)
 
 void Sprite::Render()
 {
-	Image *image = static_cast<Image *>(pFrame->pImage);
+	Texture *image = static_cast<Texture *>(pFrame->pImage);
 
 	GLuint texId = 0;
 	if (!image)

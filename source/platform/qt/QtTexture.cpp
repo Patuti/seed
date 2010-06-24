@@ -29,35 +29,35 @@
  **
  *****************************************************************************/
 
-/*! \file QtImage.cpp
+/*! \file QtTexture.cpp
 	\author	Danny Angelo Carminati Grein
-	\brief Image QT Implementation
+	\brief Texture QT Implementation
 */
 
 #if defined(_QT_)
 
-#include "Image.h"
+#include "Texture.h"
 #include "FileSystem.h"
 #include "MemoryManager.h"
 #include "ResourceManager.h"
 #include "Log.h"
 #include "Screen.h"
 
-#define TAG "[Image] "
+#define TAG "[Texture] "
 
 namespace Seed { namespace QT {
 
-IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
+IResource *TextureResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
 	UNUSED(res);
 
-	Image *image = new Image();
+	Texture *image = new Texture();
 	image->Load(filename, res, pool);
 
 	return image;
 }
 
-Image::Image()
+Texture::Texture()
 	: pPool(NULL)
 	, iTextureId(0)
 	, iHalfWidth(0)
@@ -65,17 +65,17 @@ Image::Image()
 {
 }
 
-Image::~Image()
+Texture::~Texture()
 {
 	this->Unload();
 }
 
-INLINE BOOL Image::Unload()
+INLINE BOOL Texture::Unload()
 {
 	return this->Reset();
 }
 
-BOOL Image::Reset()
+BOOL Texture::Reset()
 {
 	this->UnloadTexture();
 
@@ -92,7 +92,7 @@ BOOL Image::Reset()
 	return TRUE;
 }
 
-BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
+BOOL Texture::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
 	UNUSED(res);
 	UNUSED(pool);
@@ -124,13 +124,13 @@ BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 	return TRUE;
 }
 
-BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
+BOOL Texture::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 {
 	UNUSED(pool);
 	ASSERT_NULL(pool);
 
-	ASSERT_MSG((void *)ROUND_UP(buffer, 32) == (void *)buffer, "ERROR: User image buffer MUST BE 32bits aligned!");
-	ASSERT_MSG(ROUND_UP(width, 32) == width, "ERROR: User image scanline MUST BE 32bits aligned - pitch/stride!");
+	ASSERT_MSG((void *)ROUND_UP(buffer, 32) == (void *)buffer, "ERROR: User texture buffer MUST BE 32bits aligned!");
+	ASSERT_MSG(ROUND_UP(width, 32) == width, "ERROR: User texture scanline MUST BE 32bits aligned - pitch/stride!");
 
 	if (this->Unload())
 	{
@@ -154,12 +154,12 @@ BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 	return TRUE;
 }
 
-INLINE const void *Image::GetData() const
+INLINE const void *Texture::GetData() const
 {
 	return image.bits();
 }
 
-INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
+INLINE void Texture::PutPixel(u32 x, u32 y, PIXEL px)
 {
 	u8 mR = PIXEL_GET_R(px);
 	u8 mG = PIXEL_GET_G(px);
@@ -169,24 +169,24 @@ INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
 	image.setPixel(x, y, qRgba(mR, mG, mB, mA));
 }
 
-INLINE PIXEL Image::GetPixel(u32 x, u32 y) const
+INLINE PIXEL Texture::GetPixel(u32 x, u32 y) const
 {
 	QRgb px = image.pixel(x, y);
 	return PIXEL_COLOR(qRed(px), qGreen(px), qBlue(px), qAlpha(px));
 }
 
-INLINE u8 Image::GetPixelAlpha(u32 x, u32 y) const
+INLINE u8 Texture::GetPixelAlpha(u32 x, u32 y) const
 {
 	QRgb px = image.pixel(x, y);
 	return (u8)(qAlpha(px));
 }
 
-INLINE u32 Image::GetUsedMemory() const
+INLINE u32 Texture::GetUsedMemory() const
 {
 	return image.byteCount() + sizeof(this);
 }
 
-INLINE int Image::LoadTexture()
+INLINE int Texture::LoadTexture()
 {
 	bool a = !image.isNull();
 	bool b = (iTextureId == 0);
@@ -221,12 +221,12 @@ INLINE int Image::LoadTexture()
 	return this->iTextureId;
 }
 
-INLINE int Image::GetTexture()
+INLINE int Texture::GetTexture()
 {
 	return this->iTextureId;
 }
 
-INLINE void Image::UnloadTexture()
+INLINE void Texture::UnloadTexture()
 {
 	if (iTextureId)
 		glDeleteTextures(1, &iTextureId);

@@ -1256,7 +1256,7 @@ INLINE const char* Button::GetSpriteFilename() const
 	return this->pstrSpriteFilename;
 }
 
-INLINE IImage *Button::GetSpriteTexture() const
+INLINE ITexture *Button::GetSpriteTexture() const
 {
 	return this->cSprite.GetTexture();
 }

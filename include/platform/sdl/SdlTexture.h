@@ -29,34 +29,34 @@
  **
  *****************************************************************************/
 
-/*! \file SdlImage.h
+/*! \file SdlTexture.h
 	\author	Danny Angelo Carminati Grein
-	\brief Image SDL Implementation
+	\brief Texture SDL Implementation
 */
 
-#ifndef __SDL_IMAGE_H__
-#define __SDL_IMAGE_H__
+#ifndef __SDL_TEXTURE_H__
+#define __SDL_TEXTURE_H__
 
 #if defined(_SDL_)
 
 #include "Defines.h"
 #include "File.h"
-#include "interface/IImage.h"
+#include "interface/ITexture.h"
 #include "SeedInit.h"
 
 namespace Seed { namespace SDL {
 
-IResource *ImageResourceLoader(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
+IResource *TextureResourceLoader(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 
-class SEED_CORE_API Image : public IImage
+class SEED_CORE_API Texture : public ITexture
 {
-	friend IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
+	friend IResource *TextureResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 
 	public:
-		Image();
-		virtual ~Image();
+		Texture();
+		virtual ~Texture();
 
-		// IImage
+		// ITexture
 		virtual const void *GetData() const;
 		virtual void PutPixel(u32 x, u32 y, PIXEL px);
 		virtual PIXEL GetPixel(u32 x, u32 y) const;
@@ -83,7 +83,7 @@ class SEED_CORE_API Image : public IImage
 		void UnloadTexture();
 
 	private:
-		SEED_DISABLE_COPY(Image);
+		SEED_DISABLE_COPY(Texture);
 
 	private:
 		SDL_Surface *pSurface;
@@ -97,6 +97,6 @@ class SEED_CORE_API Image : public IImage
 }} // namespace
 
 #else // _SDL_
-	#error "Include 'Image.h' instead 'platform/sdl/SdlImage.h' directly."
+	#error "Include 'Texture.h' instead 'platform/sdl/SdlTexture.h' directly."
 #endif // _SDL_
-#endif // __SDL_IMAGE__
+#endif // __SDL_TEXTURE__

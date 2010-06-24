@@ -41,7 +41,7 @@
 #include "Log.h"
 #include "MemoryManager.h"
 #include "Screen.h"
-#include "Image.h"
+#include "Texture.h"
 
 #if defined(_SDL_)
 #include <SDL/SDL_opengl.h>
@@ -327,13 +327,13 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 	}
 }
 
-INLINE void OGL14RendererDevice::TextureRequestAbort(IImage *texture, void **texName)
+INLINE void OGL14RendererDevice::TextureRequestAbort(ITexture *texture, void **texName)
 {
 	arTexture.Remove(texture);
 	arTextureName.Remove(texName);
 }
 
-INLINE void OGL14RendererDevice::TextureRequest(IImage *texture, void **texName)
+INLINE void OGL14RendererDevice::TextureRequest(ITexture *texture, void **texName)
 {
 	arTexture.Add(texture);
 	arTextureName.Add(texName);
@@ -344,7 +344,7 @@ INLINE void OGL14RendererDevice::TextureRequestProcess() const
 	for (u32 i = 0; i < arTexture.Size(); i++)
 	{
 		GLuint **texId = (GLuint **)arTextureName[i];
-		IImage *texture = arTexture[i];
+		ITexture *texture = arTexture[i];
 		if (!(*texId))
 		{
 			GLint tex = 0;
@@ -408,7 +408,7 @@ INLINE void OGL14RendererDevice::TextureRequestProcess() const
 	arTextureName.Truncate();
 }
 
-INLINE void OGL14RendererDevice::TextureFilterUpdate(IImage *texture)
+INLINE void OGL14RendererDevice::TextureFilterUpdate(ITexture *texture)
 {
 	void *pTextureId = texture->GetTextureName();
 	if (pTextureId)
@@ -436,7 +436,7 @@ INLINE void OGL14RendererDevice::TextureFilterUpdate(IImage *texture)
 	}
 }
 
-INLINE void OGL14RendererDevice::TextureUnload(IImage *texture)
+INLINE void OGL14RendererDevice::TextureUnload(ITexture *texture)
 {
 	void *texId = texture->GetTextureName();
 	if (texId)
@@ -447,7 +447,7 @@ INLINE void OGL14RendererDevice::TextureUnload(IImage *texture)
 	}
 }
 
-INLINE void OGL14RendererDevice::TextureDataUpdate(IImage *texture)
+INLINE void OGL14RendererDevice::TextureDataUpdate(ITexture *texture)
 {
 	void *texId = texture->GetTextureName();
 	if (texId)

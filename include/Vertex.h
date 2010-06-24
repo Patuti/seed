@@ -62,7 +62,7 @@ struct RendererPacket
 	eMeshType				nMeshType;
 	eBlendMode				nBlendMode;
 	PIXEL					iColor;
-	IImage					*pTexture;
+	ITexture				*pTexture;
 	void					*pVertexData;
 	u32						iSize;
 

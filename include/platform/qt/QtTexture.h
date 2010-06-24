@@ -29,40 +29,40 @@
  **
  *****************************************************************************/
 
-/*! \file WiiImage.h
+/*! \file QtTexture.h
 	\author	Danny Angelo Carminati Grein
-	\brief Image implementation
+	\brief Texture QT Implementation
 */
 
-#ifndef __WII_IMAGE_H__
-#define __WII_IMAGE_H__
+#ifndef __QT_TEXTURE_H__
+#define __QT_TEXTURE_H__
+
+#if defined(_QT_)
 
 #include "Defines.h"
-
-#if defined(_WII_)
-
-#include "interface/IImage.h"
-#include "ResourceManager.h"
-#include "MemoryManager.h"
-#include "Screen.h"
 #include "File.h"
+#include "interface/ITexture.h"
 #include "SeedInit.h"
 
-namespace Seed { namespace WII {
+#include <QImage>
 
-IResource *ImageResourceLoader(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+namespace Seed { namespace QT {
 
-class Image : public IImage
+IResource *TextureResourceLoader(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
+
+class Texture : public ITexture
 {
-	friend IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool = pDefaultPool);
+	friend IResource *TextureResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool);
 	friend class Sprite;
 
 	public:
-		Image();
-		virtual ~Image();
+		Texture();
+		virtual ~Texture();
 
-		// IImage
-		//virtual void Load(u16 width, u16 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
+		// ITexture
+		virtual BOOL Load(const char *filename, ResourceManager *res, IMemoryPool *pool);
+		virtual BOOL Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Unload();
 
 		virtual const void *GetData() const;
 		virtual void PutPixel(u32 x, u32 y, PIXEL px);
@@ -74,38 +74,32 @@ class Image : public IImage
 		virtual u32 GetWidthInPixel() const;
 		virtual u32 GetHeightInPixel() const;
 
-		virtual void Reset();
+		virtual BOOL Reset();
 
 		// IResource
-		virtual BOOL Load(const char *filename, ResourceManager *res = &glResourceManager, IMemoryPool *pool = pDefaultPool);
-		virtual BOOL Unload();
 		virtual u32 GetUsedMemory() const;
+		int LoadTexture();
 
 	protected:
-		File 	stFile;
+		int GetTexture();
+		void UnloadTexture();
 
 	private:
-		SEED_DISABLE_COPY(Image);
-		void LoadPalette(const char *name);
+		SEED_DISABLE_COPY(Texture);
 
 	private:
-		WiiTexObj pImage;
+		IMemoryPool *pPool;
+		QImage image;
 
-		u8 	*pImageBuffer;
-
-		f32 fWidth;
-		f32 fHeight;
+		u32 iTextureId;
 
 		s32 iHalfWidth;
 		s32 iHalfHeight;
-
-		u16 iWidth;
-		u16 iHeight;
 };
 
 }} // namespace
 
-#else // _WII_
-	#error "Include 'Image.h' instead 'platform/wii/WiiImage.h' directly."
-#endif // _WII_
-#endif // __WII_IMAGE_H__
+#else // _QT_
+	#error "Include 'Texture.h' instead 'platform/qt/QtTexture.h' directly."
+#endif // _QT_
+#endif // __QT_TEXTURE__

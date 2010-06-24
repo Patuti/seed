@@ -43,7 +43,7 @@ namespace Seed {
 enum eObjectType
 {
 	// Assets
-	ObjectImage = 0,
+	ObjectTexture = 0,
 	ObjectSprite,
 	ObjectText,
 	ObjectFont,

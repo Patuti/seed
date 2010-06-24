@@ -29,14 +29,14 @@
  **
  *****************************************************************************/
 
-/*! \file IphImage.cpp
+/*! \file IphTexture.cpp
 	\author	Danny Angelo Carminati Grein
-	\brief Image Iphone Implementation
+	\brief Texture Iphone Implementation
 */
 
 #if defined(_IPHONE_)
 
-#include "Image.h"
+#include "Texture.h"
 #include "FileSystem.h"
 #include "MemoryManager.h"
 #include "ResourceManager.h"
@@ -51,22 +51,22 @@
 
 #include <math.h>
 
-#define TAG	"[Image] "
+#define TAG	"[Texture] "
 #define MAX_TEXTURE_SIZE	1024
 
 namespace Seed { namespace iPhone {
 
-IResource *ImageResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
+IResource *TextureResourceLoader(const char *filename, ResourceManager *res, IMemoryPool *pool)
 {
 	UNUSED(res);
 
-	Image *image = New(Image());
+	Texture *image = New(Texture());
 	image->Load(filename, pool);
 
 	return image;
 }
 
-Image::Image()
+Texture::Texture()
 	: pImage(NULL)
 	, stFile()
 	, fWidth(0.0f)
@@ -81,12 +81,12 @@ Image::Image()
 {
 }
 
-Image::~Image()
+Texture::~Texture()
 {
 	this->Unload();
 }
 
-INLINE void Image::Load(const char *filename, IMemoryPool *pool)
+INLINE void Texture::Load(const char *filename, IMemoryPool *pool)
 {
 	ASSERT_NULL(filename);
 	ASSERT_NULL(pool);
@@ -99,7 +99,7 @@ INLINE void Image::Load(const char *filename, IMemoryPool *pool)
 #endif // ENABLE_NATIVE_PVRTC_FORMAT
 }
 
-INLINE void Image::Load(u16 width, u16 height, PIXEL *buffer, IMemoryPool *pool)
+INLINE void Texture::Load(u16 width, u16 height, PIXEL *buffer, IMemoryPool *pool)
 {
 	ASSERT(width > 0);
 	ASSERT(height > 0);
@@ -113,12 +113,12 @@ INLINE void Image::Load(u16 width, u16 height, PIXEL *buffer, IMemoryPool *pool)
 	this->pImage = buffer;
 }
 
-INLINE void Image::Unload()
+INLINE void Texture::Unload()
 {
 	this->Reset();
 }
 
-INLINE void Image::Reset()
+INLINE void Texture::Reset()
 {
 	this->pImage = NULL;
 	this->pPool = NULL;
@@ -134,12 +134,12 @@ INLINE void Image::Reset()
 	this->bCompressed = FALSE;
 }
 
-INLINE const void *Image::GetData() const
+INLINE const void *Texture::GetData() const
 {
 	return pImage;
 }
 
-INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
+INLINE void Texture::PutPixel(u32 x, u32 y, PIXEL px)
 {
 #if !defined(ENABLE_NATIVE_PVRTC_FORMAT)
 	if (this->pImage || pixelFormat != kTexture2DPixelFormat_RGB565 || pixelFormat != kTexture2DPixelFormat_A8)
@@ -157,7 +157,7 @@ INLINE void Image::PutPixel(u32 x, u32 y, PIXEL px)
 #endif // ENABLE_NATIVE_PVRTC_FORMAT
 }
 
-INLINE PIXEL Image::GetPixel(u32 x, u32 y) const
+INLINE PIXEL Texture::GetPixel(u32 x, u32 y) const
 {
 #if !defined(ENABLE_NATIVE_PVRTC_FORMAT)
 	if (!this->pImage)
@@ -178,7 +178,7 @@ INLINE PIXEL Image::GetPixel(u32 x, u32 y) const
 #endif // ENABLE_NATIVE_PVRTC_FORMAT
 }
 
-INLINE u8 Image::GetPixelAlpha(u32 x, u32 y) const
+INLINE u8 Texture::GetPixelAlpha(u32 x, u32 y) const
 {
 #if !defined(ENABLE_NATIVE_PVRTC_FORMAT)
 	if (!this->pImage)
@@ -198,7 +198,7 @@ INLINE u8 Image::GetPixelAlpha(u32 x, u32 y) const
 #endif // ENABLE_NATIVE_PVRTC_FORMAT
 }
 
-INLINE u32 Image::GetUsedMemory() const
+INLINE u32 Texture::GetUsedMemory() const
 {
 	u32 size = 4;
 
@@ -208,27 +208,27 @@ INLINE u32 Image::GetUsedMemory() const
 	return size * iWidth * iHeight;
 }
 
-INLINE f32 Image::GetWidth() const
+INLINE f32 Texture::GetWidth() const
 {
 	return fWidth;
 }
 
-INLINE f32 Image::GetHeight() const
+INLINE f32 Texture::GetHeight() const
 {
 	return fHeight;
 }
 
-INLINE u32 Image::GetWidthInPixel() const
+INLINE u32 Texture::GetWidthInPixel() const
 {
 	return this->iWidth;
 }
 
-INLINE u32 Image::GetHeightInPixel() const
+INLINE u32 Texture::GetHeightInPixel() const
 {
 	return this->iHeight;
 }
 
-INLINE int Image::LoadTexture()
+INLINE int Texture::LoadTexture()
 {
 	if (pImage && !iTextureId)
 	{
@@ -278,12 +278,12 @@ INLINE int Image::LoadTexture()
 	return this->iTextureId;
 }
 
-INLINE int Image::GetTexture()
+INLINE int Texture::GetTexture()
 {
 	return this->iTextureId;
 }
 
-INLINE void Image::UnloadTexture()
+INLINE void Texture::UnloadTexture()
 {
 	if (iTextureId)
 		glDeleteTextures(1, &iTextureId);
@@ -292,7 +292,7 @@ INLINE void Image::UnloadTexture()
 }
 
 // FIXME: 2009-02-15 | Use Width x Height from image. | Danny Angelo Carminati Grein
-void Image::LoadPVRTC(const char *file)
+void Texture::LoadPVRTC(const char *file)
 {
 	this->iHeight = 1024;
 	this->iWidth = 1024;
@@ -311,7 +311,7 @@ void Image::LoadPVRTC(const char *file)
 	this->fHeight = 1024 / pScreen->GetHeight();
 }
 
-void Image::LoadPNG(const char *file)
+void Texture::LoadPNG(const char *file)
 {
 	NSUInteger width, height, i;
 	CGContextRef context = nil;

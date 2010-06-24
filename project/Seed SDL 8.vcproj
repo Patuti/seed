@@ -505,10 +505,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\source\platform\iphone\IphImage.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\source\platform\iphone\IphInput.cpp"
 						>
 					</File>
@@ -565,6 +561,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\source\platform\iphone\IphTexture.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\source\platform\iphone\IphThread.cpp"
 						>
 					</File>
@@ -576,10 +576,6 @@
 				<Filter
 					Name="sdl"
 					>
-					<File
-						RelativePath="..\source\platform\sdl\SdlImage.cpp"
-						>
-					</File>
 					<File
 						RelativePath="..\source\platform\sdl\SdlInput.cpp"
 						>
@@ -594,6 +590,10 @@
 					</File>
 					<File
 						RelativePath="..\source\platform\sdl\SdlSystem.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\source\platform\sdl\SdlTexture.cpp"
 						>
 					</File>
 					<File
@@ -645,10 +645,6 @@
 					Name="qt"
 					>
 					<File
-						RelativePath="..\source\platform\qt\QtImage.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\source\platform\qt\QtInput.cpp"
 						>
 					</File>
@@ -670,6 +666,10 @@
 					</File>
 					<File
 						RelativePath="..\source\platform\qt\QtSystem.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\source\platform\qt\QtTexture.cpp"
 						>
 					</File>
 					<File
@@ -743,10 +743,6 @@
 				</File>
 				<File
 					RelativePath="..\source\interface\IGameApp.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\source\interface\IImage.cpp"
 					>
 				</File>
 				<File
@@ -835,6 +831,10 @@
 				</File>
 				<File
 					RelativePath="..\source\interface\ISystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\interface\ITexture.cpp"
 					>
 				</File>
 				<File
@@ -1063,10 +1063,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\include\Image.h"
-				>
-			</File>
-			<File
 				RelativePath="..\include\Input.h"
 				>
 			</File>
@@ -1255,6 +1251,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\include\Texture.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\Thread.h"
 				>
 			</File>
@@ -1426,10 +1426,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\include\interface\IImage.h"
-					>
-				</File>
-				<File
 					RelativePath="..\include\interface\IInput.h"
 					>
 				</File>
@@ -1518,6 +1514,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\include\interface\ITexture.h"
+					>
+				</File>
+				<File
 					RelativePath="..\include\interface\IThread.h"
 					>
 				</File>
@@ -1554,10 +1554,6 @@
 					</File>
 					<File
 						RelativePath="..\include\platform\iphone\IphFileSystem.h"
-						>
-					</File>
-					<File
-						RelativePath="..\include\platform\iphone\IphImage.h"
 						>
 					</File>
 					<File
@@ -1617,6 +1613,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\include\platform\iphone\IphTexture.h"
+						>
+					</File>
+					<File
 						RelativePath="..\include\platform\iphone\IphThread.h"
 						>
 					</File>
@@ -1633,10 +1633,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\include\platform\sdl\SdlImage.h"
-						>
-					</File>
-					<File
 						RelativePath="..\include\platform\sdl\SdlInput.h"
 						>
 					</File>
@@ -1650,6 +1646,10 @@
 					</File>
 					<File
 						RelativePath="..\include\platform\sdl\SdlSystem.h"
+						>
+					</File>
+					<File
+						RelativePath="..\include\platform\sdl\SdlTexture.h"
 						>
 					</File>
 					<File
@@ -1709,10 +1709,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\include\platform\wii\WiiImage.h"
-						>
-					</File>
-					<File
 						RelativePath="..\include\platform\wii\WiiInput.h"
 						>
 					</File>
@@ -1765,6 +1761,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\include\platform\wii\WiiTexture.h"
+						>
+					</File>
+					<File
 						RelativePath="..\include\platform\wii\WiiThread.h"
 						>
 					</File>
@@ -1782,10 +1782,6 @@
 					>
 					<File
 						RelativePath="..\include\platform\qt\QtDefines.h"
-						>
-					</File>
-					<File
-						RelativePath="..\include\platform\qt\QtImage.h"
 						>
 					</File>
 					<File
@@ -1814,6 +1810,10 @@
 					</File>
 					<File
 						RelativePath="..\include\platform\qt\QtSystem.h"
+						>
+					</File>
+					<File
+						RelativePath="..\include\platform\qt\QtTexture.h"
 						>
 					</File>
 					<File

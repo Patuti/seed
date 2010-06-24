@@ -69,7 +69,7 @@
 #include <gui/TextArea.h>
 
 #include <Input.h>
-#include <Image.h>
+#include <Texture.h>
 
 #include <LeakReport.h>
 

@@ -29,13 +29,13 @@
  **
  *****************************************************************************/
 
-/*! \file IImage.h
+/*! \file ITexture.h
 	\author	Danny Angelo Carminati Grein
-	\brief Defines the Image class interface
+	\brief Defines the Texture class interface
 */
 
-#ifndef __IIMAGE_H__
-#define __IIMAGE_H__
+#ifndef __ITEXTURE_H__
+#define __ITEXTURE_H__
 
 #include "Defines.h"
 #include "interface/IResource.h"
@@ -47,13 +47,13 @@ namespace Seed {
 
 /// ITexture
 /**
-Base texture class. This IResource must not be instanciable. It has basic information about the texture image.
+Base texture class. This IResource must not be instanciable. It has basic information about the texture.
 */
-class SEED_CORE_API IImage : public IResource
+class SEED_CORE_API ITexture : public IResource
 {
 	public:
-		IImage();
-		virtual ~IImage();
+		ITexture();
+		virtual ~ITexture();
 
 		/// Returns the texture bits data.
 		virtual const void *GetData() const;
@@ -79,10 +79,10 @@ class SEED_CORE_API IImage : public IResource
 		/// Gets the full atlas height in pixels.
 		virtual u32 GetAtlasHeightInPixel() const;
 
-		/// Gets the texture image width normalized (0.0f - 1.0f).
+		/// Gets the texture width normalized (0.0f - 1.0f).
 		virtual f32 GetWidth() const;
 
-		/// Gets the texture image height normalized (0.0f - 1.0f).
+		/// Gets the texture height normalized (0.0f - 1.0f).
 		virtual f32 GetHeight() const;
 
 		/// Specify a filtering to be used with this texture.
@@ -112,15 +112,15 @@ class SEED_CORE_API IImage : public IResource
 		/// Create a texture using a pre-allocated buffer.
 		/**
 		Create a texture using a pre-allocated buffer provided by the user, the
-		Image class won't deallocate it uppon Unloading, so keep sure to clean your
+		Texture class won't deallocate it uppon Unloading, so keep sure to clean your
 		buffers when not needed anymore. And the same way, keep sure that the buffer
-		will exist while Image exists.
+		will exist while texture exists.
 
 		The buffer MUST BE 32bits aligned and each scanline must be 32bits aligned (stride, pitch)
 
-		\param width Width of the image
-		\param height Height of the image
-		\param buffer Buffer to image pixels
+		\param width Width of the texture
+		\param height Height of the texture
+		\param buffer Buffer to texture pixels
 		\param pool Pointer to IMemoryPool to use when allocating this object
 		*/
 		virtual BOOL Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
@@ -156,9 +156,9 @@ class SEED_CORE_API IImage : public IResource
 		f32		fHeight;
 
 	private:
-		SEED_DISABLE_COPY(IImage);
+		SEED_DISABLE_COPY(ITexture);
 };
 
 } // namespace
 
-#endif // __IIMAGE_H__
+#endif // __ITEXTURE_H__
