@@ -131,6 +131,21 @@ enum eRendererDeviceType
 	RendererDeviceDirectX11
 };
 
+enum eVideoMode
+{
+	Video_AutoDetect,
+	Video_320x240,
+	Video_480x272,
+	Video_480x320,
+	Video_iPhone,
+	Video_iPhoneLandscape,
+	Video_iPhonePortrait,
+	Video_640x480,
+	Video_NintendoWii,
+	Video_800x600,
+	Video_1024x768,
+};
+
 /// Widget Alignment
 enum eHorizontalAlignment
 {

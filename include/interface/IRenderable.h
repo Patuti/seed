@@ -58,7 +58,7 @@ class SEED_CORE_API IRenderable
 
 		virtual void Render();
 		virtual void Update(f32 delta);
-		virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
+		virtual void SetColor(u32 r, u32 g, u32 b, u32 a);
 		virtual void SetColor(f32 r, f32 g, f32 b, f32 a);
 		virtual void SetColor(PIXEL px);
 		virtual PIXEL GetColor() const;

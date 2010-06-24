@@ -37,8 +37,6 @@
 #ifndef __RENDERER_DEVICE_H__
 #define __RENDERER_DEVICE_H__
 
-#include "Config.h"
-
 #if defined(_WII_)
 	#include "platform/wii/WiiRendererDevice.h"
 	using namespace Seed::WII;
@@ -61,19 +59,19 @@
 	#endif
 
 	#if defined(SEED_ENABLE_D3D8)
-	#include "api/d3d8/D3D8RendererDevice.h"
+	#include "api/directx/D3D8RendererDevice.h"
 	#endif
 
 	#if defined(SEED_ENABLE_D3D9)
-	#include "api/d3d9/D3D9RendererDevice.h"
+	#include "api/directx/D3D9RendererDevice.h"
 	#endif
 
 	#if defined(SEED_ENABLE_D3D10)
-	#include "api/d3d10/D3D10RendererDevice.h"
+	#include "api/directx/D3D10RendererDevice.h"
 	#endif
 
 	#if defined(SEED_ENABLE_D3D11)
-	#include "api/d3d11/D3D11RendererDevice.h"
+	#include "api/directx/D3D11RendererDevice.h"
 	#endif
 
 	using namespace Seed::PC;

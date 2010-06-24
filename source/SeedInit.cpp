@@ -34,8 +34,8 @@
 	\brief Seed Initialization / Shutdown
 */
 
+#include "Defines.h"
 #include "SeedInit.h"
-#include "Config.h"
 #include "ResourceManager.h"
 #include "ResourceLoader.h"
 #include "Image.h"
@@ -68,6 +68,7 @@
 #include "RendererManager.h"
 #include "SceneManager.h"
 #include "RendererDevice.h"
+#include "Checksum.h"
 
 namespace Seed {
 
@@ -81,7 +82,7 @@ namespace Private
 	f32			fCurrentTime	= 0.0f;
 }
 
-ResourceManager *pResourceManager = NULL;//("global");
+ResourceManager *pResourceManager = NULL;
 const Configuration *pConfiguration = NULL;
 
 #define MAX_FRAME_DELTA (1.0f / 60.0f) * 5.0f
@@ -168,6 +169,8 @@ BOOL Initialize()
 	BOOL ret = TRUE;
 	//Private::bDisableSound = TRUE;
 
+	pChecksum = Checksum::GetInstance();
+
 	ret = ret && pModuleManager->Add(pSystem);
 	ret = ret && pModuleManager->Add(pMemoryManager);
 	ret = ret && pModuleManager->Add(pTimer);
@@ -191,7 +194,7 @@ BOOL Initialize()
 
 	pUpdater->Add(Private::pApplication);
 	pUpdater->Add(pInput);
-	//pUpdater->Add(pGuiManager);
+	pUpdater->Add(pGuiManager);
 
 	if (!Private::bDisableSound)
 		pUpdater->Add(pSoundSystem);
@@ -217,7 +220,7 @@ BOOL Initialize()
 	//ready during Setup
 	Private::bInitialized = TRUE;
 
-	//Private::pApplication->Initialize();
+	Private::pApplication->Initialize();
 	ret = ret && pModuleManager->Add(Private::pApplication);
 
 	pModuleManager->Print();
@@ -238,17 +241,18 @@ void Update()
 		dt = MAX_FRAME_DELTA;
 
 	pUpdater->Run(dt, 1.0f / 60.0f);
+	// maybe this? pUpdater->Run(dt, 1.0f / (f32)pConfiguration->GetFrameRate());
 
 	Seed::Render();
 }
 
 void Render()
 {
+	pScreen->Update();
 	// FIXME: Viewport Render and Screen Update must be generic
 #if !defined(_QT_)
 	pViewManager->Render();
 #endif
-	pScreen->Update();
 }
 
 void Shutdown()
@@ -269,7 +273,7 @@ void Shutdown()
 	pSoundSystem->DestroyInstance();
 	pRendererManager->DestroyInstance();
 	pViewManager->DestroyInstance();
-	pScreen->DestroyInstance();
+//	pScreen->DestroyInstance();
 	pCartridge->DestroyInstance();
 	pFileSystem->DestroyInstance();
 	pPackageManager->DestroyInstance();

@@ -6,11 +6,6 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-// FIXME: Xcode or cmake isnt setting these defines correcly - quick hack to get it working on mac
-#if defined(__APPLE_CC__)
-#define DEBUG
-#endif
-
 #if defined(SEED_BUILD)
 	#if !defined(SEED_BUILD_COMMERCIAL)
 		#define SEED_BUILD_LGPL
@@ -101,6 +96,10 @@ Maximum amount of objects per scene node.
 Toggle between instancing Singleton classes in the (0) Stack or in the (1) Heap
 */
 #define SEED_SINGLETON_HEAP					0
+
+/*
+*/
+#define SEED_MAX_PRIORITY					1000000
 
 /*
 String Pools - Define the amount of each pool

@@ -150,35 +150,46 @@ BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 		while (height < iHeight)
 			height *= 2;
 
-		if (width != iWidth || height != iHeight)
+		eRendererDeviceType type = pConfiguration->GetRendererDeviceType();
+		if (type >= Seed::RendererDeviceOpenGLES && type <= Seed::RendererDeviceOpenGL40)
 		{
-			Log(TAG "WARNING: Image size not optimal, changing from %dx%d to %dx%d", iWidth, iHeight, width, height);
+			/*
+			HACK:
+			When using OpenGL we must pass power of 2 textures to the device, so we check if the texture need fix and create
+			a new and correct surface for it. When using DirectX the device will not use SDL Surface to load texture, it will
+			load directly from our in memory file and then close it, so we don't need to fix our texture.
+			*/
 
-			SDL_Surface *pTempSurface = NULL;
-			Uint32 rmask, gmask, bmask, amask;
+			if (width != iWidth || height != iHeight)
+			{
+				Log(TAG "WARNING: Image size not optimal, changing from %dx%d to %dx%d", iWidth, iHeight, width, height);
 
-			#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-				rmask = 0xff000000;
-				gmask = 0x00ff0000;
-				bmask = 0x0000ff00;
-				amask = 0x000000ff;
-			#else
-				rmask = 0x000000ff;
-				gmask = 0x0000ff00;
-				bmask = 0x00ff0000;
-				amask = 0xff000000;
-			#endif
+				SDL_Surface *pTempSurface = NULL;
+				Uint32 rmask, gmask, bmask, amask;
 
-			pTempSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA , width, height, 32, bmask, gmask, rmask, amask);
+				#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+					rmask = 0xff000000;
+					gmask = 0x00ff0000;
+					bmask = 0x0000ff00;
+					amask = 0x000000ff;
+				#else
+					rmask = 0x000000ff;
+					gmask = 0x0000ff00;
+					bmask = 0x00ff0000;
+					amask = 0xff000000;
+				#endif
 
-			SDL_SetAlpha(pTempSurface, 0, SDL_ALPHA_OPAQUE);
-			SDL_SetAlpha(pSurface, 0, SDL_ALPHA_OPAQUE);
-			SDL_BlitSurface(pSurface, NULL, pTempSurface, NULL);
-			SDL_SetAlpha(pTempSurface, 0, SDL_ALPHA_TRANSPARENT);
-			SDL_SetAlpha(pSurface, 0, SDL_ALPHA_TRANSPARENT);
+				pTempSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA , width, height, 32, bmask, gmask, rmask, amask);
 
-			SDL_FreeSurface(pSurface);
-			pSurface = pTempSurface;
+				SDL_SetAlpha(pTempSurface, 0, SDL_ALPHA_OPAQUE);
+				SDL_SetAlpha(pSurface, 0, SDL_ALPHA_OPAQUE);
+				SDL_BlitSurface(pSurface, NULL, pTempSurface, NULL);
+				SDL_SetAlpha(pTempSurface, 0, SDL_ALPHA_TRANSPARENT);
+				SDL_SetAlpha(pSurface, 0, SDL_ALPHA_TRANSPARENT);
+
+				SDL_FreeSurface(pSurface);
+				pSurface = pTempSurface;
+			}
 		}
 
 		fWidth = (f32)iWidth / (f32)pScreen->GetWidth();
@@ -208,7 +219,7 @@ BOOL Image::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 {
 	ASSERT_NULL(buffer);
-	ASSERT_NULL(pool);
+	//ASSERT_NULL(pool);
 
 	ASSERT_MSG(ALIGN_FLOOR(buffer, 32) == (u8 *)buffer, "ERROR: User image buffer MUST BE 32bits aligned!");
 	ASSERT_MSG(ROUND_UP(width, 32) == width, "ERROR: User image scanline MUST BE 32bits aligned - pitch/stride!");
@@ -225,16 +236,20 @@ BOOL Image::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 		iPitch = ROUND_UP(width, 32); // FIXME: parametized?
 		pData = buffer;
 
+		pRendererDevice->TextureRequest(this, &pTextureId);
+
 		bLoaded = TRUE;
 	}
 
 	return bLoaded;
 }
 
-void Image::Update()
+void Image::Update(PIXEL *data)
 {
-	this->UnloadTexture();
-	pRendererDevice->TextureRequest(this, &pTextureId);
+	//this->UnloadTexture();
+	//pRendererDevice->TextureRequest(this, &pTextureId);
+	pData = data;
+	pRendererDevice->TextureDataUpdate(this);
 }
 
 BOOL Image::Unload()
@@ -380,7 +395,7 @@ INLINE void Image::SetFilter(eTextureFilterType type, eTextureFilter filter)
 	if (type == Seed::TextureFilterTypeMag && filter == nMagFilter)
 		return;
 
-	pRendererDevice->UpdateTextureFilter(this);
+	pRendererDevice->TextureFilterUpdate(this);
 
 	if (type == Seed::TextureFilterTypeMin)
 	{
@@ -406,7 +421,7 @@ INLINE void Image::UnloadTexture()
 {
 	if (pTextureId)
 	{
-		pRendererDevice->UnloadTexture(this);
+		pRendererDevice->TextureUnload(this);
 	}
 	else
 	{

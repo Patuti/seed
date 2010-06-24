@@ -92,7 +92,7 @@ INLINE BOOL ViewManager::Shutdown()
 	return IModule::Shutdown();
 }
 
-void ViewManager::Add(IViewport *view)
+void ViewManager::Add(Viewport *view)
 {
 	ASSERT_NULL(view);
 
@@ -112,7 +112,7 @@ void ViewManager::Add(IViewport *view)
 	}
 }
 
-void ViewManager::Remove(IViewport *view)
+void ViewManager::Remove(Viewport *view)
 {
 	ASSERT_NULL(view);
 	arViewport.Remove(view);
@@ -145,7 +145,7 @@ INLINE void ViewManager::Render()
 	pCurrentViewport = NULL;
 }
 
-INLINE IRenderer *ViewManager::GetCurrentRenderer() const
+INLINE Renderer *ViewManager::GetCurrentRenderer() const
 {
 	ASSERT_MSG(pCurrentViewport, TAG "GetCurrentRenderer must be called within Render call.");
 
@@ -153,7 +153,7 @@ INLINE IRenderer *ViewManager::GetCurrentRenderer() const
 }
 
 
-INLINE IViewport *ViewManager::GetCurrentViewport() const
+INLINE Viewport *ViewManager::GetCurrentViewport() const
 {
 	ASSERT_MSG(pCurrentViewport, TAG "GetCurrentViewport must be called within Render call.");
 
@@ -161,9 +161,9 @@ INLINE IViewport *ViewManager::GetCurrentViewport() const
 }
 
 
-INLINE IViewport *ViewManager::GetViewportAt(f32 x, f32 y)
+INLINE Viewport *ViewManager::GetViewportAt(f32 x, f32 y)
 {
-	IViewport *ret = NULL;
+	Viewport *ret = NULL;
 	if (bEnabled)
 	{
 		for (u32 i = 0; i < arViewport.Size(); i++)

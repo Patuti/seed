@@ -71,6 +71,9 @@ class SEED_CORE_API GuiManager : public IModule, public IUpdatable, public IEven
 		// IUpdatable
 		virtual BOOL Update(f32 dt);
 
+		// IObject
+		virtual const char *GetObjectName() const;
+
 	private:
 		SEED_DISABLE_COPY(GuiManager);
 

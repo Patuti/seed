@@ -36,7 +36,7 @@
 
 #include "Viewport.h"
 #include "Log.h"
-#include "interface/IRenderer.h"
+#include "Renderer.h"
 #include "RendererDevice.h"
 
 namespace Seed {
@@ -51,7 +51,7 @@ Viewport::~Viewport()
 {
 }
 
-INLINE void Viewport::SetRenderer(IRenderer *renderer)
+INLINE void Viewport::SetRenderer(Renderer *renderer)
 {
 	ASSERT_NULL(renderer);
 
@@ -74,7 +74,7 @@ INLINE void Viewport::SetHeight(f32 h)
 	this->cArea.height = h;
 }
 
-INLINE IRenderer *Viewport::GetRenderer() const
+INLINE Renderer *Viewport::GetRenderer() const
 {
 	return pRenderer;
 }

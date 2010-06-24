@@ -336,7 +336,7 @@ void Button::SetBlending(eBlendMode op)
 	this->cLabel.SetBlending(op);
 }
 
-void Button::SetColor(u8 r, u8 g, u8 b, u8 a)
+void Button::SetColor(u32 r, u32 g, u32 b, u32 a)
 {
 	this->cSprite.SetColor(r, g, b, a);
 	this->cLabel.SetColor(r, g, b, a);
@@ -1032,7 +1032,7 @@ INLINE void Button::SetLabelBlending(eBlendMode blending)
 	this->eLabelBlendOperation = blending;
 }
 
-INLINE void Button::SetLabelColor(u8 r, u8 g, u8 b, u8 a)
+INLINE void Button::SetLabelColor(u32 r, u32 g, u32 b, u32 a)
 {
 	this->cLabel.SetBlending(eLabelBlendOperation);
 	this->cLabel.SetColor(r, g, b, a);
@@ -1044,7 +1044,7 @@ INLINE void Button::SetLabelColor(PIXEL px)
 	this->cLabel.SetColor(px);
 }
 
-INLINE void Button::SetLabelPressColor(u8 r, u8 g, u8 b, u8 a)
+INLINE void Button::SetLabelPressColor(u32 r, u32 g, u32 b, u32 a)
 {
 	this->iLabelPressColor = PIXEL_COLOR(r, g, b, a);
 }
@@ -1054,7 +1054,7 @@ INLINE void Button::SetLabelPressColor(PIXEL px)
 	this->iLabelPressColor = px;
 }
 
-INLINE void Button::SetLabelHoverColor(u8 r, u8 g, u8 b, u8 a)
+INLINE void Button::SetLabelHoverColor(u32 r, u32 g, u32 b, u32 a)
 {
 	this->iLabelHoverColor = PIXEL_COLOR(r, g, b, a);
 }
@@ -1064,7 +1064,7 @@ INLINE void Button::SetLabelHoverColor(PIXEL px)
 	this->iLabelHoverColor = px;
 }
 
-INLINE void Button::SetLabelDisabledColor(u8 r, u8 g, u8 b, u8 a)
+INLINE void Button::SetLabelDisabledColor(u32 r, u32 g, u32 b, u32 a)
 {
 	this->iLabelDisabledColor = PIXEL_COLOR(r, g, b, a);
 }
@@ -1266,7 +1266,7 @@ INLINE void Button::SetSpriteBlending(eBlendMode op)
 	this->cSprite.SetBlending(op);
 }
 
-INLINE void Button::SetSpriteColor(u8 r, u8 g, u8 b, u8 a)
+INLINE void Button::SetSpriteColor(u32 r, u32 g, u32 b, u32 a)
 {
 	this->cSprite.SetColor(r, g, b, a);
 }

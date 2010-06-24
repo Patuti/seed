@@ -50,7 +50,7 @@ namespace Seed {
 
 Label::Label()
 	: iAlign(Seed::HorizontalAlignLeft)
-	, iColor(0)
+	//, iColor(0)
 	, bAutoAdjust(FALSE)
 	, cText()
 	, pFont(NULL)
@@ -209,6 +209,7 @@ INLINE void Label::SetFont(const Font *font)
 	this->bChanged = TRUE;
 }
 
+/*
 INLINE void Label::SetColor(u8 r, u8 g, u8 b, u8 a)
 {
 	this->iColor = PIXEL_COLOR(r, g, b, a);
@@ -220,6 +221,7 @@ INLINE void Label::SetColor(PIXEL px)
 	this->iColor = px;
 	this->bChanged = TRUE;
 }
+*/
 
 INLINE f32 Label::GetTextWidth()
 {

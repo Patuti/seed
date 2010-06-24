@@ -66,9 +66,11 @@ class SEED_CORE_API TextArea : public IWidget
 
 		// IRenderable
 		virtual void Render();
+		/*
 		virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
 		virtual void SetColor(PIXEL px);
 		virtual PIXEL GetColor() const;
+		*/
 
 		// IObject
 		virtual const char *GetObjectName() const;

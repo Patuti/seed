@@ -38,7 +38,7 @@
 #include "Defines.h"
 #include "Log.h"
 #include "Enum.h"
-#include "interface/IRenderer.h"
+#include "Renderer.h"
 
 #define TAG		"[RendererManager] "
 
@@ -83,23 +83,25 @@ INLINE BOOL RendererManager::Shutdown()
 		arRenderer[i]->Shutdown();
 	}
 
-	this->Reset();
-
 	return IModule::Shutdown();
 }
 
 INLINE BOOL RendererManager::Update(f32 dt)
 {
 	BOOL ret = TRUE;
-	for (u32 i = 0; i < arRenderer.Size(); i++)
+
+	if (bEnabled)
 	{
-		ret &= arRenderer[i]->Update(dt);
+		for (u32 i = 0; i < arRenderer.Size(); i++)
+		{
+			ret &= arRenderer[i]->Update(dt);
+		}
 	}
 
 	return ret;
 }
 
-void RendererManager::Add(IRenderer *renderer)
+void RendererManager::Add(Renderer *renderer)
 {
 	ASSERT_NULL(renderer);
 
@@ -120,7 +122,7 @@ void RendererManager::Add(IRenderer *renderer)
 	}
 }
 
-void RendererManager::Remove(IRenderer *renderer)
+void RendererManager::Remove(Renderer *renderer)
 {
 	ASSERT_NULL(renderer);
 	arRenderer.Remove(renderer);

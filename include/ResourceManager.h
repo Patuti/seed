@@ -37,7 +37,6 @@
 #ifndef __RESOURCE_MANAGER_H__
 #define __RESOURCE_MANAGER_H__
 
-#include "Config.h"
 #include "interface/IResource.h"
 #include "interface/IMemoryPool.h"
 #include "MemoryManager.h"

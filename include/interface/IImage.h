@@ -125,16 +125,17 @@ class SEED_CORE_API IImage : public IResource
 		*/
 		virtual BOOL Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
 
-		/// Update the internal state of a dynamic texture (texture created by the user)
+		/// Update the internal state of a dynamic texture with a new buffer (texture created by the user)
 		/**
 		This method should be called as the user finishes its texture manipulation.
 		This is a really expensive method that will keep the internal state of the texture usable by
 		the underlaying system.
-		In OpenGL it will re-upload the texture to vga and in Nintendo Wii it should swizzle the texture.
-		By using dynamic textures, the Seed will keep a internal buffer that it will use to process the user
-		(pointer) buffer, so be sure to keep your buffer alive until this texture is not needed.
+		In OpenGL/DX it will re-upload the texture to vga and in Nintendo Wii it should swizzle the texture.
+		By using dynamic textures, the Seed MAY keep a internal buffer or pointer to your buffer that will 
+		be used, so be sure to keep your buffer alive until this texture is not needed.
+		Keep the Width and Height unchanged, otherwise you must do a Load again.
 		*/
-		virtual void Update();
+		virtual void Update(PIXEL *buffer);
 
 		// IObject
 		virtual int GetObjectType() const;

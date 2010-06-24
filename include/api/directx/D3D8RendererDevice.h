@@ -29,36 +29,60 @@
  **
  *****************************************************************************/
 
-/*! \file IRendererDevice.h
+/*! \file D3D8RendererDevice.h
 	\author	Danny Angelo Carminati Grein
-	\brief Renderer Device interfacve
+	\brief DirectX 8.1 renderer device implementation
 */
 
-#ifndef __IRENDERER_DEVICE_H__
-#define __IRENDERER_DEVICE_H__
+#ifndef __D3D8_RENDERER_DEVICE_H__
+#define __D3D8_RENDERER_DEVICE_H__
 
-#include "interface/IModule.h"
+#include "Defines.h"
 #include "Enum.h"
-#include "Array.h"
-#include "Rect.h"
+#include "Vertex.h"
+
+#if defined(SEED_ENABLE_D3D8)
+
+#include "interface/IRendererDevice.h"
+
+#pragma push_macro("Delete")
+#pragma push_macro("BOOL")
+#pragma push_macro("SIZE_T")
+#undef Delete
+#undef BOOL
+#undef SIZE_T
+#include <d3d8.h>
+#include <d3dx8.h>
+#pragma pop_macro("SIZE_T")
+#pragma pop_macro("BOOL")
+#pragma pop_macro("Delete")
+
+#define D3DFVF_VERTEXFORMAT (D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
 namespace Seed {
 
-class IRenderer;
 class IImage;
 
-class SEED_CORE_API IRendererDevice : public IModule
-{
-	public:
-		IRendererDevice();
-		~IRendererDevice();
+namespace DirectX {
 
+class SEED_CORE_API D3D8RendererDevice : public IRendererDevice
+{
+	friend class IScreen;
+
+	public:
+		D3D8RendererDevice();
+		virtual ~D3D8RendererDevice();
+
+		virtual void Begin() const;
+		virtual void End() const;
+
+		// IRendererDevice
+		virtual void TextureFilterUpdate(IImage *texture);
+		virtual void TextureUnload(IImage *texture);
 		virtual void TextureRequest(IImage *texture, void **texName);
 		virtual void TextureRequestAbort(IImage *texture, void **texName);
 		virtual void TextureRequestProcess() const;
 		virtual void TextureDataUpdate(IImage *texture);
-		virtual void TextureUnload(IImage *tex);
-		virtual void TextureFilterUpdate(IImage *texture);
 
 		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
 		virtual void UploadData(void *userData);
@@ -70,20 +94,39 @@ class SEED_CORE_API IRendererDevice : public IModule
 		virtual void Enable2D() const;
 		virtual void Disable2D() const;
 
-		virtual void Begin() const;
-		virtual void End() const;
-
 		virtual void Update();
 
-		virtual BOOL IsRequired() const;
+		// IModule
+		virtual BOOL Initialize();
+		virtual BOOL Reset();
+		virtual BOOL Shutdown();
 
 		// IObject
 		virtual const char *GetObjectName() const;
 
+	protected:
+		mutable Array<IImage *, 128> arTexture;
+		mutable Array<void **, 128> arTextureName;
+
 	private:
-		SEED_DISABLE_COPY(IRendererDevice);
+		SEED_DISABLE_COPY(D3D8RendererDevice);
+		BOOL CheckExtension(const char *extName);
+
+		D3DCAPS8				mCaps;
+		LPDIRECT3D8				mObject;
+		LPDIRECT3DDEVICE8		mDevice;
+		D3DPRESENT_PARAMETERS	mParams;
+		D3DDISPLAYMODE			mMode;
+
+		BOOL					bLost;
+		//LPDIRECT3DVERTEXBUFFER8 pVertexBuffer;
+		//IDirect3DTexture8		*iTextureId;
 };
 
-} // namespace
+}} // namespace
 
-#endif // __IRENDERER_DEVICE_H__
+#else // SEED_ENABLE_D3D8
+	#error "Include 'RendererDevice.h' instead 'api/directx/D3D8RendererDevice.h' directly."
+#endif // SEED_ENABLE_D3D8
+
+#endif // __D3D8_RENDERER_DEVICE_H__

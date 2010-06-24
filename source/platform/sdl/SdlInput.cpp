@@ -51,7 +51,16 @@
 #include "Viewport.h"
 
 #if defined(WIN32)
+#pragma push_macro("Delete")
+#pragma push_macro("BOOL")
+#pragma push_macro("SIZE_T")
+#undef Delete
+#undef BOOL
+#undef SIZE_T
 #include <SDL/SDL_syswm.h>
+#pragma pop_macro("SIZE_T")
+#pragma pop_macro("BOOL")
+#pragma pop_macro("Delete")
 #endif
 
 #define TAG "[Input] "

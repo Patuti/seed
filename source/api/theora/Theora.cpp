@@ -105,8 +105,8 @@ INLINE BOOL Theora::Unload()
 	bTerminateThread = TRUE;
 	bPlaying = FALSE;
 
-	if (iTextureId)
-		glDeleteTextures(1, &iTextureId);
+//	if (iTextureId)
+//		glDeleteTextures(1, &iTextureId);
 
 	pMemoryManager->Free(pTexData);
 
@@ -430,7 +430,21 @@ INLINE void Theora::ProcessVideoData(OggPlayVideoData *data)
 	rgb.rgb_width = iTexWidth;
 	rgb.rgb_height = iTexHeight;
 
-	oggplay_yuv2rgba(&yuv, &rgb);
+	eRendererDeviceType type = pConfiguration->GetRendererDeviceType();
+	if (type == Seed::RendererDeviceOpenGL14 || type == Seed::RendererDeviceOpenGL20 ||
+		type == Seed::RendererDeviceOpenGL30 || type == Seed::RendererDeviceOpenGL40)
+	{
+		oggplay_yuv2rgba(&yuv, &rgb);
+	}
+	else // DirectX
+	{
+		oggplay_yuv2argb(&yuv, &rgb);
+	}
+
+	if (pTexData)
+	{
+		cImage.Update(static_cast<PIXEL *>((void *)pTexData));
+	}
 }
 
 INLINE BOOL Theora::WaitFrameRate()
@@ -480,6 +494,9 @@ void Theora::ConfigureRendering()
 		iTexHeight = po2_height;
 	}
 
+	cImage.Load(iTexWidth, iTexHeight, static_cast<PIXEL *>((void *)pTexData));
+
+/*
 	glGenTextures(1, &iTextureId);
 	glBindTexture(GL_TEXTURE_2D, iTextureId);
 
@@ -488,7 +505,7 @@ void Theora::ConfigureRendering()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
+*/
 	coords[0] = 0.0f;
 	coords[1] = 0.0f;
 	coords[2] = fTexScaleX;
@@ -521,6 +538,7 @@ void Theora::Render(f32 delta)
 {
 	UNUSED(delta);
 
+/*
 	if (pTexData != NULL)
 	{
 		glEnable(GL_TEXTURE_2D);
@@ -538,6 +556,7 @@ void Theora::Render(f32 delta)
 
 		glDrawArrays(GL_QUADS, 0, 4);
 	}
+*/
 }
 
 

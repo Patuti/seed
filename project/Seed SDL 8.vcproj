@@ -196,19 +196,20 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include;&quot;$(SEEDSDK)\dependency\common\include&quot;;&quot;$(SEEDSDK)\dependency\vc8\include&quot;"
-				PreprocessorDefinitions="WIN32;DEBUG;YMEM_DEBUG;_CONSOLE;_SDL_;_CRT_SECURE_NO_WARNINGS;YMEM_PARANOID_CHECK;SEED_BUILD;SEED_USE_COMMERCIAL"
+				AdditionalIncludeDirectories="C:\DXSDK\Include;..\include;&quot;$(SEEDSDK)\dependency\common\include&quot;;&quot;$(SEEDSDK)\dependency\vc8\include&quot;"
+				PreprocessorDefinitions="WIN32;DEBUG;YMEM_DEBUG;_CONSOLE;_SDL_;_CRT_SECURE_NO_WARNINGS;YMEM_PARANOID_CHECK;SEED_BUILD;SEED_ENABLE_D3D8;SEED_USE_COMMERCIAL;D3D_DEBUG_INFO"
 				IgnoreStandardIncludePath="false"
 				GeneratePreprocessedFile="0"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
-				BasicRuntimeChecks="0"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
+				ShowIncludes="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -418,6 +419,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\Renderer.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\RendererManager.cpp"
 				>
 			</File>
@@ -479,6 +484,10 @@
 			</File>
 			<File
 				RelativePath="..\source\ViewManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\Viewport.cpp"
 				>
 			</File>
 			<Filter
@@ -789,10 +798,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\source\interface\IRenderer.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\source\interface\IRendererDevice.cpp"
 					>
 				</File>
@@ -846,10 +851,6 @@
 				</File>
 				<File
 					RelativePath="..\source\interface\IUpdatable.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\source\interface\IViewport.cpp"
 					>
 				</File>
 				<File
@@ -927,10 +928,6 @@
 						RelativePath="..\source\api\ogl\Ogl14RendererDevice.cpp"
 						>
 					</File>
-					<File
-						RelativePath="..\source\api\ogl\OglRenderer.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="oal_ogg"
@@ -961,6 +958,18 @@
 					>
 					<File
 						RelativePath="..\source\api\theora\Theora.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="directx"
+					>
+					<File
+						RelativePath="..\source\api\directx\D3D8RendererDevice.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\source\api\directx\DirectXVersion.cpp"
 						>
 					</File>
 				</Filter>
@@ -1469,10 +1478,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\include\interface\IRenderer.h"
-					>
-				</File>
-				<File
 					RelativePath="..\include\interface\IRendererDevice.h"
 					>
 				</File>
@@ -1526,10 +1531,6 @@
 				</File>
 				<File
 					RelativePath="..\include\interface\IUpdatable.h"
-					>
-				</File>
-				<File
-					RelativePath="..\include\interface\IViewport.h"
 					>
 				</File>
 				<File
@@ -1868,6 +1869,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="directx"
+					>
+					<File
+						RelativePath="..\include\api\directx\D3D8RendererDevice.h"
+						>
+					</File>
+					<File
+						RelativePath="..\include\api\directx\DirectXVersion.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1876,10 +1889,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath=".\ClassDiagram1.cd"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

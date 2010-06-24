@@ -38,21 +38,20 @@
 #define __RENDERER_MANAGER_H__
 
 #include "Array.h"
-#include "Config.h"
 #include "interface/IModule.h"
 #include "interface/IUpdatable.h"
 #include "Singleton.h"
 
 namespace Seed {
 
-class IRenderer;
+class Renderer;
 
 class SEED_CORE_API RendererManager : public IModule, public IUpdatable
 {
 	SEED_SINGLETON_DECLARE(RendererManager);
 	public:
-		virtual void Add(IRenderer *renderer);
-		virtual void Remove(IRenderer *renderer);
+		virtual void Add(Renderer *renderer);
+		virtual void Remove(Renderer *renderer);
 
 		// IModule
 		virtual BOOL Initialize();
@@ -72,7 +71,7 @@ class SEED_CORE_API RendererManager : public IModule, public IUpdatable
 	private:
 		SEED_DISABLE_COPY(RendererManager);
 
-		Array<IRenderer *, SEED_RENDERER_MAX> arRenderer;
+		Array<Renderer *, SEED_RENDERER_MAX> arRenderer;
 		BOOL bEnabled;
 };
 

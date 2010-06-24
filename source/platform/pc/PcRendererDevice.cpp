@@ -98,7 +98,7 @@ BOOL RendererDevice::Initialize()
 		case RendererDeviceDirectX8:
 		{
 			Info(TAG "Creating renderer device DirectX 8.1");
-			pApiDevice = New(D3D8RendererDevice());
+			pApiDevice = New(Seed::DirectX::D3D8RendererDevice());
 		}
 		break;
 #endif
@@ -130,18 +130,20 @@ BOOL RendererDevice::Initialize()
 		break;
 #endif
 
-		case RendererDeviceOpenGLES:
 		case RendererDeviceWii:
+		case RendererDeviceOpenGLES:
 		case RendererDeviceOpenGL14:
 		default:
 		{
 			Info(TAG "Creating renderer device OpenGL 1.4");
-			pApiDevice = New(Seed::OGL::OGL14RendererDevice());
+			pApiDevice = New(Seed::OpenGL::OGL14RendererDevice());
 		}
 		break;
 	}
 
-	return (pApiDevice != &cNull);
+	BOOL ret = pApiDevice->Initialize();
+
+	return ((pApiDevice != &cNull) && ret);
 }
 
 INLINE BOOL RendererDevice::Reset()
@@ -173,14 +175,19 @@ INLINE void RendererDevice::TextureRequestProcess() const
 	pApiDevice->TextureRequestProcess();
 }
 
-INLINE void RendererDevice::UnloadTexture(IImage *tex)
+INLINE void RendererDevice::TextureUnload(IImage *tex)
 {
-	pApiDevice->UnloadTexture(tex);
+	pApiDevice->TextureUnload(tex);
 }
 
-INLINE void RendererDevice::UpdateTextureFilter(IImage *texture)
+INLINE void RendererDevice::TextureFilterUpdate(IImage *texture)
 {
-	pApiDevice->UpdateTextureFilter(texture);
+	pApiDevice->TextureFilterUpdate(texture);
+}
+
+INLINE void RendererDevice::TextureDataUpdate(IImage *texture)
+{
+	pApiDevice->TextureDataUpdate(texture);
 }
 
 INLINE void RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL color) const
@@ -213,11 +220,6 @@ INLINE void RendererDevice::End() const
 	pApiDevice->End();
 }
 
-INLINE IRenderer *RendererDevice::CreateRenderer() const
-{
-	return pApiDevice->CreateRenderer();
-}
-
 INLINE void RendererDevice::SetViewport(const Rect<f32> &area) const
 {
 	pApiDevice->SetViewport(area);
@@ -236,6 +238,11 @@ INLINE void RendererDevice::Enable2D() const
 INLINE void RendererDevice::Disable2D() const
 {
 	pApiDevice->Disable2D();
+}
+
+INLINE void RendererDevice::Update()
+{
+	pApiDevice->Update();
 }
 
 }} // namespace

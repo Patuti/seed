@@ -78,8 +78,8 @@ INLINE File *IImage::GetFile()
 
 INLINE const void *IImage::GetData() const
 {
-	return NULL;
 	SEED_ABSTRACT_METHOD;
+	return NULL;
 }
 
 INLINE void IImage::PutPixel(u32 x, u32 y, PIXEL px)
@@ -211,7 +211,7 @@ INLINE void *IImage::GetTextureName() const
 	return NULL;
 }
 
-INLINE void IImage::Update()
+INLINE void IImage::Update(PIXEL *buffer)
 {
 	SEED_ABSTRACT_METHOD
 }

@@ -356,6 +356,11 @@ BOOL Cartridge::CreateSaveFile()
 	return TRUE;
 }
 
+INLINE const char *Cartridge::GetObjectName() const
+{
+	return "Cartridge";
+}
+
 }} // namespace
 
 #endif // _PC_

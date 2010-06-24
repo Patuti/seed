@@ -41,7 +41,7 @@ namespace Seed {
 
 IScreen::IScreen()
 	: bFading(FALSE)
-	, iMode(0)
+	, nMode(Seed::Video_AutoDetect)
 	, fAspectRatio(static_cast<f32>(PLATFORM_MAX_SCREEN_HEIGHT)/static_cast<f32>(PLATFORM_MAX_SCREEN_WIDTH))
 	, iHeight(PLATFORM_MAX_SCREEN_HEIGHT)
 	, iWidth(PLATFORM_MAX_SCREEN_WIDTH)
@@ -54,17 +54,17 @@ IScreen::~IScreen()
 
 INLINE BOOL IScreen::IsFading() const
 {
-	return this->bFading;
+	return bFading;
 }
 
-INLINE void IScreen::SetMode(u32 mode)
+INLINE void IScreen::SetMode(eVideoMode mode)
 {
-	this->iMode = mode;
+	nMode = mode;
 }
 
-INLINE u32 IScreen::GetMode() const
+INLINE eVideoMode IScreen::GetMode() const
 {
-	return this->iMode;
+	return nMode;
 }
 
 INLINE void IScreen::ToggleFullscreen()
@@ -91,17 +91,25 @@ INLINE void IScreen::Update()
 
 INLINE u32 IScreen::GetHeight() const
 {
-	return this->iHeight;
+	return iHeight;
 }
 
 INLINE u32 IScreen::GetWidth() const
 {
-	return this->iWidth;
+	return iWidth;
 }
 
 INLINE f32 IScreen::GetAspectRatio() const
 {
-	return this->fAspectRatio;
+	return fAspectRatio;
+}
+
+INLINE void IScreen::FadeIn()
+{
+}
+
+INLINE void IScreen::FadeOut()
+{
 }
 
 INLINE BOOL IScreen::IsRequired() const

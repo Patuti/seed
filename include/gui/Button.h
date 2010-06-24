@@ -91,7 +91,7 @@ class SEED_CORE_API Button : public IWidget, public IResource
 		virtual eCollisionType GetCollisionType() const;
 
 		virtual void SetBlending(eBlendMode op);
-		virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
+		virtual void SetColor(u32 r, u32 g, u32 b, u32 a);
 		virtual void SetColor(PIXEL color);
 
 		// IEventWidgetListener
@@ -146,13 +146,13 @@ class SEED_CORE_API Button : public IWidget, public IResource
 		virtual void SetText(const WideString str);
 		virtual void SetText(const String &str);
 		virtual void SetLabelBlending(eBlendMode blending);
-		virtual void SetLabelColor(u8 r, u8 g, u8 b, u8 a);
+		virtual void SetLabelColor(u32 r, u32 g, u32 b, u32 a);
 		virtual void SetLabelColor(PIXEL px);
-		virtual void SetLabelPressColor(u8 r, u8 g, u8 b, u8 a);
+		virtual void SetLabelPressColor(u32 r, u32 g, u32 b, u32 a);
 		virtual void SetLabelPressColor(PIXEL px);
-		virtual void SetLabelHoverColor(u8 r, u8 g, u8 b, u8 a);
+		virtual void SetLabelHoverColor(u32 r, u32 g, u32 b, u32 a);
 		virtual void SetLabelHoverColor(PIXEL px);
-		virtual void SetLabelDisabledColor(u8 r, u8 g, u8 b, u8 a);
+		virtual void SetLabelDisabledColor(u32 r, u32 g, u32 b, u32 a);
 		virtual void SetLabelDisabledColor(PIXEL px);
 		virtual void SetLabelPressOffset(f32 x, f32 y);
 		virtual void SetLabelHoverOffset(f32 x, f32 y);
@@ -201,7 +201,7 @@ class SEED_CORE_API Button : public IWidget, public IResource
 
 		// Sprite
 		virtual void SetSpriteBlending(eBlendMode op);
-		virtual void SetSpriteColor(u8 r, u8 g, u8 b, u8 a);
+		virtual void SetSpriteColor(u32 r, u32 g, u32 b, u32 a);
 		virtual void SetSpriteColor(PIXEL px);
 		virtual PIXEL GetSpriteColor();
 		virtual void SetSpritePressOffset(f32 x, f32 y);

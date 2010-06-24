@@ -38,7 +38,6 @@
 #define __SCENE_MANAGER_H__
 
 #include "Array.h"
-#include "Config.h"
 #include "interface/IUpdatable.h"
 #include "Singleton.h"
 

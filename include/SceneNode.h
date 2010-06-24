@@ -38,7 +38,6 @@
 #define __SCENE_NODE_H__
 
 #include "Array.h"
-#include "Config.h"
 #include "interface/ISceneNode.h"
 
 namespace Seed {

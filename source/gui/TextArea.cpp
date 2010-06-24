@@ -317,6 +317,7 @@ INLINE void TextArea::SetAlignment(eVerticalAlignment align)
 	this->bChanged = TRUE;
 }
 
+/*
 INLINE void TextArea::SetColor(u8 r, u8 g, u8 b, u8 a)
 {
 	this->iColor = PIXEL_COLOR(r, g, b, a);
@@ -331,6 +332,7 @@ INLINE PIXEL TextArea::GetColor() const
 {
 	return this->iColor;
 }
+*/
 
 INLINE const char *TextArea::GetObjectName() const
 {

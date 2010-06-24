@@ -37,8 +37,6 @@
 #ifndef __IMAGE_H__
 #define __IMAGE_H__
 
-#include "Config.h"
-
 #if defined(_WII_)
 	#include "platform/wii/WiiImage.h"
 	using namespace Seed::WII;

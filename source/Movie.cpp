@@ -41,6 +41,7 @@ namespace Seed {
 Movie::Movie()
 	: ISceneObject()
 	, bPlaying(TRUE)
+	, fElapsedTime(0.0f)
 	, arTimelines()
 {
 }
@@ -58,16 +59,39 @@ INLINE void Movie::AddTimeline(Timeline *timeline)
 
 INLINE void Movie::Update(f32 delta)
 {
-	UNUSED(delta);
+	if (!bPlaying)
+		return;
+
+	fElapsedTime += delta;
+	f32 frame = 1 / 60.0f;
+	
+	if (fElapsedTime >= frame)
+	{
+		fElapsedTime -= frame;
+		for (u32 i = 0; i < arTimelines.Size(); i++)
+		{
+			if (bTransformationChanged)
+			{
+				arTimelines[i]->SetLocalPosition(this->GetLocalX(), this->GetLocalY());
+				arTimelines[i]->SetPosition(this->GetX(), this->GetY());
+				arTimelines[i]->SetScale(this->GetScaleX(), this->GetScaleY());
+				arTimelines[i]->SetRotation(this->GetRotation());
+			}
+
+			arTimelines[i]->Update();
+		}
+	}
 }
 
 INLINE void Movie::Play()
 {
+	fElapsedTime = 0.0f;
 	bPlaying = TRUE;
 }
 
 INLINE void Movie::Stop()
 {
+	fElapsedTime = 0.0f;
 	bPlaying = FALSE;
 }
 
@@ -85,25 +109,6 @@ INLINE void Movie::Reset()
 		arTimelines[i]->Reset();
 
 	arTimelines.Truncate();
-}
-
-INLINE void Movie::Render()
-{
-	if (!bPlaying)
-		return;
-
-	for (u32 i = 0; i < arTimelines.Size(); i++)
-	{
-		if (bTransformationChanged)
-		{
-			arTimelines[i]->SetLocalPosition(this->GetLocalX(), this->GetLocalY());
-			arTimelines[i]->SetPosition(this->GetX(), this->GetY());
-			arTimelines[i]->SetScale(this->GetScaleX(), this->GetScaleY());
-			arTimelines[i]->SetRotation(this->GetRotation());
-		}
-
-		arTimelines[i]->Render();
-	}
 }
 
 INLINE const char *Movie::GetObjectName() const

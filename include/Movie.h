@@ -58,7 +58,6 @@ class SEED_CORE_API Movie : public ISceneObject
 
 		// IRenderable
 		virtual void Update(f32 delta);
-		virtual void Render();
 
 		// IObject
 		virtual const char *GetObjectName() const;
@@ -69,6 +68,7 @@ class SEED_CORE_API Movie : public ISceneObject
 
 	private:
 		BOOL	bPlaying;
+		f32		fElapsedTime;
 		Array<Timeline *, MAX_TIMELINES> arTimelines;
 };
 

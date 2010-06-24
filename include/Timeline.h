@@ -55,7 +55,7 @@ class SEED_CORE_API Timeline
 		~Timeline();
 
 		void Reset();
-		void Render();
+		void Update();
 		void Rewind();
 
 		void AddKeyframe(u32 frame, Keyframe *keyframe);

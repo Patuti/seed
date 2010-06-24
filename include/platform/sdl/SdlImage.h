@@ -66,7 +66,7 @@ class SEED_CORE_API Image : public IImage
 		virtual u32 GetBytesPerPixel() const;
 		virtual void *GetTextureName() const;
 
-		virtual void Update();
+		virtual void Update(PIXEL *buffer);
 		virtual void Reset();
 		virtual BOOL Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool); // O que acontece no Reload?
 

@@ -51,12 +51,12 @@ class RendererDevice : public IRendererDevice
 	SEED_SINGLETON_DECLARE(RendererDevice);
 	public:
 		// IRendererDevice
-		virtual void UnloadTexture(IImage *tex);
-		virtual void UpdateTextureFilter(IImage *texture);
-
+		virtual void TextureUnload(IImage *tex);
+		virtual void TextureFilterUpdate(IImage *texture);
 		virtual void TextureRequest(IImage *texture, void **texName);
 		virtual void TextureRequestAbort(IImage *texture, void **texName);
 		virtual void TextureRequestProcess() const;
+		virtual void TextureDataUpdate(IImage *texture);
 
 		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
 		virtual void UploadData(void *userData);
@@ -71,7 +71,7 @@ class RendererDevice : public IRendererDevice
 		virtual void Enable2D() const;
 		virtual void Disable2D() const;
 
-		virtual IRenderer *CreateRenderer() const;
+		virtual void Update();
 
 		// IModule
 		virtual BOOL Initialize();

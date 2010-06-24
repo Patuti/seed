@@ -42,7 +42,7 @@
 
 namespace Seed {
 
-class IRenderer;
+class Renderer;
 
 /// Viewport Interface
 /**
@@ -56,8 +56,8 @@ class SEED_CORE_API Viewport
 
 		virtual void Render();
 
-		virtual void SetRenderer(IRenderer *renderer);
-		virtual IRenderer *GetRenderer() const;
+		virtual void SetRenderer(Renderer *renderer);
+		virtual Renderer *GetRenderer() const;
 
 		virtual void SetPosition(f32 x, f32 y);
 		virtual void SetWidth(f32 w);
@@ -80,7 +80,7 @@ class SEED_CORE_API Viewport
 		SEED_DISABLE_COPY(Viewport);
 
 	private:
-		IRenderer *pRenderer;
+		Renderer *pRenderer;
 };
 
 } // namespace

@@ -38,28 +38,27 @@
 #define __VIEW_MANAGER_H__
 
 #include "Array.h"
-#include "Config.h"
 #include "interface/IModule.h"
 #include "Singleton.h"
 
 namespace Seed {
 
-class IViewport;
-class IRenderer;
+class Viewport;
+class Renderer;
 
 class SEED_CORE_API ViewManager : public IModule
 {
 	SEED_SINGLETON_DECLARE(ViewManager);
 	public:
-		virtual void Add(IViewport *view);
-		virtual void Remove(IViewport *view);
+		virtual void Add(Viewport *view);
+		virtual void Remove(Viewport *view);
 
 		virtual void Render();
 
-		virtual IRenderer *GetCurrentRenderer() const;
-		virtual IViewport *GetCurrentViewport() const;
+		virtual Renderer *GetCurrentRenderer() const;
+		virtual Viewport *GetCurrentViewport() const;
 		
-		virtual IViewport *GetViewportAt(f32 x, f32 y);
+		virtual Viewport *GetViewportAt(f32 x, f32 y);
 
 		// IModule
 		virtual BOOL Initialize();
@@ -77,8 +76,8 @@ class SEED_CORE_API ViewManager : public IModule
 		SEED_DISABLE_COPY(ViewManager);
 
 	private:
-		Array<IViewport *, SEED_VIEWPORT_MAX> arViewport;
-		IViewport *pCurrentViewport;
+		Array<Viewport *, SEED_VIEWPORT_MAX> arViewport;
+		Viewport *pCurrentViewport;
 		BOOL bEnabled;
 };
 

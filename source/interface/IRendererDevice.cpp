@@ -47,19 +47,19 @@ IRendererDevice::~IRendererDevice()
 {
 }
 
-INLINE IRenderer *IRendererDevice::CreateRenderer() const
-{
-	SEED_ABSTRACT_METHOD;
-	return NULL;
-}
-
-INLINE void IRendererDevice::UpdateTextureFilter(IImage *tex)
+INLINE void IRendererDevice::TextureFilterUpdate(IImage *tex)
 {
 	UNUSED(tex);
 	SEED_ABSTRACT_METHOD;
 }
 
-INLINE void IRendererDevice::UnloadTexture(IImage *tex)
+INLINE void IRendererDevice::TextureUnload(IImage *tex)
+{
+	UNUSED(tex);
+	SEED_ABSTRACT_METHOD;
+}
+
+INLINE void IRendererDevice::TextureDataUpdate(IImage *tex)
 {
 	UNUSED(tex);
 	SEED_ABSTRACT_METHOD;
@@ -150,6 +150,15 @@ INLINE void IRendererDevice::Enable2D() const
 INLINE void IRendererDevice::Disable2D() const
 {
 	SEED_ABSTRACT_METHOD;
+}
+
+INLINE void IRendererDevice::Update()
+{
+}
+
+INLINE const char *IRendererDevice::GetObjectName() const
+{
+	return "IRendererDevice";
 }
 
 } // namespace

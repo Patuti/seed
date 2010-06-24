@@ -37,8 +37,6 @@
 #ifndef __SPRITE_H__
 #define __SPRITE_H__
 
-#include "Config.h"
-
 #if defined(_WII_)
 	#include "platform/wii/WiiSprite.h"
 	using namespace Seed::WII;

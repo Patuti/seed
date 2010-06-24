@@ -51,7 +51,6 @@
 #include <wchar.h>
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
 
 #if defined(__APPLE_CC__)
 #include <SDL_image/SDL_image.h>

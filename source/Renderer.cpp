@@ -29,15 +29,14 @@
  **
  *****************************************************************************/
 
-/*! \file IRenderer.cpp
+/*! \file Renderer.cpp
 	\author	Danny Angelo Carminati Grein
-	\brief Defines the Renderer class interface
+	\brief Renderer implementation
 */
 
-#include "Screen.h"
-#include "interface/ISceneNode.h"
-#include "interface/IRenderer.h"
+#include "Renderer.h"
 #include "Log.h"
+#include "interface/ISceneNode.h"
 #include "RendererDevice.h"
 
 #include <algorithm>
@@ -45,13 +44,13 @@
 
 namespace Seed {
 
-IRenderer::IRenderer()
+Renderer::Renderer()
 	: vRenderables()
 	, vVisibleRenderables()
 {
 }
 
-IRenderer::~IRenderer()
+Renderer::~Renderer()
 {
 	vRenderables.clear();
 	RenderableVector().swap(vRenderables);
@@ -60,7 +59,7 @@ IRenderer::~IRenderer()
 	RenderableVector().swap(vVisibleRenderables);
 }
 
-void IRenderer::PushChildNodes(ISceneNode *node, NodeVector &v)
+void Renderer::PushChildNodes(ISceneNode *node, NodeVector &v)
 {
 	for (u32 i = 0; i < node->Size(); i++)
 	{
@@ -73,7 +72,7 @@ void IRenderer::PushChildNodes(ISceneNode *node, NodeVector &v)
 	}
 }
 
-BOOL IRenderer::Update(f32 dt)
+BOOL Renderer::Update(f32 dt)
 {
 	UNUSED(dt);
 
@@ -106,7 +105,7 @@ BOOL IRenderer::Update(f32 dt)
 	return TRUE;
 }
 
-INLINE void IRenderer::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill) const
+INLINE void Renderer::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill) const
 {
 	UNUSED(x);
 	UNUSED(y);
@@ -117,7 +116,7 @@ INLINE void IRenderer::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fi
 	SEED_ABSTRACT_METHOD;
 }
 
-void IRenderer::Render()
+void Renderer::Render()
 {
 	if (pRendererDevice && pRendererDevice->IsEnabled() && IModule::IsEnabled())
 	{
@@ -129,7 +128,7 @@ void IRenderer::Render()
 	}
 }
 
-INLINE void IRenderer::RenderObjects(const RenderableVector &vec) const
+INLINE void Renderer::RenderObjects(const RenderableVector &vec) const
 {
 	ConstRenderableVectorIterator it = vec.begin();
 	ConstRenderableVectorIterator end = vec.end();
@@ -144,7 +143,7 @@ INLINE void IRenderer::RenderObjects(const RenderableVector &vec) const
 }
 
 // FIXME: Culler(SceneNode, CullingOperation)
-INLINE void IRenderer::Culler()
+INLINE void Renderer::Culler()
 {
 	vVisibleRenderables.clear();
 
@@ -163,7 +162,7 @@ INLINE void IRenderer::Culler()
 	this->Sort(vVisibleRenderables);
 }
 
-INLINE void IRenderer::Sort(RenderableVector &vec)
+INLINE void Renderer::Sort(RenderableVector &vec)
 {
 #if !SEED_ENABLE_DEPTH_TEST
 	std::sort(vec.begin(), vec.end(), ISceneObjectAscendingPrioritySort());
@@ -172,30 +171,29 @@ INLINE void IRenderer::Sort(RenderableVector &vec)
 #endif
 }
 
-INLINE void IRenderer::Begin() const
+INLINE void Renderer::Begin() const
 {
+	pRendererDevice->Begin();
 }
 
-INLINE void IRenderer::End() const
+INLINE void Renderer::End() const
 {
+	pRendererDevice->End();
 }
 
-INLINE void IRenderer::Enable2D() const
-{
-}
-
-INLINE void IRenderer::Disable2D() const
-{
-}
-
-INLINE void IRenderer::Add(ISceneNode *node)
+INLINE void Renderer::Add(ISceneNode *node)
 {
 	arScenes.Add(node);
 }
 
-INLINE void IRenderer::Remove(ISceneNode *node)
+INLINE void Renderer::Remove(ISceneNode *node)
 {
 	arScenes.Remove(node);
+}
+
+INLINE const char *Renderer::GetObjectName() const
+{
+	return "Renderer";
 }
 
 } // namespace

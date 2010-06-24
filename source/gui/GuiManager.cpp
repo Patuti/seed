@@ -124,4 +124,9 @@ INLINE void GuiManager::OnInputPointerMove(const EventInputPointer *ev)
 	cContainer.OnInputPointerMove(ev);
 }
 
+INLINE const char *GuiManager::GetObjectName() const
+{
+	return "GuiManager";
+}
+
 } // namespace

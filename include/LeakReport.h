@@ -39,7 +39,6 @@
 
 #if defined(DEBUG)
 
-#include "Config.h"
 #include "Defines.h"
 #include "Log.h"
 #include "Singleton.h"

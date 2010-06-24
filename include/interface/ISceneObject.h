@@ -38,7 +38,6 @@
 #define __ISCENE_OBJECT_H__
 
 #include "Array.h"
-#include "Config.h"
 #include "interface/ITransformable2D.h"
 #include "interface/IRenderable.h"
 

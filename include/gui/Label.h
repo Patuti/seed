@@ -64,8 +64,8 @@ class SEED_CORE_API Label : public IWidget
 
 		// IRenderable
 		virtual void Render();
-		virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
-		virtual void SetColor(PIXEL px);
+		//virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
+		//virtual void SetColor(PIXEL px);
 
 		// ITransformable2D
 		virtual void SetWidth(f32 w);
@@ -76,7 +76,7 @@ class SEED_CORE_API Label : public IWidget
 
 	protected:
 		eHorizontalAlignment	iAlign;
-		PIXEL		iColor;
+		//PIXEL		iColor;
 		BOOL		bAutoAdjust;
 		Text		cText;
 		const Font	*pFont;

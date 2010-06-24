@@ -99,7 +99,7 @@ void Timeline::GotoAndPlay(const char *strKeyframeName)
 	iCurrentFrame	= iKeyframeFrom;
 }
 
-void Timeline::Render()
+void Timeline::Update()
 {
 	if (!pObject)
 		return;
@@ -120,7 +120,7 @@ void Timeline::Render()
 
 			iKeyframeFrom = 0;
 			iCurrentFrame = 0;
-			this->Render();
+			this->Update();
 			return;
 		}
 	}
@@ -248,7 +248,7 @@ void Timeline::Render()
 		pObject->SetLocalPosition(fCurrLocalPosX, fCurrLocalPosY);
 		pObject->SetRotation(fCurrRot);
 		pObject->SetScale(fCurrScaleX, fCurrScaleY);
-		pObject->SetColor((u8)fCurrR, (u8)fCurrG, (u8)fCurrB, (u8)fCurrA);
+		pObject->SetColor((u32)fCurrR, (u32)fCurrG, (u32)fCurrB, (u32)fCurrA);
 	}
 
 	if ((fBegin / fDuration) >= 1.0f)

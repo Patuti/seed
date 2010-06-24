@@ -38,11 +38,14 @@
 
 #if defined(_OGL_)
 
-#include "api/ogl/OglRenderer.h"
 #include "Log.h"
 #include "MemoryManager.h"
 #include "Screen.h"
 #include "Image.h"
+
+#if defined(_SDL_)
+#include <SDL/SDL_opengl.h>
+#endif
 
 #if defined(__APPLE_CC__)
 #include <OpenGL/gl.h>
@@ -58,7 +61,7 @@
 
 #define TAG "[OGL14RendererDevice] "
 
-namespace Seed { namespace OGL {
+namespace Seed { namespace OpenGL {
 
 OGL14RendererDevice::OGL14RendererDevice()
 {
@@ -138,6 +141,8 @@ INLINE void OGL14RendererDevice::BackbufferClear(const PIXEL color)
 
 INLINE void OGL14RendererDevice::Begin() const
 {
+	this->TextureRequestProcess();
+
 	glPushMatrix();
 	glLoadIdentity();
 }
@@ -146,7 +151,6 @@ INLINE void OGL14RendererDevice::End() const
 {
 	glPopMatrix();
 	pScreen->ApplyFade();
-	this->TextureRequestProcess();
 }
 
 BOOL OGL14RendererDevice::CheckExtension(const char *extName)
@@ -366,32 +370,34 @@ INLINE void OGL14RendererDevice::TextureRequestProcess() const
 			GLuint w = texture->GetAtlasWidthInPixel();
 			GLuint h = texture->GetAtlasHeightInPixel();
 			const void *data = texture->GetData();
-			ASSERT_NULL(data);
 
-			switch (texture->GetBytesPerPixel())
+			// if data == NULL then this can be a dynamic texture. we need just the texture id.
+			if (data)
 			{
-				case 4:
-					// OpenGL 1.2+ only GL_EXT_bgra
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
-				break;
+				switch (texture->GetBytesPerPixel())
+				{
+					case 4:
+						// OpenGL 1.2+ only GL_EXT_bgra
+						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+					break;
 
-				case 3:
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-				break;
+					case 3:
+						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+					break;
 
-				case 2:
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
-				break;
+					case 2:
+						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
+					break;
 
-				case 1:
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
-				break;
+					case 1:
+						glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
+					break;
 
-				default:
-				break;
+					default:
+					break;
+				}
 			}
-
-			glBindTexture(GL_TEXTURE_2D, 0);
+			//glBindTexture(GL_TEXTURE_2D, 0);
 
 			*texId = (GLuint *)tex;
 			texture->Close(); // free ram
@@ -402,7 +408,7 @@ INLINE void OGL14RendererDevice::TextureRequestProcess() const
 	arTextureName.Truncate();
 }
 
-INLINE void OGL14RendererDevice::UpdateTextureFilter(IImage *texture)
+INLINE void OGL14RendererDevice::TextureFilterUpdate(IImage *texture)
 {
 	void *pTextureId = texture->GetTextureName();
 	if (pTextureId)
@@ -430,7 +436,7 @@ INLINE void OGL14RendererDevice::UpdateTextureFilter(IImage *texture)
 	}
 }
 
-INLINE void OGL14RendererDevice::UnloadTexture(IImage *texture)
+INLINE void OGL14RendererDevice::TextureUnload(IImage *texture)
 {
 	void *texId = texture->GetTextureName();
 	if (texId)
@@ -438,6 +444,45 @@ INLINE void OGL14RendererDevice::UnloadTexture(IImage *texture)
 		GLuint *t = static_cast<GLuint *>(texId);
 		GLuint tex = (GLuint)t;
 		glDeleteTextures(1, &tex);
+	}
+}
+
+INLINE void OGL14RendererDevice::TextureDataUpdate(IImage *texture)
+{
+	void *texId = texture->GetTextureName();
+	if (texId)
+	{
+		GLuint *t = static_cast<GLuint *>(texId);
+		GLuint tex = (GLuint)t;
+		glBindTexture(GL_TEXTURE_2D, tex);
+
+		GLuint w = texture->GetAtlasWidthInPixel();
+		GLuint h = texture->GetAtlasHeightInPixel();
+		const void *data = texture->GetData();
+		ASSERT_NULL(data);
+
+		switch (texture->GetBytesPerPixel())
+		{
+			case 4:
+				// OpenGL 1.2+ only GL_EXT_bgra
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+			break;
+
+			case 3:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			break;
+
+			case 2:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
+			break;
+
+			case 1:
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
+			break;
+
+			default:
+			break;
+		}
 	}
 }
 
@@ -511,11 +556,6 @@ void OGL14RendererDevice::BackbufferFill(PIXEL color)
 	//glEnable(GL_TEXTURE_2D);
 
 	glPopAttrib();
-}
-
-IRenderer *OGL14RendererDevice::CreateRenderer() const
-{
-	return New(OglRenderer());
 }
 
 void OGL14RendererDevice::SetViewport(const Rect<f32> &area) const
@@ -606,7 +646,7 @@ INLINE void OGL14RendererDevice::Enable2D() const
 	glLoadIdentity();
 
 	f32 aspectH = viewH / viewW;
-	glOrtho(0.0f, 1.0f, aspectH, 0.0f, -1000000, 0);
+	glOrtho(0.0f, 1.0f, aspectH, 0.0f, -SEED_MAX_PRIORITY, 0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();

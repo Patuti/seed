@@ -43,6 +43,7 @@
 
 #include "Thread.h"
 #include "Mutex.h"
+#include "Image.h"
 //#include "interface/IRenderable.h"
 #include "interface/ISceneObject.h"
 #include <oggplay/oggplay.h>
@@ -84,7 +85,16 @@
 */
 #endif // _SDL_
 #elif defined(WIN32)
-	#include <windows.h>
+#pragma push_macro("Delete")
+#pragma push_macro("BOOL")
+#pragma push_macro("SIZE_T")
+#undef Delete
+#undef BOOL
+#undef SIZE_T
+#include <windows.h>
+#pragma pop_macro("SIZE_T")
+#pragma pop_macro("BOOL")
+#pragma pop_macro("Delete")
 	#define SEM_CREATE(p,s) ((p = CreateSemaphore(NULL, (long)(s), (long)(s), NULL)) == 0)
 	#define SEM_SIGNAL(p)   (!ReleaseSemaphore(p, 1, NULL))
 	#define SEM_WAIT(p)     WaitForSingleObject(p, INFINITE)
@@ -198,9 +208,11 @@ class SEED_CORE_API Theora : public ISceneObject, public Thread // public Thread
 		BOOL		bTerminateThread;
 		semaphore	sem;
 
-		GLuint		iTextureId;
-		GLfloat		vertices[8];
-		GLfloat		coords[8];
+		int		iTextureId;
+		float		vertices[8];
+		float		coords[8];
+
+		Image		cImage;
 };
 
 } // namespace

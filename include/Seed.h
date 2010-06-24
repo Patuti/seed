@@ -37,7 +37,6 @@
 #ifndef __SEED_H__
 #define __SEED_H__
 
-#include <Config.h>
 #include <Defines.h>
 #include <MemoryManager.h>
 #include <Enum.h>

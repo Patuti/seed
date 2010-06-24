@@ -45,18 +45,30 @@
 
 #include "interface/IRendererDevice.h"
 
+#if defined(_SDL_)
+#pragma push_macro("Delete")
+#pragma push_macro("BOOL")
+#pragma push_macro("SIZE_T")
+#undef Delete
+#undef BOOL
+#undef SIZE_T
+#include <SDL/SDL_opengl.h>
+#pragma pop_macro("SIZE_T")
+#pragma pop_macro("BOOL")
+#pragma pop_macro("Delete")
+#endif
+
 #if defined(__APPLE_CC__)
 #include <OpenGL/glext.h>
 #else
 #include <GL/glext.h>
 #endif
 
-
 namespace Seed {
 
 class IImage;
 
-namespace OGL {
+namespace OpenGL {
 
 class SEED_CORE_API OGL14RendererDevice : public IRendererDevice
 {
@@ -70,12 +82,12 @@ class SEED_CORE_API OGL14RendererDevice : public IRendererDevice
 		virtual void End() const;
 
 		// IRendererDevice
-		virtual void UpdateTextureFilter(IImage *texture);
-		virtual void UnloadTexture(IImage *tex);
-
+		virtual void TextureFilterUpdate(IImage *texture);
+		virtual void TextureUnload(IImage *tex);
 		virtual void TextureRequest(IImage *texture, void **texName);
 		virtual void TextureRequestAbort(IImage *texture, void **texName);
 		virtual void TextureRequestProcess() const;
+		virtual void TextureDataUpdate(IImage *texture);
 
 		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
 		virtual void UploadData(void *userData);
@@ -86,8 +98,6 @@ class SEED_CORE_API OGL14RendererDevice : public IRendererDevice
 		virtual void DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill = FALSE) const;
 		virtual void Enable2D() const;
 		virtual void Disable2D() const;
-
-		virtual IRenderer *CreateRenderer() const;
 
 		// IModule
 		virtual BOOL Initialize();
