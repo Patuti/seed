@@ -369,11 +369,11 @@ INLINE void D3D8RendererDevice::TextureRequestProcess() const
 			u32 h = texture->GetAtlasHeightInPixel();
 
 			// FIXME: only 32bits for now
-			mDevice->CreateTexture(w, h, 0, D3DUSAGE_DYNAMIC, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, tex);
+			mDevice->CreateTexture(w, h, 0, D3DUSAGE_DYNAMIC, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, tex);
 			IDirect3DTexture8 *t = *tex;
 
 			const void *data = texture->GetData();
-			if (data)
+			if (t && data)
 			{
 				D3DLOCKED_RECT r;
 				t->LockRect(0, &r, NULL, D3DLOCK_DISCARD);
@@ -409,23 +409,20 @@ INLINE void D3D8RendererDevice::TextureUnload(ITexture *texture)
 
 INLINE void D3D8RendererDevice::TextureDataUpdate(ITexture *texture)
 {
-	for (u32 i = 0; i < arTexture.Size(); i++)
+	const void *data = texture->GetData();
+	if (data)
 	{
-		const void *data = texture->GetData();
-		if (data)
-		{
-			u32 w = texture->GetAtlasWidthInPixel();
-			u32 h = texture->GetAtlasHeightInPixel();
-			IDirect3DTexture8 *t = static_cast<IDirect3DTexture8 *>(texture->GetTextureName());
+		u32 w = texture->GetAtlasWidthInPixel();
+		u32 h = texture->GetAtlasHeightInPixel();
+		IDirect3DTexture8 *t = static_cast<IDirect3DTexture8 *>(texture->GetTextureName());
 
-			D3DLOCKED_RECT r;
-			t->LockRect(0, &r, NULL, D3DLOCK_DISCARD);
-			if (r.pBits)
-			{
-				MEMCOPY(r.pBits, data, w * h * 4);
-			}
-			t->UnlockRect(0);
+		D3DLOCKED_RECT r;
+		t->LockRect(0, &r, NULL, D3DLOCK_DISCARD);
+		if (r.pBits)
+		{
+			MEMCOPY(r.pBits, data, w * h * 4);
 		}
+		t->UnlockRect(0);
 	}
 }
 

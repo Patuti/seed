@@ -43,8 +43,8 @@
 
 #include "Thread.h"
 #include "Mutex.h"
+#include "Image.h"
 #include "Texture.h"
-//#include "interface/IRenderable.h"
 #include "interface/ISceneObject.h"
 #include <oggplay/oggplay.h>
 
@@ -126,7 +126,7 @@
 
 namespace Seed {
 
-class SEED_CORE_API Theora : public ISceneObject, public Thread // public Thread, public IRenderable /*, public IVideo*/
+class SEED_CORE_API Theora : public Thread, public Image /*, public IVideo*/
 {
 	public:
 		Theora();
@@ -134,7 +134,8 @@ class SEED_CORE_API Theora : public ISceneObject, public Thread // public Thread
 
 		virtual void Rewind();
 
-		virtual BOOL Load(const char *filename);
+		virtual BOOL Load(const char *filename, IMemoryPool *pool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
 		virtual void Reset();
 		virtual BOOL Unload();
 
@@ -157,8 +158,8 @@ class SEED_CORE_API Theora : public ISceneObject, public Thread // public Thread
 		virtual void PlayToFrame(u32 frame);
 
 		// IRenderable
-		virtual void Render(f32 delta);
 		virtual void Update(f32 delta);
+		virtual void Render();
 
 		// Thread
 		virtual BOOL Run();
@@ -208,11 +209,8 @@ class SEED_CORE_API Theora : public ISceneObject, public Thread // public Thread
 		BOOL		bTerminateThread;
 		semaphore	sem;
 
-		int		iTextureId;
-		float		vertices[8];
-		float		coords[8];
-
 		Texture		cTexture;
+		//Image		cImage;
 };
 
 } // namespace

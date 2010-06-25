@@ -111,6 +111,10 @@ INLINE void Movie::Reset()
 	arTimelines.Truncate();
 }
 
+INLINE void Movie::Render()
+{
+}
+
 INLINE const char *Movie::GetObjectName() const
 {
 	return "Movie";

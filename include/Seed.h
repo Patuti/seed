@@ -68,6 +68,7 @@
 #include <gui/Label.h>
 #include <gui/TextArea.h>
 
+#include <Image.h>
 #include <Input.h>
 #include <Texture.h>
 

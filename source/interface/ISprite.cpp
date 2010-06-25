@@ -145,20 +145,20 @@ BOOL ISprite::Load(const char *filename, ResourceManager *res, IMemoryPool *pool
 
 	if (this->Unload())
 	{
-		this->pFilename = filename;
-		this->pPool = pool;
-		this->pRes = res;
+		pFilename = filename;
+		pPool = pool;
+		pRes = res;
 
-		this->pSprite = static_cast<SpriteObject *>(res->Get(filename, Seed::ObjectSprite, pool));
+		pSprite = static_cast<SpriteObject *>(res->Get(filename, Seed::ObjectSprite, pool));
 		this->SetRotation(0);
-		this->SetAnimation((u32)0);
+		this->SetAnimation(0u);
 
-		this->bChanged = TRUE;
-		this->bInitialized = TRUE;
+		bChanged = TRUE;
+		bInitialized = TRUE;
 
-		this->pAnimation = pSprite->GetAnimation(iCurrentAnimation);
-		this->pAnimationFrames = pSprite->GetFrames(pAnimation);
-		this->pFrame = &pAnimationFrames[iCurrentFrame]; //&pAnimation->pFrame[iCurrentFrame];
+		pAnimation = pSprite->GetAnimation(iCurrentAnimation);
+		pAnimationFrames = pSprite->GetFrames(pAnimation);
+		pFrame = &pAnimationFrames[iCurrentFrame];
 	}
 
 	return TRUE;

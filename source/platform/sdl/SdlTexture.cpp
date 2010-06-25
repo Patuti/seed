@@ -70,6 +70,8 @@ Texture::Texture()
 	, pTextureId(NULL)
 	, iBytesPerPixel(0)
 	, iPitch(0)
+	, iAtlasWidth(0)
+	, iAtlasHeight(0)
 {
 }
 
@@ -94,6 +96,8 @@ INLINE void Texture::Reset()
 	iHeight = 0;
 	iBytesPerPixel = 0;
 	iPitch = 0;
+	iAtlasWidth = 0;
+	iAtlasHeight = 0;
 
 	fWidth = 0.0f;
 	fHeight = 0.0f;
@@ -136,8 +140,8 @@ BOOL Texture::Load(const char *filename, ResourceManager *res, IMemoryPool *pool
 		ASSERT_NULL(pSurface);
 		SDL_FreeSurface(tmp);
 
-		iWidth	= pSurface->w;
-		iHeight = pSurface->h;
+		iAtlasWidth = iWidth = pSurface->w;
+		iAtlasHeight = iHeight = pSurface->h;
 
 		/*
 		If the image isn't power of two, we need fix it.
@@ -231,6 +235,8 @@ BOOL Texture::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 
 		fWidth = (f32)width / (f32)pScreen->GetWidth();
 		fHeight = (f32)height / (f32)pScreen->GetHeight();
+		iWidth = iAtlasWidth = width;
+		iHeight = iAtlasHeight = height;
 
 		iBytesPerPixel = 4; // FIXME: parametized?
 		iPitch = ROUND_UP(width, 32); // FIXME: parametized?
@@ -272,12 +278,12 @@ INLINE const void *Texture::GetData() const
 
 INLINE u32 Texture::GetAtlasWidthInPixel() const
 {
-	return pSurface->w;
+	return iAtlasWidth;
 }
 
 INLINE u32 Texture::GetAtlasHeightInPixel() const
 {
-	return pSurface->h;
+	return iAtlasHeight;
 }
 
 INLINE void Texture::PutPixel(u32 x, u32 y, PIXEL px)
@@ -409,7 +415,7 @@ INLINE void Texture::SetFilter(eTextureFilterType type, eTextureFilter filter)
 
 INLINE u32 Texture::GetBytesPerPixel() const
 {
-	return pSurface->format->BytesPerPixel;
+	return iBytesPerPixel;
 }
 
 INLINE void *Texture::GetTextureName() const

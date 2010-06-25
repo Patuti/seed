@@ -44,6 +44,7 @@ enum eObjectType
 {
 	// Assets
 	ObjectTexture = 0,
+	ObjectImage,
 	ObjectSprite,
 	ObjectText,
 	ObjectFont,

@@ -92,6 +92,9 @@ class SEED_CORE_API Texture : public ITexture
 
 		u32 iBytesPerPixel;
 		u32 iPitch;
+
+		u32 iAtlasWidth;
+		u32 iAtlasHeight;
 };
 
 }} // namespace

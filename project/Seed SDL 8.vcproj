@@ -367,6 +367,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\Image.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\Key.cpp"
 				>
 			</File>
@@ -1060,6 +1064,10 @@
 			</File>
 			<File
 				RelativePath="..\include\Formats.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Image.h"
 				>
 			</File>
 			<File

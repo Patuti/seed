@@ -3,14 +3,14 @@
  ** All rights reserved
  ** Contact: licensing@seedframework.org
  ** Website: http://www.seedframework.org
-
+ 
  ** This file is part of the Seed Framework.
-
+ 
  ** Commercial Usage
  ** Seed Framework is available under proprietary license for those who cannot,
  ** or choose not to, use LGPL and GPL code in their projects (eg. iPhone,
  ** Nintendo Wii and others).
-
+ 
  ** GNU Lesser General Public License Usage
  ** Alternatively, this file may be used under the terms of the GNU Lesser
  ** General Public License version 2.1 as published by the Free Software
@@ -29,50 +29,70 @@
  **
  *****************************************************************************/
 
-/*! \file Movie.h
-	\author	Rafael Eduardo Gonchor
-	\brief A collection of timelines that are part of the movie
+/*! \file Image.h
+	\author	Danny Angelo Carminati Grein
+	\brief Image
 */
 
-#ifndef __MOVIE_H__
-#define __MOVIE_H__
+#ifndef __IMAGE_H__
+#define __IMAGE_H__
 
-#include "Timeline.h"
-#include "Array.h"
+#include "interface/ISceneObject.h"
+#include "SeedInit.h"
+#include "Vertex.h"
 
 namespace Seed {
 
-#define MAX_TIMELINES 36
+class ITexture;
 
-class SEED_CORE_API Movie : public ISceneObject
+class SEED_CORE_API Image : public ISceneObject
 {
 	public:
-		Movie();
-		virtual ~Movie();
+		Image();
+		virtual ~Image();
 
-		void AddTimeline(Timeline *timeline);
-		void Play();
-		void Stop();
-		void Rewind();
-		void Reset();
+		virtual BOOL Load(const char *filename, IMemoryPool *pool);
+		virtual BOOL Load(const char *filename, ResourceManager *res = pResourceManager, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(ITexture *texture);
+		virtual BOOL Unload();
 
 		// IRenderable
 		virtual void Update(f32 delta);
 		virtual void Render();
 
 		// IObject
-		virtual const char *GetObjectName() const;
 		virtual int GetObjectType() const;
+		virtual const char *GetObjectName() const;
 
-	private:
-		SEED_DISABLE_COPY(Movie);
+	protected:
+		SEED_DISABLE_COPY(Image);
 
-	private:
-		BOOL	bPlaying;
-		f32		fElapsedTime;
-		Array<Timeline *, MAX_TIMELINES> arTimelines;
+		ITexture		*pTexture;
+		ResourceManager *pRes;
+		IMemoryPool		*pPool;
+		const char		*pFilename;
+
+		f32 fAspectHalfWidth; // real half width
+		f32 fAspectHalfHeight; // real half height
+		f32 fAspectWidth; // real width
+		f32 fAspectHeight; // real height
+
+		// Frame related width and heigth used for rendering only
+		s32 iHalfWidth; // half width in pixel
+		s32 iHalfHeight; // half height in pixel
+		u32 iWidth; // width in pixel
+		u32 iHeight; // height in pixel
+
+		f32 fTexS0;
+		f32 fTexS1;
+		f32 fTexT0;
+		f32 fTexT1;
+
+		sVertex vert[4];
+
+		BOOL bDynamic;
 };
 
 } // namespace
 
-#endif // __MOVIE_H__
+#endif // __IMAGE_H__

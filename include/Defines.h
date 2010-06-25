@@ -47,7 +47,7 @@ http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 */
 #if defined(_MSC_VER)
 #pragma warning(disable:4127) // conditional expression is constant
-#pragma warning(disable:4201) // anonymous union
+#pragma warning(disable:4201) // nonstandard extension used : nameless struct/union
 #pragma warning(disable:4530)
 #pragma warning(disable:4996) // _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4251) // stl + dll
