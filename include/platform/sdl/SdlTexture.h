@@ -62,7 +62,6 @@ class SEED_CORE_API Texture : public ITexture
 		virtual PIXEL GetPixel(u32 x, u32 y) const;
 		virtual u8 GetPixelAlpha(u32 x, u32 y) const;
 
-		virtual void SetFilter(eTextureFilterType type, eTextureFilter filter);
 		virtual u32 GetBytesPerPixel() const;
 		virtual void *GetTextureName() const;
 

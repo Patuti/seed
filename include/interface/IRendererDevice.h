@@ -58,7 +58,6 @@ class SEED_CORE_API IRendererDevice : public IModule
 		virtual void TextureRequestProcess() const;
 		virtual void TextureDataUpdate(ITexture *texture);
 		virtual void TextureUnload(ITexture *tex);
-		virtual void TextureFilterUpdate(ITexture *texture);
 
 		virtual void SetBlendingOperation(eBlendMode mode, PIXEL color) const;
 		virtual void UploadData(void *userData);

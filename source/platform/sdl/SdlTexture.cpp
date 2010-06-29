@@ -401,26 +401,6 @@ INLINE u32 Texture::GetUsedMemory() const
 	return IResource::GetUsedMemory() + sizeof(this) + (iHeight * iWidth * iBytesPerPixel);
 }
 
-INLINE void Texture::SetFilter(eTextureFilterType type, eTextureFilter filter)
-{
-	if (type == Seed::TextureFilterTypeMin && filter == nMinFilter)
-		return;
-
-	if (type == Seed::TextureFilterTypeMag && filter == nMagFilter)
-		return;
-
-	pRendererDevice->TextureFilterUpdate(this);
-
-	if (type == Seed::TextureFilterTypeMin)
-	{
-		nMinFilter = filter;
-	}
-	else if (type == Seed::TextureFilterTypeMag)
-	{
-		nMagFilter = filter;
-	}
-}
-
 INLINE u32 Texture::GetBytesPerPixel() const
 {
 	return iBytesPerPixel;

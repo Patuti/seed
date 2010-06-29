@@ -180,11 +180,6 @@ INLINE void RendererDevice::TextureUnload(ITexture *tex)
 	pApiDevice->TextureUnload(tex);
 }
 
-INLINE void RendererDevice::TextureFilterUpdate(ITexture *texture)
-{
-	pApiDevice->TextureFilterUpdate(texture);
-}
-
 INLINE void RendererDevice::TextureDataUpdate(ITexture *texture)
 {
 	pApiDevice->TextureDataUpdate(texture);

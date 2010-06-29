@@ -69,7 +69,7 @@ class SEED_CORE_API IRenderable
 
 	protected:
 		eBlendMode	eBlendOperation;
-		PIXEL		iColor;
+		uPixel		iColor;
 		BOOL		bVisible;
 
 		virtual void Reset();

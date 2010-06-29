@@ -54,7 +54,6 @@ TextArea::TextArea()
 	, fDiffX(0.0f)
 	, fScaleX(0.0f)
 	, fScaleY(0.0f)
-	, iColor(0)
 	, eHAlign(HorizontalAlignLeft)
 	, eVAlign(VerticalAlignTop)
 	, pFont(NULL)
@@ -80,7 +79,7 @@ void TextArea::Reset()
 
 	this->iId				= 0;
 	this->bDisabled			= TRUE;
-	this->iColor			= 0;
+	this->iColor.pixel		= 0;
 	this->iLines			= 0;
 	this->eHAlign 			= HorizontalAlignLeft;
 	this->eVAlign 			= VerticalAlignTop;
@@ -97,7 +96,7 @@ void TextArea::ReleaseText()
 
 	this->iId				= 0;
 	this->bDisabled			= TRUE;
-	this->iColor			= 0;
+	this->iColor.pixel		= 0;
 	this->iLines			= 0;
 	this->eHAlign 			= HorizontalAlignLeft;
 	this->eVAlign 			= VerticalAlignTop;
@@ -122,7 +121,7 @@ void TextArea::Update(f32 dt)
 void TextArea::Render()
 {
 	this->cText.SetBlending(this->eBlendOperation);
-	this->cText.SetColor(this->iColor);
+	this->cText.SetColor(this->iColor.pixel);
 	this->cText.SetScale(this->GetScaleX(), this->GetScaleY());
 
 	for (u32 i = 0; i < this->iLines; i++)

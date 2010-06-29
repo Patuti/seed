@@ -80,7 +80,7 @@ WidgetContainer::~WidgetContainer()
 void WidgetContainer::Reset()
 {
 	iId				= 0;
-	iColor			= 0;
+	iColor.pixel	= 0;
 	eBlendOperation	= BlendNone;
 
 	IWidget::Reset();

@@ -52,7 +52,6 @@ class RendererDevice : public IRendererDevice
 	public:
 		// IRendererDevice
 		virtual void TextureUnload(ITexture *tex);
-		virtual void TextureFilterUpdate(ITexture *texture);
 		virtual void TextureRequest(ITexture *texture, void **texName);
 		virtual void TextureRequestAbort(ITexture *texture, void **texName);
 		virtual void TextureRequestProcess() const;

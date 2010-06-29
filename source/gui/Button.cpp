@@ -338,14 +338,23 @@ void Button::SetBlending(eBlendMode op)
 
 void Button::SetColor(u32 r, u32 g, u32 b, u32 a)
 {
+	IWidget::SetColor(r, g, b, a);
 	this->cSprite.SetColor(r, g, b, a);
 	this->cLabel.SetColor(r, g, b, a);
 }
 
 void Button::SetColor(PIXEL color)
 {
+	IWidget::SetColor(color);
 	this->cSprite.SetColor(color);
 	this->cLabel.SetColor(color);
+}
+
+void Button::SetColor(f32 r, f32 g, f32 b, f32 a)
+{
+	IWidget::SetColor(r, g, b, a);
+	this->cSprite.SetColor(r, g, b, a);
+	this->cLabel.SetColor(r, g, b, a);
 }
 
 INLINE BOOL Button::CheckPixel(f32 x, f32 y) const

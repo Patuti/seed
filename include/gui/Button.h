@@ -92,6 +92,7 @@ class SEED_CORE_API Button : public IWidget, public IResource
 
 		virtual void SetBlending(eBlendMode op);
 		virtual void SetColor(u32 r, u32 g, u32 b, u32 a);
+		virtual void SetColor(f32 r, f32 g, f32 b, f32 a);
 		virtual void SetColor(PIXEL color);
 
 		// IEventWidgetListener

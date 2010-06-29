@@ -137,7 +137,7 @@ INLINE void ParticleEmitter::Reset()
 
 INLINE void ParticleEmitter::Update(f32 deltaTime)
 {
-	if (!(bEnabled && pSpriteFilename))
+	if (!(bEnabled && pSpriteFilename && !bPaused))
 		return;
 
 	//deltaTime = 0.017000001f;

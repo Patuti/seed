@@ -43,7 +43,7 @@ namespace Seed {
 IRenderable::IRenderable()
 	: eBlendOperation(BlendNone)
 //	, iPriority(0)
-	, iColor(0xffffffff)
+	, iColor(255, 255, 255, 255)
 	, bVisible(TRUE)
 //	, fPriority(0.0f)
 {
@@ -57,8 +57,7 @@ IRenderable::~IRenderable()
 INLINE void IRenderable::Reset()
 {
 	eBlendOperation = BlendNone;
-	//iPriority = 0;
-	iColor = 0;
+	iColor.pixel = 0;
 	bVisible = TRUE;
 }
 
@@ -103,22 +102,22 @@ INLINE BOOL IRenderable::IsVisible() const
 
 INLINE void IRenderable::SetColor(u32 r, u32 g, u32 b, u32 a)
 {
-	iColor = PIXEL_COLOR(r, g, b, a);
+	iColor.pixel = PIXEL_COLOR(r, g, b, a);
 }
 
 INLINE void IRenderable::SetColor(f32 r, f32 g, f32 b, f32 a)
 {
-	iColor = PIXEL_COLOR(static_cast<u32>(r * 255), static_cast<u32>(g * 255), static_cast<u32>(b * 255), static_cast<u32>(a * 255));
+	iColor.pixel = PIXEL_COLOR(static_cast<u32>(r * 255), static_cast<u32>(g * 255), static_cast<u32>(b * 255), static_cast<u32>(a * 255));
 }
 
 INLINE void IRenderable::SetColor(PIXEL px)
 {
-	iColor = px;
+	iColor.pixel = px;
 }
 
 INLINE PIXEL IRenderable::GetColor() const
 {
-	return iColor;
+	return iColor.pixel;
 }
 
 } // namespace

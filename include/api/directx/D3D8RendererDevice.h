@@ -77,7 +77,6 @@ class SEED_CORE_API D3D8RendererDevice : public IRendererDevice
 		virtual void End() const;
 
 		// IRendererDevice
-		virtual void TextureFilterUpdate(ITexture *texture);
 		virtual void TextureUnload(ITexture *texture);
 		virtual void TextureRequest(ITexture *texture, void **texName);
 		virtual void TextureRequestAbort(ITexture *texture, void **texName);

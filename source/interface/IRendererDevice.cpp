@@ -47,12 +47,6 @@ IRendererDevice::~IRendererDevice()
 {
 }
 
-INLINE void IRendererDevice::TextureFilterUpdate(ITexture *tex)
-{
-	UNUSED(tex);
-	SEED_ABSTRACT_METHOD;
-}
-
 INLINE void IRendererDevice::TextureUnload(ITexture *tex)
 {
 	UNUSED(tex);

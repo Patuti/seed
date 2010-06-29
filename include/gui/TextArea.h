@@ -104,8 +104,6 @@ class SEED_CORE_API TextArea : public IWidget
 		f32			fScaleX;
 		f32			fScaleY;
 
-		PIXEL		iColor;
-
 		eHorizontalAlignment	eHAlign;
 		eVerticalAlignment		eVAlign;
 

@@ -134,7 +134,7 @@ INLINE void OGL14RendererDevice::BackbufferClear(const PIXEL color)
 		uPixel p;
 		p.pixel = color;
 
-		glClearColor(p.component.r / 255.0f, p.component.g / 255.0f, p.component.b / 255.0f, p.component.a / 255.0f);
+		glClearColor(p.rgba.r / 255.0f, p.rgba.g / 255.0f, p.rgba.b / 255.0f, p.rgba.a / 255.0f);
 	}
 	glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -193,7 +193,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			// http://home.comcast.net/~tom_forsyth/blog.wiki.html#[[Premultiplied%20alpha]]
 			glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		}
 		break;
 
@@ -216,8 +215,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 		{
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR);
-			// glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-			// glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE); // Morpho
 		}
 		break;
 
@@ -233,7 +230,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(mR, mG, mB, mA);
-			glDisableClientState(GL_COLOR_ARRAY);
 		}
 		break;
 
@@ -249,7 +245,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(mR, mG, mB, mA);
-			glDisableClientState(GL_COLOR_ARRAY);
 		}
 		break;
 
@@ -264,7 +259,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(mR, mG, mB, mA);
-			glDisableClientState(GL_COLOR_ARRAY);
 		}
 		break;
 
@@ -279,7 +273,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(mR, mG, mB, mA);
-			glDisableClientState(GL_COLOR_ARRAY);
 		}
 		break;
 
@@ -294,7 +287,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(mR, mG, mB, mA);
-			glDisableClientState(GL_COLOR_ARRAY);
 		}
 		break;
 
@@ -306,12 +298,11 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(255, 255, 255, mA);
-			glDisableClientState(GL_COLOR_ARRAY);
 		}
 		break;
 
 		case BlendModulate:
-		{/*
+		{
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -321,7 +312,6 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(mR, mG, mB, mA);
-			glDisableClientState(GL_COLOR_ARRAY);*/
 		}
 		break;
 	}
@@ -350,7 +340,7 @@ INLINE void OGL14RendererDevice::TextureRequestProcess() const
 			GLint tex = 0;
 			glGenTextures(1, (GLuint *)&tex);
 			glBindTexture(GL_TEXTURE_2D, (GLuint)tex);
-
+/*
 			eTextureFilter min = texture->GetFilter(Seed::TextureFilterTypeMin);
 			eTextureFilter mag = texture->GetFilter(Seed::TextureFilterTypeMag);
 
@@ -366,7 +356,7 @@ INLINE void OGL14RendererDevice::TextureRequestProcess() const
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+*/
 			GLuint w = texture->GetAtlasWidthInPixel();
 			GLuint h = texture->GetAtlasHeightInPixel();
 			const void *data = texture->GetData();
@@ -406,34 +396,6 @@ INLINE void OGL14RendererDevice::TextureRequestProcess() const
 
 	arTexture.Truncate();
 	arTextureName.Truncate();
-}
-
-INLINE void OGL14RendererDevice::TextureFilterUpdate(ITexture *texture)
-{
-	void *pTextureId = texture->GetTextureName();
-	if (pTextureId)
-	{
-		GLint *tex = static_cast<GLint *>(pTextureId);
-		GLint old = 0;
-
-		glGetIntegerv(GL_TEXTURE_BINDING_2D, &old);
-		glBindTexture(GL_TEXTURE_2D, (GLuint)tex);
-
-		eTextureFilter min = texture->GetFilter(Seed::TextureFilterTypeMin);
-		eTextureFilter mag = texture->GetFilter(Seed::TextureFilterTypeMag);
-
-		if (min == Seed::TextureFilterLinear)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		else if (min == Seed::TextureFilterNearest)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-		if (mag == Seed::TextureFilterLinear)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		else if (mag == Seed::TextureFilterNearest)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glBindTexture(GL_TEXTURE_2D, old);
-	}
 }
 
 INLINE void OGL14RendererDevice::TextureUnload(ITexture *texture)
@@ -490,7 +452,8 @@ INLINE void OGL14RendererDevice::UploadData(void *userData)
 {
 	RendererPacket *packet = static_cast<RendererPacket *>(userData);
 
-	GLuint *t = static_cast<GLuint *>(packet->pTexture->GetTextureName());
+	ITexture *texture = packet->pTexture;
+	GLuint *t = static_cast<GLuint *>(texture->GetTextureName());
 	GLuint tex = (GLuint)t;
 
 	sVertex *data = static_cast<sVertex *>(packet->pVertexData);
@@ -498,13 +461,28 @@ INLINE void OGL14RendererDevice::UploadData(void *userData)
 	glPushMatrix();
 	glLoadIdentity();
 
-	//glPolygonMode(GL_FRONT, GL_LINE);
-	//glEnable(GL_TEXTURE_2D);
-	//glEnable(GL_BLEND);
-	this->SetBlendingOperation(packet->nBlendMode, packet->iColor);
+	this->SetBlendingOperation(packet->nBlendMode, packet->iColor.pixel);
 
 	glBindTexture(GL_TEXTURE_2D, tex);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+/*
+	eTextureFilter min = texture->GetFilter(Seed::TextureFilterTypeMin);
+	eTextureFilter mag = texture->GetFilter(Seed::TextureFilterTypeMag);
+
+	if (min == Seed::TextureFilterLinear)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	else if (min == Seed::TextureFilterNearest)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	if (mag == Seed::TextureFilterLinear)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	else if (mag == Seed::TextureFilterNearest)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+*/
 	glBegin(this->GetOpenGLMeshType(packet->nMeshType));
 	for (u32 i = 0; i < packet->iSize; i++)
 	{
@@ -512,8 +490,6 @@ INLINE void OGL14RendererDevice::UploadData(void *userData)
 		glVertex3f(data[i].cVertex.x, data[i].cVertex.y, data[i].cVertex.z);
 	}
 	glEnd();
-	//glDisable(GL_BLEND);
-	//glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }
@@ -547,7 +523,7 @@ void OGL14RendererDevice::BackbufferFill(PIXEL color)
 
 	uPixel p;
 	p.pixel = color;
-	glColor4ub(p.component.r, p.component.g, p.component.b, p.component.a);
+	glColor4ub(p.rgba.r, p.rgba.g, p.rgba.b, p.rgba.a);
 
 	glPushMatrix();
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -609,7 +585,7 @@ INLINE void OGL14RendererDevice::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL colo
 	}
 	uPixel p;
 	p.pixel = color;
-	glColor4ub(p.component.r, p.component.g, p.component.b, p.component.a);
+	glColor4ub(p.rgba.r, p.rgba.g, p.rgba.b, p.rgba.a);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);

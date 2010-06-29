@@ -69,7 +69,7 @@ Label::~Label()
 void Label::Reset()
 {
 	this->iId				= 0;
-	this->iColor			= 0;
+	this->iColor.pixel		= 0;
 	this->eBlendOperation	= BlendNone;
 
 	IWidget::Reset();
@@ -87,7 +87,7 @@ void Label::Reset()
 void Label::ReleaseText()
 {
 	this->iId				= 0;
-	this->iColor			= 0;
+	this->iColor.pixel		= 0;
 	this->eBlendOperation	= Seed::BlendNone;
 
 	this->bVisible			= TRUE;
@@ -120,7 +120,7 @@ void Label::Update(f32 dt)
 void Label::Render()
 {
 	cText.SetBlending(eBlendOperation);
-	cText.SetColor(iColor);
+	cText.SetColor(iColor.pixel);
 	cText.SetScale(GetScaleX(), GetScaleY());
 
 	switch (iAlign)
@@ -208,20 +208,6 @@ INLINE void Label::SetFont(const Font *font)
 
 	this->bChanged = TRUE;
 }
-
-/*
-INLINE void Label::SetColor(u8 r, u8 g, u8 b, u8 a)
-{
-	this->iColor = PIXEL_COLOR(r, g, b, a);
-	this->bChanged = TRUE;
-}
-
-INLINE void Label::SetColor(PIXEL px)
-{
-	this->iColor = px;
-	this->bChanged = TRUE;
-}
-*/
 
 INLINE f32 Label::GetTextWidth()
 {

@@ -270,9 +270,9 @@ INLINE BOOL D3D8RendererDevice::Shutdown()
 
 INLINE void D3D8RendererDevice::BackbufferClear(const PIXEL color)
 {
-	uPixel p;
+	uPixel p(0, 0, 0, 0);
 	p.pixel = color;
-	mDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_ARGB(p.component.a, p.component.r, p.component.g, p.component.b), 0.0f, 0);
+	mDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_ARGB(p.argb.a, p.argb.r, p.argb.g, p.argb.b), 0.0f, 0);
 }
 
 INLINE void D3D8RendererDevice::Begin() const
@@ -318,9 +318,26 @@ INLINE void D3D8RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL colo
 		{
 			mDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 			mDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 			mDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 			mDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 			mDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
+
+			mDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+			mDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+			mDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
+		}
+		break;
+
+		case Seed::BlendModulateAlpha:
+		{
+			mDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			mDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+			mDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+
+			mDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+			mDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
 			mDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 		}
 		break;
@@ -329,7 +346,6 @@ INLINE void D3D8RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL colo
 		case Seed::BlendDecalOverlay:
 		case Seed::BlendLighten:
 		case Seed::BlendMerge:
-		case Seed::BlendModulateAlpha:
 		case Seed::BlendOverlay:
 		case Seed::BlendScreen:
 		{
@@ -392,11 +408,6 @@ INLINE void D3D8RendererDevice::TextureRequestProcess() const
 	arTextureName.Truncate();
 }
 
-INLINE void D3D8RendererDevice::TextureFilterUpdate(ITexture *texture)
-{
-	UNUSED(texture);
-}
-
 INLINE void D3D8RendererDevice::TextureUnload(ITexture *texture)
 {
 	void *texId = texture->GetTextureName();
@@ -430,7 +441,7 @@ INLINE void D3D8RendererDevice::UploadData(void *userData)
 {
 	RendererPacket *packet = static_cast<RendererPacket *>(userData);
 
-	this->SetBlendingOperation(packet->nBlendMode, packet->iColor);
+	this->SetBlendingOperation(packet->nBlendMode, packet->iColor.pixel);
 
 	ITexture *texture = packet->pTexture;
 	IDirect3DTexture8 *t = static_cast<IDirect3DTexture8 *>(texture->GetTextureName());
@@ -457,7 +468,41 @@ INLINE void D3D8RendererDevice::UploadData(void *userData)
 
 void D3D8RendererDevice::BackbufferFill(PIXEL color)
 {
-	UNUSED(color);
+	uPixel argb;
+	argb.pixel = color;
+	uPixel rgba = argb;
+	rgba.rgba.r = argb.argb.r;
+	rgba.rgba.g = argb.argb.g;
+	rgba.rgba.b = argb.argb.b;
+	rgba.rgba.a = argb.argb.a;
+
+	sVertex quad[4];
+
+	quad[0].cVertex.x = 0.0f;
+	quad[0].cVertex.y = 0.0f;
+	quad[0].cVertex.z = 1.0f;
+	quad[0].iColor = rgba;
+
+	quad[1].cVertex.x = 1.0f;
+	quad[1].cVertex.y = 0.0f;
+	quad[1].cVertex.z = 1.0f;
+	quad[1].iColor = rgba;
+
+	quad[2].cVertex.x = 0.0f;
+	quad[2].cVertex.y = 1.0f;
+	quad[2].cVertex.z = 1.0f;
+	quad[2].iColor = rgba;
+
+	quad[3].cVertex.x = 1.0f;
+	quad[3].cVertex.y = 1.0f;
+	quad[3].cVertex.z = 1.0f;
+	quad[3].iColor = rgba;
+
+	this->SetBlendingOperation(Seed::BlendModulate, 0);
+	mDevice->SetTexture(0, NULL);
+
+	mDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, &quad, sizeof(sVertex));
+
 	/*
 	glEnable(GL_BLEND);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);

@@ -82,7 +82,6 @@ class SEED_CORE_API OGL14RendererDevice : public IRendererDevice
 		virtual void End() const;
 
 		// IRendererDevice
-		virtual void TextureFilterUpdate(ITexture *texture);
 		virtual void TextureUnload(ITexture *tex);
 		virtual void TextureRequest(ITexture *texture, void **texName);
 		virtual void TextureRequestAbort(ITexture *texture, void **texName);

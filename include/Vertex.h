@@ -46,14 +46,21 @@ namespace Seed {
 struct sVertex
 {
 	Vector3f	cVertex;
-	PIXEL		iColor;
+	uPixel		iColor;
 	Point2f		cCoords;
 
 	sVertex()
 		: cVertex(0.0f, 0.0f, 0.0f)
-		, iColor(PIXEL_COLOR(255, 255, 255, 255))
+		, iColor(255, 255, 255, 255)
 		, cCoords(0.0f, 0.0f)
 	{
+	}
+
+	sVertex &operator=(const sVertex &v)
+	{
+		cVertex = v.cVertex;
+		iColor = v.iColor;
+		cCoords = v.cCoords;
 	}
 };
 
@@ -61,7 +68,7 @@ struct RendererPacket
 {
 	eMeshType				nMeshType;
 	eBlendMode				nBlendMode;
-	PIXEL					iColor;
+	uPixel					iColor;
 	ITexture				*pTexture;
 	void					*pVertexData;
 	u32						iSize;
@@ -69,7 +76,7 @@ struct RendererPacket
 	RendererPacket()
 		: nMeshType(Seed::TriangleStrip)
 		, nBlendMode(Seed::BlendNone)
-		, iColor(PIXEL_COLOR(0, 0, 0, 255))
+		, iColor(0, 0, 0, 255)
 		, pTexture(NULL)
 		, pVertexData(NULL)
 		, iSize(0)

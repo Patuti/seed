@@ -132,6 +132,38 @@ http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
 #define PIXEL_SET_G(px, g)		(((px) & (~LIB_PIXEL_G_MASK)) + (static_cast<u32>(g)<<PIXEL_G_SHIFT))
 #define PIXEL_SET_B(px, b)		(((px) & (~LIB_PIXEL_B_MASK)) + (static_cast<u32>(b)<<PIXEL_B_SHIFT))
 
+union uPixel
+{
+	PIXEL pixel;
+	struct vec
+	{
+		u8 c[4];
+	} pComponent;
+	struct _argb
+	{
+		u8 a;
+		u8 r;
+		u8 g;
+		u8 b;
+	} argb;
+	struct _rgba
+	{
+		u8 r;
+		u8 g;
+		u8 b;
+		u8 a;
+	} rgba;
+
+	uPixel(u8 R, u8 G, u8 B, u8 A)
+		: pixel(PIXEL_COLOR(R,G,B,A))
+	{
+	}
+
+	uPixel()
+		: pixel(0)
+	{
+	}
+};
 
 // Debugging
 #if defined(DEBUG)

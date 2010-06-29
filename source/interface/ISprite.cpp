@@ -490,24 +490,30 @@ void ISprite::Update(f32 delta)
 	if (!bChanged && !this->IsChanged())
 		return;
 
+	uPixel p = iColor;
+	p.rgba.r = iColor.argb.r;
+	p.rgba.g = iColor.argb.g;
+	p.rgba.b = iColor.argb.b;
+	p.rgba.a = iColor.argb.a;
+
 	if (!arCustomVertexData)
 	{
 		arCurrentVertexData = &vert[0];
 
 		vert[0].cVertex = Vector3f(-fAspectHalfWidth, -fAspectHalfHeight, (f32)iPriority);
-		vert[0].iColor = iColor;
+		vert[0].iColor = p;
 		vert[0].cCoords = Point2f(fTexS0, fTexT0);
 
 		vert[1].cVertex = Vector3f(+fAspectHalfWidth, -fAspectHalfHeight, (f32)iPriority);
-		vert[1].iColor = iColor;
+		vert[1].iColor = p;
 		vert[1].cCoords = Point2f(fTexS1, fTexT0);
 
 		vert[2].cVertex = Vector3f(-fAspectHalfWidth, +fAspectHalfHeight, (f32)iPriority);
-		vert[2].iColor = iColor;
+		vert[2].iColor = p;
 		vert[2].cCoords = Point2f(fTexS0, fTexT1);
 
 		vert[3].cVertex = Vector3f(+fAspectHalfWidth, +fAspectHalfHeight, (f32)iPriority);
-		vert[3].iColor = iColor;
+		vert[3].iColor = p;
 		vert[3].cCoords = Point2f(fTexS1, fTexT1);
 	}
 	else

@@ -64,8 +64,6 @@ class SEED_CORE_API Label : public IWidget
 
 		// IRenderable
 		virtual void Render();
-		//virtual void SetColor(u8 r, u8 g, u8 b, u8 a);
-		//virtual void SetColor(PIXEL px);
 
 		// ITransformable2D
 		virtual void SetWidth(f32 w);
