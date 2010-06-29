@@ -140,8 +140,8 @@ BOOL Texture::Load(const char *filename, ResourceManager *res, IMemoryPool *pool
 		ASSERT_NULL(pSurface);
 		SDL_FreeSurface(tmp);
 
-		iAtlasWidth = iWidth = pSurface->w;
-		iAtlasHeight = iHeight = pSurface->h;
+		iWidth = pSurface->w;
+		iHeight = pSurface->h;
 
 		/*
 		If the image isn't power of two, we need fix it.
@@ -198,6 +198,8 @@ BOOL Texture::Load(const char *filename, ResourceManager *res, IMemoryPool *pool
 
 		fWidth = (f32)iWidth / (f32)pScreen->GetWidth();
 		fHeight = (f32)iHeight / (f32)pScreen->GetHeight();
+		iAtlasWidth = pSurface->w;
+		iAtlasHeight = pSurface->h;
 
 		// Lets keep the iWidth and iHeight the original one so the sprite rect can match it.
 		// For texture UV mapping, we use the relation between original W and H and the converted texture W and H.
@@ -220,7 +222,7 @@ BOOL Texture::Load(const char *filename, ResourceManager *res, IMemoryPool *pool
 	return bLoaded;
 }
 
-BOOL Texture::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
+BOOL Texture::Load(u32 width, u32 height, PIXEL *buffer, u32 atlasWidth, u32 atlasHeight, IMemoryPool *pool)
 {
 	ASSERT_NULL(buffer);
 	//ASSERT_NULL(pool);
@@ -237,6 +239,12 @@ BOOL Texture::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
 		fHeight = (f32)height / (f32)pScreen->GetHeight();
 		iWidth = iAtlasWidth = width;
 		iHeight = iAtlasHeight = height;
+
+		if (atlasWidth)
+			iAtlasWidth = atlasWidth;
+
+		if (atlasHeight)
+			iAtlasHeight = atlasHeight;
 
 		iBytesPerPixel = 4; // FIXME: parametized?
 		iPitch = ROUND_UP(width, 32); // FIXME: parametized?

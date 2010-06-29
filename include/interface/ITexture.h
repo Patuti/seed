@@ -123,7 +123,7 @@ class SEED_CORE_API ITexture : public IResource
 		\param buffer Buffer to texture pixels
 		\param pool Pointer to IMemoryPool to use when allocating this object
 		*/
-		virtual BOOL Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool = pDefaultPool);
+		virtual BOOL Load(u32 width, u32 height, PIXEL *buffer, u32 atlasWidth = 0, u32 atlasHeight = 0, IMemoryPool *pool = pDefaultPool);
 
 		/// Update the internal state of a dynamic texture with a new buffer (texture created by the user)
 		/**

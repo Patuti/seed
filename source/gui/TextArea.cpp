@@ -266,9 +266,8 @@ INLINE void TextArea::SetText(const WideString str)
 	if (!this->GetWidth())
 		this->SetWidth(cText.GetWidth());
 
+	//this->bChanged = TRUE;
 	this->Rebuild();
-	this->bChanged = FALSE;
-//	this->bChanged = TRUE;
 }
 
 
@@ -282,9 +281,8 @@ INLINE void TextArea::SetText(const String &str)
 	if (!this->GetWidth())
 		this->SetWidth(cText.GetWidth());
 
+	//this->bChanged = TRUE;
 	this->Rebuild();
-	this->bChanged = FALSE;
-//	this->bChanged = TRUE;
 }
 
 INLINE void TextArea::SetAutoAdjust(BOOL b)

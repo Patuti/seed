@@ -311,7 +311,7 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 		break;
 
 		case BlendModulate:
-		{
+		{/*
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -321,7 +321,7 @@ INLINE void OGL14RendererDevice::SetBlendingOperation(eBlendMode mode, PIXEL col
 			u8 mA = PIXEL_GET_A(color);
 
 			glColor4ub(mR, mG, mB, mA);
-			glDisableClientState(GL_COLOR_ARRAY);
+			glDisableClientState(GL_COLOR_ARRAY);*/
 		}
 		break;
 	}
@@ -499,8 +499,8 @@ INLINE void OGL14RendererDevice::UploadData(void *userData)
 	glLoadIdentity();
 
 	//glPolygonMode(GL_FRONT, GL_LINE);
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
+	//glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_BLEND);
 	this->SetBlendingOperation(packet->nBlendMode, packet->iColor);
 
 	glBindTexture(GL_TEXTURE_2D, tex);
@@ -512,8 +512,8 @@ INLINE void OGL14RendererDevice::UploadData(void *userData)
 		glVertex3f(data[i].cVertex.x, data[i].cVertex.y, data[i].cVertex.z);
 	}
 	glEnd();
-	glDisable(GL_BLEND);
-	glDisable(GL_TEXTURE_2D);
+	//glDisable(GL_BLEND);
+	//glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }
@@ -658,6 +658,9 @@ INLINE void OGL14RendererDevice::Enable2D() const
 	glDisable(GL_DEPTH_TEST);
 	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_ALPHA_TEST);
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
 #endif
 }
 

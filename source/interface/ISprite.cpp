@@ -229,10 +229,24 @@ INLINE void ISprite::ReconfigureFrame()
 	iHalfWidth = static_cast<s32>(pScreen->GetWidth() * (w / 2.0f));
 	iHalfHeight = static_cast<s32>(pScreen->GetHeight() *  (h / 2.0f));
 
-	fTexS0 = static_cast<f32>((iX) * rInvWidth);
-	fTexS1 = static_cast<f32>((iX + iWidth) * rInvWidth);
-	fTexT0 = static_cast<f32>((iY) * rInvHeight);
-	fTexT1 = static_cast<f32>((iY + iHeight) * rInvHeight);
+	/*
+	FIXME: Se um dia otimizar o sprite (reconf. frame, anim), corrigir esse if maldito.
+	*/
+	eRendererDeviceType type = pConfiguration->GetRendererDeviceType();
+	if (type >= Seed::RendererDeviceDirectX8 && type <= Seed::RendererDeviceDirectX11)
+	{
+		fTexS0 = static_cast<f32>((iX + 0.5f) * rInvWidth);
+		fTexS1 = static_cast<f32>((iX + 0.5f + iWidth) * rInvWidth);
+		fTexT0 = static_cast<f32>((iY + 0.5f) * rInvHeight);
+		fTexT1 = static_cast<f32>((iY + 0.5f + iHeight) * rInvHeight);
+	}
+	else
+	{
+		fTexS0 = static_cast<f32>((iX) * rInvWidth);
+		fTexS1 = static_cast<f32>((iX + iWidth) * rInvWidth);
+		fTexT0 = static_cast<f32>((iY) * rInvHeight);
+		fTexT1 = static_cast<f32>((iY + iHeight) * rInvHeight);
+	}
 
 	bChanged = TRUE;
 }

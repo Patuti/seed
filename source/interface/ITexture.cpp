@@ -172,12 +172,14 @@ INLINE BOOL ITexture::Load(const char *filename, ResourceManager *res, IMemoryPo
 	return ret;
 }
 
-INLINE BOOL ITexture::Load(u32 width, u32 height, PIXEL *buffer, IMemoryPool *pool)
+INLINE BOOL ITexture::Load(u32 width, u32 height, PIXEL *buffer, u32 atlasWidth, u32 atlasHeight, IMemoryPool *pool)
 {
 	UNUSED(width)
 	UNUSED(height)
 	UNUSED(buffer)
 	UNUSED(pool)
+	UNUSED(atlasWidth)
+	UNUSED(atlasHeight)
 
 	SEED_ABSTRACT_METHOD
 	return TRUE;

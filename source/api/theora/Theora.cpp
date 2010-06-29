@@ -202,7 +202,7 @@ BOOL Theora::Load(const char *filename, ResourceManager *res, IMemoryPool *pool)
 
 			oggplay_use_buffer(pPlayer, OGGPLAY_BUFFER_SIZE);
 
-			SEM_CREATE(sem, OGGPLAY_BUFFER_SIZE);
+			SEM_CHECK(sem) {} else SEM_CREATE(sem, OGGPLAY_BUFFER_SIZE);
 			SEM_WAIT(sem);
 
 			this->ConfigureRendering();
@@ -490,7 +490,7 @@ void Theora::ConfigureRendering()
 		iTexHeight = po2_height;
 	}
 
-	cTexture.Load(iTexWidth, iTexHeight, static_cast<PIXEL *>((void *)pTexData));
+	cTexture.Load(iWidth, iHeight, static_cast<PIXEL *>((void *)pTexData), iTexWidth, iTexHeight);
 	Image::Load(&cTexture);
 
 	bTerminateThread = FALSE;

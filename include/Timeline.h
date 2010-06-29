@@ -41,6 +41,9 @@
 #include "Point.h"
 #include "Keyframe.h"
 #include "interface/IEventMovieListener.h"
+#undef GetObject
+#undef GetObjectW
+#undef GetObjectA
 
 #define MAX_KEYFRAMES 8192
 
