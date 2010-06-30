@@ -590,6 +590,9 @@ void ISprite::Render()
 	packet.nBlendMode = this->eBlendOperation;
 	packet.iColor = this->iColor;
 	pRendererDevice->UploadData(&packet);
+
+	if (pConfiguration->bDebugSprite)
+		pRendererDevice->DrawRect(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), PIXEL_COLOR(255, 255, 255, 255));
 }
 
 INLINE const char *ISprite::GetObjectName() const

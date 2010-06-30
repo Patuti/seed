@@ -14,6 +14,7 @@
 #include "Screen.h"
 #include "Formats.h"
 #include "CollisionMask.h"
+#include "RendererDevice.h"
 
 #include <math.h>
 
@@ -717,7 +718,8 @@ INLINE void Button::Render()
 		this->cLabel.Render();
 	}
 
-	//DEBUG_BUTTON_RECT;
+	if (pConfiguration->bDebugButton)
+		pRendererDevice->DrawRect(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), PIXEL_COLOR(0, 0, 255, 255));
 }
 
 void Button::SetSprite(const char *spriteName, ResourceManager *res, IMemoryPool *pool)

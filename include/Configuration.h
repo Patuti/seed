@@ -116,6 +116,11 @@ class SEED_CORE_API Configuration : public IObject
 		virtual const char *GetObjectName() const;
 		virtual int GetObjectType() const;
 
+		BOOL bDebugSprite;
+		BOOL bDebugButton;
+		BOOL bDebugText;
+		BOOL bDebugContainer;
+
 	private:
 		SEED_DISABLE_COPY(Configuration);
 

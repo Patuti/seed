@@ -521,9 +521,7 @@ void OGL14RendererDevice::BackbufferFill(PIXEL color)
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	uPixel p;
-	p.pixel = color;
-	glColor4ub(p.rgba.r, p.rgba.g, p.rgba.b, p.rgba.a);
+	glColor4ub(PIXEL_GET_R(color), PIXEL_GET_G(color), PIXEL_GET_B(color), PIXEL_GET_A(color));
 
 	glPushMatrix();
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -583,12 +581,8 @@ INLINE void OGL14RendererDevice::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL colo
 		vertices[6] = + fAspectHalfWidth;
 		vertices[7] = + fAspectHalfHeight;
 	}
-	uPixel p;
-	p.pixel = color;
-	glColor4ub(p.rgba.r, p.rgba.g, p.rgba.b, p.rgba.a);
 
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glColor4ub(PIXEL_GET_R(color), PIXEL_GET_G(color), PIXEL_GET_B(color), PIXEL_GET_A(color));
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	glEnableClientState(GL_VERTEX_ARRAY);

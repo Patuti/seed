@@ -149,6 +149,9 @@ void Label::Render()
 	}
 
 	cText.Draw();
+
+	if (pConfiguration->bDebugText)
+		pRendererDevice->DrawRect(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), PIXEL_COLOR(0, 255, 0, 255));
 }
 
 INLINE void Label::SetAutoAdjust(BOOL b)

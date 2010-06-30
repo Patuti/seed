@@ -45,6 +45,7 @@
 #include "Timer.h"
 #include "Enum.h"
 #include "SeedInit.h"
+#include "RendererDevice.h"
 
 #define TAG						"[GUI::WidgetContainer] "
 #define DRAG_START_THRESHOLD	30
@@ -154,6 +155,9 @@ INLINE void WidgetContainer::Render()
 
 		w->Render();
 	}
+
+	if (pConfiguration->bDebugContainer)
+		pRendererDevice->DrawRect(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), PIXEL_COLOR(255, 0, 255, 255));
 }
 
 INLINE void WidgetContainer::Add(IWidget *widget)

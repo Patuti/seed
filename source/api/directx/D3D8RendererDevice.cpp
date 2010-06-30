@@ -502,20 +502,6 @@ void D3D8RendererDevice::BackbufferFill(PIXEL color)
 	mDevice->SetTexture(0, NULL);
 
 	mDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, &quad, sizeof(sVertex));
-
-	/*
-	glEnable(GL_BLEND);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	uPixel p;
-	p.pixel = color;
-	glColor4ub(p.component.r, p.component.g, p.component.b, p.component.a);
-
-	glPushMatrix();
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-	*/
 }
 
 void D3D8RendererDevice::SetViewport(const Rect<f32> &area) const
@@ -537,13 +523,49 @@ void D3D8RendererDevice::SetViewport(const Rect<f32> &area) const
 
 INLINE void D3D8RendererDevice::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fill) const
 {
-	UNUSED(x);
-	UNUSED(y);
-	UNUSED(w);
-	UNUSED(h);
-	UNUSED(color);
 	UNUSED(fill);
-	// not implemented
+
+	uPixel argb;
+	argb.pixel = color;
+	uPixel rgba = argb;
+	rgba.rgba.r = argb.argb.r;
+	rgba.rgba.g = argb.argb.g;
+	rgba.rgba.b = argb.argb.b;
+	rgba.rgba.a = argb.argb.a;
+
+	f32 ratio = ((f32)pScreen->GetHeight() / (f32)pScreen->GetWidth());
+
+	sVertex quad[5];
+
+	quad[0].cVertex.x = x;
+	quad[0].cVertex.y = y * ratio;
+	quad[0].cVertex.z = 1.0f;
+	quad[0].iColor = rgba;
+
+	quad[1].cVertex.x = x + w;
+	quad[1].cVertex.y = y * ratio;
+	quad[1].cVertex.z = 1.0f;
+	quad[1].iColor = rgba;
+
+	quad[2].cVertex.x = x + w;
+	quad[2].cVertex.y = (y + h) * ratio;
+	quad[2].cVertex.z = 1.0f;
+	quad[2].iColor = rgba;
+
+	quad[3].cVertex.x = x;
+	quad[3].cVertex.y = (y + h) * ratio;
+	quad[3].cVertex.z = 1.0f;
+	quad[3].iColor = rgba;
+
+	quad[4].cVertex.x = x;
+	quad[4].cVertex.y = y * ratio;
+	quad[4].cVertex.z = 1.0f;
+	quad[4].iColor = rgba;
+
+	this->SetBlendingOperation(Seed::BlendModulate, 0);
+	mDevice->SetTexture(0, NULL);
+
+	mDevice->DrawPrimitiveUP(D3DPT_LINESTRIP, 4, &quad, sizeof(sVertex));
 }
 
 // FIXME: Viewport aspect ratio...

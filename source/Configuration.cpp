@@ -36,7 +36,11 @@ namespace Seed {
 
 
 Configuration::Configuration()
-	: nVideoMode(Video_AutoDetect)
+	: bDebugSprite(FALSE)
+	, bDebugButton(FALSE)
+	, bDebugText(FALSE)
+	, bDebugContainer(FALSE)
+	, nVideoMode(Video_AutoDetect)
 	, iResolutionWidth(800)
 	, iResolutionHeight(600)
 	, pcWorkingDirectory(NULL)

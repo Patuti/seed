@@ -132,6 +132,9 @@ void TextArea::Render()
 		this->cText.SetPosition(pLines[i].fPosX + this->GetX(), pLines[i].fPosY + this->GetY());
 		this->cText.Draw(pLines[i].iIndex, pLines[i].iSize);
 	}
+
+	if (pConfiguration->bDebugText)
+		pRendererDevice->DrawRect(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), PIXEL_COLOR(255, 0, 0, 255));
 }
 
 u32 TextArea::GetLineCount() const
