@@ -69,6 +69,7 @@
 #include "SceneManager.h"
 #include "RendererDevice.h"
 #include "Checksum.h"
+#include "Profiler.h"
 
 namespace Seed {
 
@@ -220,7 +221,6 @@ BOOL Initialize()
 	//ready during Setup
 	Private::bInitialized = TRUE;
 
-	Private::pApplication->Initialize();
 	ret = ret && pModuleManager->Add(Private::pApplication);
 
 	pModuleManager->Print();
@@ -273,7 +273,7 @@ void Shutdown()
 	pSoundSystem->DestroyInstance();
 	pRendererManager->DestroyInstance();
 	pViewManager->DestroyInstance();
-//	pScreen->DestroyInstance();
+	pScreen->DestroyInstance();
 	pCartridge->DestroyInstance();
 	pFileSystem->DestroyInstance();
 	pPackageManager->DestroyInstance();
@@ -281,6 +281,7 @@ void Shutdown()
 	pMemoryManager->DestroyInstance();
 	pSystem->DestroyInstance();
 
+	ProfilerReportPrint;
 	LeakReportPrint;
 
 	Private::bInitialized = FALSE;

@@ -197,7 +197,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="C:\DXSDK\Include;..\include;&quot;$(SEEDSDK)\dependency\common\include&quot;;&quot;$(SEEDSDK)\dependency\vc8\include&quot;"
-				PreprocessorDefinitions="WIN32;DEBUG;YMEM_DEBUG;_CONSOLE;_SDL_;_CRT_SECURE_NO_WARNINGS;YMEM_PARANOID_CHECK;SEED_BUILD;SEED_ENABLE_D3D8;SEED_USE_COMMERCIAL;D3D_DEBUG_INFO"
+				PreprocessorDefinitions="WIN32;DEBUG;YMEM_DEBUG;_CONSOLE;_SDL_;_CRT_SECURE_NO_WARNINGS;YMEM_PARANOID_CHECK;SEED_BUILD;SEED_ENABLE_D3D8;SEED_USE_COMMERCIAL;SEED_ENABLE_PROFILER;D3D_DEBUG_INFO"
 				IgnoreStandardIncludePath="false"
 				GeneratePreprocessedFile="0"
 				MinimalRebuild="true"

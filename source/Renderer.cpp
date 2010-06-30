@@ -38,6 +38,7 @@
 #include "Log.h"
 #include "interface/ISceneNode.h"
 #include "RendererDevice.h"
+#include "Profiler.h"
 
 #include <algorithm>
 #include <vector>
@@ -46,7 +47,7 @@ namespace Seed {
 
 Renderer::Renderer()
 	: vRenderables()
-	, vVisibleRenderables()
+	//, vVisibleRenderables()
 {
 }
 
@@ -55,8 +56,8 @@ Renderer::~Renderer()
 	vRenderables.clear();
 	RenderableVector().swap(vRenderables);
 
-	vVisibleRenderables.clear();
-	RenderableVector().swap(vVisibleRenderables);
+	//vVisibleRenderables.clear();
+	//RenderableVector().swap(vVisibleRenderables);
 }
 
 void Renderer::PushChildNodes(ISceneNode *node, NodeVector &v)
@@ -64,7 +65,7 @@ void Renderer::PushChildNodes(ISceneNode *node, NodeVector &v)
 	for (u32 i = 0; i < node->Size(); i++)
 	{
 		ISceneObject *obj = node->GetChildAt(i);
-		if (obj && obj->IsNode())
+		if (obj && obj->IsNode() && obj->IsVisible())
 		{
 			v.push_back(static_cast<ISceneNode *>(obj));
 			this->PushChildNodes(static_cast<ISceneNode *>(obj), v);
@@ -75,6 +76,7 @@ void Renderer::PushChildNodes(ISceneNode *node, NodeVector &v)
 BOOL Renderer::Update(f32 dt)
 {
 	UNUSED(dt);
+	SEED_FUNCTION_PROFILER;
 
 	if (!IModule::IsEnabled())
 		return FALSE;
@@ -98,7 +100,8 @@ BOOL Renderer::Update(f32 dt)
 		for (u32 i = 0; i < node->Size(); i++)
 		{
 			ISceneObject *obj = node->GetChildAt(i);
-			vRenderables.push_back(obj);
+			if (obj->IsVisible())
+				vRenderables.push_back(obj);
 		}
 	}
 
@@ -118,12 +121,13 @@ INLINE void Renderer::DrawRect(f32 x, f32 y, f32 w, f32 h, PIXEL color, BOOL fil
 
 void Renderer::Render()
 {
+	SEED_FUNCTION_PROFILER;
 	if (pRendererDevice && pRendererDevice->IsEnabled() && IModule::IsEnabled())
 	{
 		this->Culler();
 
 		this->Begin();
-			this->RenderObjects(vVisibleRenderables);
+			this->RenderObjects(vRenderables); //vVisibleRenderables);
 		this->End();
 	}
 }
@@ -145,6 +149,9 @@ INLINE void Renderer::RenderObjects(const RenderableVector &vec) const
 // FIXME: Culler(SceneNode, CullingOperation)
 INLINE void Renderer::Culler()
 {
+	SEED_FUNCTION_PROFILER;
+	this->Sort(vRenderables);
+/*
 	vVisibleRenderables.clear();
 
 	ConstRenderableVectorIterator it = vRenderables.begin();
@@ -160,6 +167,7 @@ INLINE void Renderer::Culler()
 	}
 
 	this->Sort(vVisibleRenderables);
+*/
 }
 
 INLINE void Renderer::Sort(RenderableVector &vec)
