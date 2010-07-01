@@ -61,13 +61,10 @@ TextArea::TextArea()
 	, cText()
 	, bAutoAdjust(FALSE)
 {
-	//this->Reset();
 }
 
 TextArea::~TextArea()
 {
-	//this->Reset();
-
 	if (Private::bInitialized)
 		pGuiManager->Remove(this);
 }
@@ -207,7 +204,6 @@ u32 TextArea::RebuildPosX()
 
 		pLines[i].iSize = size;
 		pLines[i].iIndex = index;
-		//pLines[i].fPosY = y + ((cText.GetHeight() + cText.GetFontTracking()) * i * this->GetScaleY());
 
 		f32 diffX = this->GetWidth() - lineWidth;
 		switch (eHAlign)
@@ -269,7 +265,6 @@ INLINE void TextArea::SetText(const WideString str)
 	if (!this->GetWidth())
 		this->SetWidth(cText.GetWidth());
 
-	//bChanged = TRUE;
 	this->Rebuild();
 }
 
@@ -284,7 +279,6 @@ INLINE void TextArea::SetText(const String &str)
 	if (!this->GetWidth())
 		this->SetWidth(cText.GetWidth());
 
-	//bChanged = TRUE;
 	this->Rebuild();
 }
 
@@ -317,23 +311,6 @@ INLINE void TextArea::SetAlignment(eVerticalAlignment align)
 	eVAlign = align;
 	bChanged = TRUE;
 }
-
-/*
-INLINE void TextArea::SetColor(u8 r, u8 g, u8 b, u8 a)
-{
-	iColor = PIXEL_COLOR(r, g, b, a);
-}
-
-INLINE void TextArea::SetColor(PIXEL px)
-{
-	iColor = px;
-}
-
-INLINE PIXEL TextArea::GetColor() const
-{
-	return iColor;
-}
-*/
 
 INLINE const char *TextArea::GetObjectName() const
 {

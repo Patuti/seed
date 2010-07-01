@@ -70,14 +70,12 @@ Text::Text()
 
 Text::~Text()
 {
-	this->Reset();
 }
 
 INLINE void Text::Reset()
 {
 	//sRelease(pFont);
 	pStrData = NULL;
-
 	fPosX = 0;
 	fPosY = 0;
 }
@@ -307,6 +305,5 @@ INLINE const WideString Text::GetText() const
 {
 	return pStrData;
 }
-
 
 } // namespace
