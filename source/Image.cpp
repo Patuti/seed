@@ -156,44 +156,45 @@ INLINE BOOL Image::Load(ITexture *texture)
 {
 	ASSERT_NULL(texture);
 
-	BOOL ret = FALSE;
-	if (this->Unload())
+	if (!bDynamic)
 	{
-		pFilename = "[dynamic texture]";
-		pTexture = texture;
-
-		iWidth = pTexture->GetWidthInPixel();
-		iHeight = pTexture->GetHeightInPixel();
-		f32 aspectH = pScreen->GetAspectRatio();
-
-		f32 w = pTexture->GetWidth();
-		f32 h = pTexture->GetHeight();
-
-		ITransformable2D::SetWidth(w); // set normalized width
-		ITransformable2D::SetHeight(h); // set normalized height
-
-		fAspectWidth = w;
-		fAspectHeight = h * aspectH;
-		fAspectHalfWidth = fAspectWidth / 2.0f;
-		fAspectHalfHeight = fAspectHeight / 2.0f;
-
-		f32 rInvWidth = 1.0F / pTexture->GetAtlasWidthInPixel(); // full width from image, not only frame area
-		f32 rInvHeight = 1.0F / pTexture->GetAtlasHeightInPixel(); // full height from image, not only frame area
-
-		// Normalized Pixel Half Width/Height for pixel based vertex rendering
-		iHalfWidth = static_cast<s32>(pScreen->GetWidth() * (w / 2.0f));
-		iHalfHeight = static_cast<s32>(pScreen->GetHeight() *  (h / 2.0f));
-
-		fTexS0 = 0.0f;
-		fTexS1 = static_cast<f32>(iWidth * rInvWidth);
-		fTexT0 = 0.0f;
-		fTexT1 = static_cast<f32>(iHeight * rInvHeight);
-
-		bDynamic = TRUE;
-		ret = TRUE;
+		sRelease(pTexture);
 	}
+	pTexture = NULL;
 
-	return ret;
+	pFilename = "[dynamic texture]";
+	pTexture = texture;
+
+	iWidth = pTexture->GetWidthInPixel();
+	iHeight = pTexture->GetHeightInPixel();
+	f32 aspectH = pScreen->GetAspectRatio();
+
+	f32 w = pTexture->GetWidth();
+	f32 h = pTexture->GetHeight();
+
+	ITransformable2D::SetWidth(w); // set normalized width
+	ITransformable2D::SetHeight(h); // set normalized height
+
+	fAspectWidth = w;
+	fAspectHeight = h * aspectH;
+	fAspectHalfWidth = fAspectWidth / 2.0f;
+	fAspectHalfHeight = fAspectHeight / 2.0f;
+
+	f32 rInvWidth = 1.0F / pTexture->GetAtlasWidthInPixel(); // full width from image, not only frame area
+	f32 rInvHeight = 1.0F / pTexture->GetAtlasHeightInPixel(); // full height from image, not only frame area
+
+	// Normalized Pixel Half Width/Height for pixel based vertex rendering
+	iHalfWidth = static_cast<s32>(pScreen->GetWidth() * (w / 2.0f));
+	iHalfHeight = static_cast<s32>(pScreen->GetHeight() *  (h / 2.0f));
+
+	fTexS0 = 0.0f;
+	fTexS1 = static_cast<f32>(iWidth * rInvWidth);
+	fTexT0 = 0.0f;
+	fTexT1 = static_cast<f32>(iHeight * rInvHeight);
+
+	bDynamic = TRUE;
+
+	return TRUE;
 }
 
 INLINE int Image::GetObjectType() const

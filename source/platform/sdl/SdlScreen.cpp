@@ -257,6 +257,7 @@ INLINE BOOL Screen::InitializeVideo()
 	}
 #endif
 
+SDL_WM_SetCaption(pConfiguration->GetApplicationTitle(), pConfiguration->GetApplicationTitle());
 	pSurface = SDL_SetVideoMode(iWidth, iHeight, iBPP, iFlags);
 	if (!pSurface)
 	{
@@ -265,8 +266,6 @@ INLINE BOOL Screen::InitializeVideo()
 	}
 	else
 	{
-		SDL_WM_SetCaption(pConfiguration->GetApplicationTitle(), pConfiguration->GetApplicationTitle());
-
 #if defined(WIN32)
 		BOOL icon = FALSE;
 

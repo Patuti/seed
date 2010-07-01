@@ -107,7 +107,9 @@ INLINE BOOL Theora::Unload()
 	bTerminateThread = TRUE;
 	bPlaying = FALSE;
 
-	pMemoryManager->Free(pTexData);
+	if (pTexData)
+		pMemoryManager->Free(pTexData);
+	pTexData = NULL;
 
 	return TRUE;
 }
