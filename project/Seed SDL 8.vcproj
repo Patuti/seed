@@ -266,7 +266,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="0"
 				FavorSizeOrSpeed="0"
-				AdditionalIncludeDirectories="..\include;&quot;$(SEEDSDK)\dependency\common\include&quot;;&quot;$(SEEDSDK)\dependency\vc8\include&quot;"
+				AdditionalIncludeDirectories="..\include;&quot;$(SEEDSDK)\dependency\common\include&quot;;&quot;$(SEEDSDK)\dependency\vc8\include&quot;;C:\DXSDK\Include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_SDL_;_CRT_SECURE_NO_WARNINGS;SEED_BUILD;SEED_USE_COMMERCIAL"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"

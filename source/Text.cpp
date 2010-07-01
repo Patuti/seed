@@ -70,29 +70,29 @@ Text::Text()
 
 Text::~Text()
 {
-	Reset();
+	this->Reset();
 }
 
 INLINE void Text::Reset()
 {
-	sRelease(pFont);
-	this->pStrData	= NULL;
+	//sRelease(pFont);
+	pStrData = NULL;
 
-	this->fPosX = 0;
-	this->fPosY = 0;
+	fPosX = 0;
+	fPosY = 0;
 }
 
 INLINE void Text::SetText(u32 dictText)
 {
 
-	this->pStrData = const_cast<WideString>(pDictionary->GetString(dictText));
-	this->fWidth = this->GetWidth(0, String::Length(pStrData));
+	pStrData = const_cast<WideString>(pDictionary->GetString(dictText));
+	fWidth = this->GetWidth(0, String::Length(pStrData));
 }
 
 INLINE void Text::SetText(const WideString str)
 {
-	this->pStrData = str;
-	this->fWidth = this->GetWidth(0, String::Length(pStrData));
+	pStrData = str;
+	fWidth = this->GetWidth(0, String::Length(pStrData));
 }
 
 INLINE void Text::SetText(const String &str)
@@ -128,7 +128,7 @@ u32 Text::GetLengthNonBreakMaxWidth(u32 *index, f32 maxWidth, f32 *lineWidth)
 	if (!pStrData || !pFont)
 		return 0;
 
-	u32 size = String::Length(this->pStrData);
+	u32 size = String::Length(pStrData);
 	if (*index >= size)
 		return 0;
 
@@ -137,17 +137,17 @@ u32 Text::GetLengthNonBreakMaxWidth(u32 *index, f32 maxWidth, f32 *lineWidth)
 	u32 len = 0;
 	u32 separator = 0;
 
-	//Log("B index: %d  char: '%c'", *index, this->pStrData[*index]);
-	if (this->pStrData[*index] == ' ' || this->pStrData[*index] == '\t' || this->pStrData[*index] == '\n' || this->pStrData[*index] == '\r')
+	//Log("B index: %d  char: '%c'", *index, pStrData[*index]);
+	if (pStrData[*index] == ' ' || pStrData[*index] == '\t' || pStrData[*index] == '\n' || pStrData[*index] == '\r')
 		(*index)++;
-	if (this->pStrData[*index] == '\r')
+	if (pStrData[*index] == '\r')
 		(*index)++;
 
-	//Log("A index: %d  char: '%c'", *index, this->pStrData[*index]);
+	//Log("A index: %d  char: '%c'", *index, pStrData[*index]);
 	f32 nw = 0;
 	for (u32 i = *index; i < size; i++)
 	{
-		u32 letter = this->pStrData[i];
+		u32 letter = pStrData[i];
 
 		if (letter == '\0' || letter == '\n')
 			break;
@@ -173,7 +173,7 @@ u32 Text::GetLengthNonBreakMaxWidth(u32 *index, f32 maxWidth, f32 *lineWidth)
 		w += nw;
 	}
 
-	u32 ch = this->pStrData[*index + len];
+	u32 ch = pStrData[*index + len];
 	if (ch != '\0' && ch != ' ' && ch != '\t' && ch != '\n' && ch != '\r' && len != 0 && separator != 0)
 	{
 		len = separator + 1;
@@ -227,9 +227,9 @@ INLINE BOOL Text::IsChanged()
 	return bChanged;
 }
 
-INLINE void Text::SetChanged(BOOL bChanged)
+INLINE void Text::SetChanged(BOOL b)
 {
-	this->bChanged = bChanged;
+	bChanged = b;
 }
 */
 
@@ -270,28 +270,28 @@ INLINE void Text::SetPosition(f32 x, f32 y)
 
 INLINE void Text::SetFont(Font *f)
 {
-	sRelease(pFont);
+	//sRelease(pFont);
 	pFont = f;
-	sAcquire(pFont);
+	//sAcquire(pFont);
 
-	this->fHeight = this->pFont->GetHeight();
+	fHeight = pFont->GetHeight();
 	if (pStrData)
-		this->fWidth = this->GetWidth(0, String::Length(pStrData));
+		fWidth = this->GetWidth(0, String::Length(pStrData));
 }
 
 INLINE void Text::SetBlending(eBlendMode op)
 {
-	this->iOperation = op;
+	iOperation = op;
 }
 
 INLINE void Text::SetColor(u8 r, u8 g, u8 b, u8 a)
 {
-	this->iColor = PIXEL_COLOR(r, g, b, a);
+	iColor = PIXEL_COLOR(r, g, b, a);
 }
 
 INLINE void Text::SetColor(PIXEL px)
 {
-	this->iColor = px;
+	iColor = px;
 }
 
 INLINE void Text::SetScale(f32 scaleX, f32 scaleY)
@@ -305,7 +305,7 @@ INLINE void Text::SetScale(f32 scaleX, f32 scaleY)
 
 INLINE const WideString Text::GetText() const
 {
-	return this->pStrData;
+	return pStrData;
 }
 
 
