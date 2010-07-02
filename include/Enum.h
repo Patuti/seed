@@ -88,7 +88,8 @@ enum eLanguage
 	pt_BR,
 	es_ES,
 	de_DE,
-	ja_JA,
+	ja_JP,
+	fr_FR,
 	cn_CN,
 	MaximumLanguage
 };

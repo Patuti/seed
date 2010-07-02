@@ -483,6 +483,8 @@ INLINE void OGL14RendererDevice::UploadData(void *userData)
 	else if (mag == Seed::TextureFilterNearest)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 */
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(this->GetOpenGLMeshType(packet->nMeshType));
 	for (u32 i = 0; i < packet->iSize; i++)
 	{

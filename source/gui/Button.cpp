@@ -42,6 +42,7 @@ Button::Button()
 	, bLabelBased(FALSE)
 	, bButtonChanged(TRUE)
 	, bSpriteAutoUpdate(FALSE)
+	, bLabelAutoUpdate(FALSE)
 	, bCenterDrag(TRUE)
 	, bOffsetPressed(FALSE)
 	, iDraggingPriority(0)
@@ -122,10 +123,10 @@ void Button::Initialize(u32 id, eCollisionType type)
 void Button::Initialize(u32 id, f32 posX, f32 posY, f32 width, f32 height)
 {
 	iId = id;
-	IWidget::SetWidth(width);
-	IWidget::SetHeight(height);
-	IWidget::SetX(posX);
-	IWidget::SetY(posY);
+	this->SetWidth(width);
+	this->SetHeight(height);
+	this->SetX(posX);
+	this->SetY(posY);
 
 	bDisableHover	= TRUE;
 	bFrameControl	= TRUE;
@@ -207,6 +208,7 @@ void Button::Update(f32 dt)
 {
 	UNUSED(dt);
 
+	IWidget::Update(dt);
 	if (bButtonChanged || bTransformationChanged)
 	{
 		if (bSpriteBased)
@@ -233,33 +235,42 @@ INLINE void Button::UpdateSprite()
 
 	if (bSpriteAutoUpdate)
 	{
-		cSprite.SetRotation(IWidget::GetRotation());
-		cSprite.SetScaleX(IWidget::GetScaleX());
-		cSprite.SetScaleY(IWidget::GetScaleY());
-		cSprite.SetLocalX(IWidget::GetLocalX());
-		cSprite.SetLocalY(IWidget::GetLocalY());
+		cSprite.SetRotation(this->GetRotation());
+		cSprite.SetScaleX(this->GetScaleX());
+		cSprite.SetScaleY(this->GetScaleY());
+		cSprite.SetLocalX(this->GetLocalX());
+		cSprite.SetLocalY(this->GetLocalY());
 	}
 }
 
 INLINE void Button::UpdateLabel()
 {
+	if (bLabelAutoUpdate)
+	{
+		cLabel.SetRotation(GetRotation());
+		cLabel.SetScaleX(GetScaleX());
+		cLabel.SetScaleY(GetScaleY());
+		cLabel.SetLocalX(GetLocalX());
+		cLabel.SetLocalY(GetLocalY());
+	}
+
+	cLabel.SetY(0.0f);
 	switch (eLabelVAlignment)
 	{
 		case VerticalAlignTop:
 		{
-			cLabel.SetY(0.0f);
 		}
 		break;
 
 		case VerticalAlignCenter:
 		{
-			cLabel.SetY((IWidget::GetHeight() - cLabel.GetHeight()) / 2.0f);
+			cLabel.SetY((this->GetHeight() - cLabel.GetHeight()) / 2.0f);
 		}
 		break;
 
 		case VerticalAlignBottom:
 		{
-			cLabel.SetY(IWidget::GetHeight() - cLabel.GetHeight());
+			cLabel.SetY(this->GetHeight() - cLabel.GetHeight());
 		}
 		break;
 
@@ -268,23 +279,23 @@ INLINE void Button::UpdateLabel()
 		break;
 	}
 
+	cLabel.SetX(0.0f);
 	switch (eLabelHAlignment)
 	{
 		case HorizontalAlignLeft:
 		{
-			cLabel.SetX(0.0f);
 		}
 		break;
 
 		case HorizontalAlignCenter:
 		{
-			cLabel.SetX((IWidget::GetWidth() - cLabel.GetWidth()) / 2.0f);
+			cLabel.SetX((this->GetWidth() - cLabel.GetWidth()) / 2.0f);
 		}
 		break;
 
 		case HorizontalAlignRight:
 		{
-			cLabel.SetX(IWidget::GetWidth() - cLabel.GetWidth());
+			cLabel.SetX(this->GetWidth() - cLabel.GetWidth());
 		}
 		break;
 
@@ -292,12 +303,6 @@ INLINE void Button::UpdateLabel()
 			cLabel.SetX(fLabelOffsetX);
 		break;
 	}
-
-	cLabel.SetRotation(IWidget::GetRotation());
-	cLabel.SetScaleX(IWidget::GetScaleX());
-	cLabel.SetScaleY(IWidget::GetScaleY());
-	cLabel.SetLocalX(IWidget::GetLocalX());
-	cLabel.SetLocalY(IWidget::GetLocalY());
 }
 
 INLINE BOOL Button::ContainsPoint(const Point2f &pos) const
@@ -738,10 +743,23 @@ void Button::SetSprite(const char *spriteName, ResourceManager *res, IMemoryPool
 
 	cSprite.SetPosition(0.0f, 0.0f);
 
-	if (cSprite.GetWidth() > this->GetWidth())
-		this->SetWidth(cSprite.GetWidth());
-	if (cSprite.GetHeight() > this->GetHeight())
-		this->SetHeight(cSprite.GetHeight());
+	f32 maxW, maxH;
+	maxW = maxH = 0.0f;
+ 
+	if (bLabelBased)
+	{
+		maxW = cLabel.GetWidth();
+		maxH = cLabel.GetHeight();
+	}
+
+	if (maxW < cSprite.GetWidth())
+		maxW = cSprite.GetWidth();
+
+	if (maxH < cSprite.GetHeight())
+		maxH = cSprite.GetHeight();
+
+	this->SetWidth(maxW);
+	this->SetHeight(maxH);
 
 	bSpriteBased = TRUE;
 	bButtonChanged = TRUE;
@@ -926,41 +944,149 @@ INLINE void Button::AddLabelRotation(f32 rot)
 INLINE void Button::SetLabelScaleX(f32 scaleX)
 {
 	cLabel.SetScaleX(scaleX);
+
+	f32 max = 0.0f;
+	if (bSpriteBased)
+		max = cSprite.GetWidth();
+
+	if (max < cLabel.GetWidth())
+		max = cLabel.GetWidth();
+
+	this->cLabel.SetLocalX(0.5f);
+
+	this->SetWidth(max);
 }
 
 INLINE void Button::SetLabelScaleY(f32 scaleY)
 {
 	cLabel.SetScaleY(scaleY);
+
+	f32 max = 0.0f;
+	if (bSpriteBased)
+		max = cSprite.GetHeight();
+
+	if (max < cLabel.GetHeight())
+		max = cLabel.GetHeight();
+
+	this->cLabel.SetLocalY(0.5f);
+
+	this->SetHeight(max);
 }
 
 INLINE void Button::SetLabelScale(f32 scale)
 {
 	cLabel.SetScale(scale);
+
+	f32 maxW, maxH;
+	maxW = maxH = 0.0f;
+	if (bSpriteBased)
+	{
+		maxW = cSprite.GetWidth();
+		maxH = cSprite.GetHeight();
+	}
+
+	if (maxW < cLabel.GetWidth())
+		maxW = cLabel.GetWidth();
+
+	if (maxH < cLabel.GetHeight())
+		maxH = cLabel.GetHeight();
+
+	this->SetWidth(maxW);
+	this->SetHeight(maxH);
 }
 
 INLINE void Button::SetLabelScale(f32 scaleX, f32 scaleY)
 {
 	cLabel.SetScale(scaleX, scaleY);
+
+	f32 maxW, maxH;
+	maxW = maxH = 0.0f;
+	if (bSpriteBased)
+	{
+		maxW = cSprite.GetWidth();
+		maxH = cSprite.GetHeight();
+	}
+
+	if (maxW < cLabel.GetWidth())
+		maxW = cLabel.GetWidth();
+
+	if (maxH < cLabel.GetHeight())
+		maxH = cLabel.GetHeight();
+
+	this->SetWidth(maxW);
+	this->SetHeight(maxH);
 }
 
 INLINE void Button::AddLabelScaleX(f32 scaleX)
 {
 	cLabel.AddScaleX(scaleX);
+
+	f32 max = 0.0f;
+	if (bSpriteBased)
+		max = cSprite.GetWidth();
+
+	if (max < cLabel.GetWidth())
+		max = cLabel.GetWidth();
+
+	this->SetWidth(max);
 }
 
 INLINE void Button::AddLabelScaleY(f32 scaleY)
 {
 	cLabel.AddScaleY(scaleY);
+
+	f32 max = 0.0f;
+	if (bSpriteBased)
+		max = cSprite.GetHeight();
+
+	if (max < cLabel.GetHeight())
+		max = cLabel.GetHeight();
+
+	this->SetHeight(max);
 }
 
 INLINE void Button::AddLabelScale(f32 scale)
 {
 	cLabel.AddScale(scale);
+
+	f32 maxW, maxH;
+	maxW = maxH = 0.0f;
+	if (bSpriteBased)
+	{
+		maxW = cSprite.GetWidth();
+		maxH = cSprite.GetHeight();
+	}
+
+	if (maxW < cLabel.GetWidth())
+		maxW = cLabel.GetWidth();
+
+	if (maxH < cLabel.GetHeight())
+		maxH = cLabel.GetHeight();
+
+	this->SetWidth(maxW);
+	this->SetHeight(maxH);
 }
 
 INLINE void Button::AddLabelScale(f32 scaleX, f32 scaleY)
 {
 	cLabel.AddScale(scaleX, scaleY);
+
+	f32 maxW, maxH;
+	maxW = maxH = 0.0f;
+	if (bSpriteBased)
+	{
+		maxW = cSprite.GetWidth();
+		maxH = cSprite.GetHeight();
+	}
+
+	if (maxW < cLabel.GetWidth())
+		maxW = cLabel.GetWidth();
+
+	if (maxH < cLabel.GetHeight())
+		maxH = cLabel.GetHeight();
+
+	this->SetWidth(maxW);
+	this->SetHeight(maxH);
 }
 
 INLINE f32 Button::GetLabelWidth() const
@@ -1083,14 +1209,38 @@ INLINE void Button::SetLabelDisabledColor(PIXEL px)
 	iLabelDisabledColor = px;
 }
 
+INLINE void Button::SetLabelAutoUpdate(BOOL b)
+{
+	bLabelAutoUpdate = b;
+	bChanged = TRUE;
+}
+
+INLINE BOOL Button::IsLabelAutoUpdate() const
+{
+	return bLabelAutoUpdate;
+}
+
 INLINE void Button::SetText(const WideString str)
 {
 	cLabel.SetText(str);
 
-	if (cLabel.GetWidth() > this->GetWidth())
-		this->SetWidth(cLabel.GetWidth());
-	if (cLabel.GetHeight() > this->GetHeight())
-		this->SetHeight(cLabel.GetHeight());
+	f32 maxW, maxH;
+	maxW = maxH = 0.0f;
+ 
+	if (bSpriteBased)
+	{
+		maxW = cSprite.GetWidth();
+		maxH = cSprite.GetHeight();
+	}
+
+	if (maxW < cLabel.GetWidth())
+		maxW = cLabel.GetWidth();
+
+	if (maxH < cLabel.GetHeight())
+		maxH = cLabel.GetHeight();
+
+	this->SetWidth(maxW);
+	this->SetHeight(maxH);
 
 	this->UpdateLabel();
 
@@ -1102,10 +1252,23 @@ INLINE void Button::SetText(const String &str)
 {
 	cLabel.SetText(str);
 
-	if (cLabel.GetWidth() > this->GetWidth())
-		this->SetWidth(cLabel.GetWidth());
-	if (cLabel.GetHeight() > this->GetHeight())
-		this->SetHeight(cLabel.GetHeight());
+	f32 maxW, maxH;
+	maxW = maxH = 0.0f;
+
+	if (bSpriteBased)
+	{
+		maxW = cSprite.GetWidth();
+		maxH = cSprite.GetHeight();
+	}
+
+	if (maxW < cLabel.GetWidth())
+		maxW = cLabel.GetWidth();
+
+	if (maxH < cLabel.GetHeight())
+		maxH = cLabel.GetHeight();
+
+	this->SetWidth(maxW);
+	this->SetHeight(maxH);
 
 	this->UpdateLabel();
 

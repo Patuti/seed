@@ -510,12 +510,13 @@ void ISprite::Update(f32 delta)
 		arCurrentVertexData = arCustomVertexData;
 	}
 
-	f32 x, y;
+	f32 x, y, ratio;
+	ratio = pScreen->GetAspectRatio();
 	x = this->fAspectHalfWidth + ISprite::GetX();
-	y = this->fAspectHalfHeight + ISprite::GetY() * pScreen->GetAspectRatio();
+	y = this->fAspectHalfHeight + ISprite::GetY() * ratio;
 
 	f32 lx = ISprite::GetLocalX();
-	f32 ly = ISprite::GetLocalY();
+	f32 ly = ISprite::GetLocalY() * ratio;
 
 	Matrix4x4f t1, t2, r, s;
 	t1 = TranslationMatrix(lx + x, ly + y, 0.0f);

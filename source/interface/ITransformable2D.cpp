@@ -36,6 +36,7 @@
 
 #include "interface/ITransformable2D.h"
 #include "Point.h"
+#include "Number.h"
 
 namespace Seed {
 
@@ -398,12 +399,12 @@ INLINE f32 ITransformable2D::GetScaleY() const
 
 INLINE f32 ITransformable2D::GetWidth() const
 {
-	return fWidth;
+	return fWidth * Number::Abs(ptScale.x);
 }
 
 INLINE f32 ITransformable2D::GetHeight() const
 {
-	return fHeight;
+	return fHeight * Number::Abs(ptScale.y);
 }
 
 INLINE f32 ITransformable2D::GetX() const

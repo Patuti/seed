@@ -372,15 +372,15 @@ INLINE u8 Texture::GetPixelAlpha(u32 x, u32 y) const
 	if (!pSurface)
 		return 0;
 
-	if (x > iWidth || y > iHeight)
+	if (x >= iWidth)
 	{
-		#if !defined(__GNUC__)
-			__asm { int 3 };
-		#else
-			asm("int $3");
-		#endif
-		Log(TAG "Pixel position out of bounding!");
-		return 255;
+		x = static_cast<u32>(pSurface->w) - 1;
+		return this->GetPixelAlpha(x, y);
+	}
+	else if (y >= iHeight)
+	{
+		y = static_cast<u32>(pSurface->h) - 1;
+		return this->GetPixelAlpha(x, y);
 	}
 
 	u8 a = 255;

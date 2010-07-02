@@ -140,6 +140,9 @@ class SEED_CORE_API Button : public IWidget, public IResource
 		virtual f32 GetLabelScaleX() const;
 		virtual f32 GetLabelScaleY() const;
 
+		virtual void SetLabelAutoUpdate(BOOL b);
+		virtual BOOL IsLabelAutoUpdate() const;
+
 		// Label
 		virtual void SetLabelHorizontalAlignment(eHorizontalAlignment align);
 		virtual void SetLabelVerticalAlignment(eVerticalAlignment align);
@@ -251,6 +254,7 @@ class SEED_CORE_API Button : public IWidget, public IResource
 		BOOL		bLabelBased;
 		BOOL		bButtonChanged;
 		BOOL		bSpriteAutoUpdate;
+		BOOL		bLabelAutoUpdate;
 		BOOL		bCenterDrag;
 		BOOL		bOffsetPressed; // Has Offset Pressed added? - If button was disabled when pressed we need restore its position.
 		u32			iDraggingPriority;

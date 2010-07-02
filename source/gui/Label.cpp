@@ -50,8 +50,9 @@ namespace Seed {
 
 Label::Label()
 	: iAlign(Seed::HorizontalAlignLeft)
-	//, iColor(0)
-	, bAutoAdjust(FALSE)
+	, bAutoAdjust(TRUE)
+	, fTextScaleX(1.0f)
+	, fTextScaleY(1.0f)
 	, cText()
 	, pFont(NULL)
 {
@@ -121,16 +122,13 @@ void Label::Render()
 {
 	cText.SetBlending(eBlendOperation);
 	cText.SetColor(iColor.pixel);
-	cText.SetScale(GetScaleX(), GetScaleY());
+	//cText.SetScale(GetScaleX(), GetScaleY());
+	cText.SetScale(fTextScaleX, fTextScaleY);
+	cText.SetPosition(this->GetX(), this->GetY());
+	cText.SetLocalPosition(this->GetLocalX(), this->GetLocalY());
 
 	switch (iAlign)
 	{
-		case HorizontalAlignLeft:
-		{
-			cText.SetPosition(this->GetX(), this->GetY());
-		}
-		break;
-
 		case HorizontalAlignRight:
 		{
 			cText.SetPosition(this->GetX() + ((this->GetWidth() - cText.GetWidth())), this->GetY());
@@ -144,6 +142,7 @@ void Label::Render()
 		break;
 
 		case HorizontalAlignNone:
+		case HorizontalAlignLeft:
 		default:
 		break;
 	}
@@ -154,10 +153,84 @@ void Label::Render()
 		pRendererDevice->DrawRect(this->GetX(), this->GetY(), this->GetWidth(), this->GetHeight(), PIXEL_COLOR(0, 255, 0, 255));
 }
 
+void Label::SetScaleX(f32 scaleX)
+{
+	this->SetScale(scaleX, this->GetScaleY());
+}
+
+void Label::SetScaleY(f32 scaleY)
+{
+	this->SetScale(this->GetScaleX(), scaleY);
+}
+
+void Label::SetScale(f32 scale)
+{
+	this->SetScale(scale, scale);
+}
+
+void Label::SetScale(f32 scaleX, f32 scaleY)
+{
+	fTextScaleX = scaleX;
+	fTextScaleY = scaleY;
+
+	cText.SetScale(scaleX, scaleY);
+
+	if (bAutoAdjust)
+	{
+		if (this->GetWidth() != cText.GetWidth())
+			this->SetWidth(cText.GetWidth());
+	}
+
+	if (this->GetHeight() != cText.GetHeight())
+		this->SetHeight(cText.GetHeight());
+
+	bChanged = TRUE;
+}
+
+void Label::SetScale(const Point<f32> &scale)
+{
+	this->SetScale(scale.x, scale.y);
+}
+
+void Label::AddScaleX(f32 scaleX)
+{
+	this->SetScale(this->GetScaleX() + scaleX, this->GetScaleY());
+}
+
+void Label::AddScaleY(f32 scaleY)
+{
+	this->SetScale(this->GetScaleX(), this->GetScaleY() + scaleY);
+}
+
+void Label::AddScale(f32 scale)
+{
+	this->SetScale(this->GetScaleX() + scale, this->GetScaleY() + scale);
+}
+
+void Label::AddScale(f32 scaleX, f32 scaleY)
+{
+	this->SetScale(this->GetScaleX() + scaleX, this->GetScaleY() + scaleY);
+}
+
+void Label::AddScale(const Point<f32> &scale)
+{
+	this->SetScale(this->GetScaleX() + scale.x, this->GetScaleY() + scale.y);
+}
+
+INLINE f32 Label::GetScaleX() const
+{
+	return cText.GetScaleX();
+}
+
+INLINE f32 Label::GetScaleY() const
+{
+	return cText.GetScaleY();
+}
+
 INLINE void Label::SetAutoAdjust(BOOL b)
 {
-	this->bAutoAdjust = b;
-	this->bChanged = TRUE;
+	bAutoAdjust = b;
+	bChanged = TRUE;
 }
 
 INLINE BOOL Label::IsAutoAdjust() const
@@ -167,15 +240,16 @@ INLINE BOOL Label::IsAutoAdjust() const
 
 INLINE void Label::SetWidth(f32 w)
 {
-	this->bAutoAdjust = FALSE;
+	bAutoAdjust = FALSE;
 	IWidget::SetWidth(w);
-	this->bChanged = TRUE;
+	bChanged = TRUE;
 }
 
 INLINE void Label::SetAlignment(eHorizontalAlignment align)
 {
-	this->iAlign = align;
-	this->bChanged = TRUE;
+	iAlign = align;
+	bAutoAdjust = FALSE;
+	bChanged = TRUE;
 }
 
 INLINE void Label::SetText(const WideString str)
@@ -183,7 +257,7 @@ INLINE void Label::SetText(const WideString str)
 	this->cText.SetText(str);
 
 	this->SetHeight(cText.GetHeight());
-	if (!this->GetWidth() || this->bAutoAdjust)
+	if (!this->GetWidth() || bAutoAdjust)
 		IWidget::SetWidth(cText.GetWidth());
 
 	this->bChanged = TRUE;
@@ -194,7 +268,7 @@ INLINE void Label::SetText(const String &str)
 	this->cText.SetText(str);
 
 	this->SetHeight(cText.GetHeight());
-	if (!this->GetWidth() || this->bAutoAdjust)
+	if (!this->GetWidth() || bAutoAdjust)
 		IWidget::SetWidth(cText.GetWidth());
 
 	this->bChanged = TRUE;
@@ -206,7 +280,7 @@ INLINE void Label::SetFont(const Font *font)
 	this->cText.SetFont(const_cast<Font*>(pFont));
 
 	this->SetHeight(cText.GetHeight());
-	if (!this->GetWidth() || this->bAutoAdjust)
+	if (!this->GetWidth() || bAutoAdjust)
 		IWidget::SetWidth(cText.GetWidth());
 
 	this->bChanged = TRUE;

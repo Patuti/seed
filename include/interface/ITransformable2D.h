@@ -129,10 +129,12 @@ class SEED_CORE_API ITransformable2D
 		Point2f ptPos;
 		Point2f ptLocalPos;
 		Point2f ptScale;
-		f32 fWidth;
-		f32 fHeight;
 		f32 fRotation;
 		u32	iPriority;
+
+	public: // FIXME: Font needs it...
+		f32 fWidth;
+		f32 fHeight;
 
 	private:
 		SEED_DISABLE_COPY(ITransformable2D);
@@ -142,7 +144,6 @@ struct SEED_CORE_API ITransformable2DAscendingPrioritySort
 {
 	bool operator()(ITransformable2D * const &left, ITransformable2D * const &right)
 	{
-		//return (left->iPriority < right->iPriority);
 		return (left->GetPriority() < right->GetPriority());
 	}
 };
@@ -151,7 +152,6 @@ struct SEED_CORE_API ITransformable2DDescendingPrioritySort
 {
 	bool operator()(ITransformable2D * const &left, ITransformable2D * const &right)
 	{
-		//return (left->iPriority > right->iPriority);
 		return (left->GetPriority() > right->GetPriority());
 	}
 };

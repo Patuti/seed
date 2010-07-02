@@ -55,16 +55,19 @@ namespace Seed {
 
 
 Text::Text()
-	: pFont(NULL)
+	: bChanged(FALSE)
+	, pFont(NULL)
 	, pStrData(NULL)
 	, fPosX(0)
 	, fPosY(0)
+	, fLocalX(0)
+	, fLocalY(0)
 	, fWidth(0)
 	, fHeight(0)
 	, fScaleX(1.0f)
 	, fScaleY(1.0f)
 	, iColor(0)
-	, iOperation(BlendNone)
+	, iOperation(Seed::BlendNone)
 {
 }
 
@@ -78,6 +81,9 @@ INLINE void Text::Reset()
 	pStrData = NULL;
 	fPosX = 0;
 	fPosY = 0;
+	fLocalX = 0;
+	fLocalY = 0;
+	bChanged = FALSE;
 }
 
 INLINE void Text::SetText(u32 dictText)
@@ -85,12 +91,14 @@ INLINE void Text::SetText(u32 dictText)
 
 	pStrData = const_cast<WideString>(pDictionary->GetString(dictText));
 	fWidth = this->GetWidth(0, String::Length(pStrData));
+	bChanged = TRUE;
 }
 
 INLINE void Text::SetText(const WideString str)
 {
 	pStrData = str;
 	fWidth = this->GetWidth(0, String::Length(pStrData));
+	bChanged = TRUE;
 }
 
 INLINE void Text::SetText(const String &str)
@@ -114,7 +122,7 @@ INLINE f32 Text::GetWidth(u32 index, u32 size)
 			w += pFont->GetWidth() + pFont->GetSpacing();
 		}
 
-		w -= pFont->GetSpacing();
+		//w -= pFont->GetSpacing();
 	}
 
 	return w;
@@ -122,7 +130,7 @@ INLINE f32 Text::GetWidth(u32 index, u32 size)
 
 u32 Text::GetLengthNonBreakMaxWidth(u32 *index, f32 maxWidth, f32 *lineWidth)
 {
-	// Pode ter somente texto ou somente fonte, por isso nao dar ASSERT
+	// Pode ter somente texto ou somente fonte, por isso nao usar ASSERT
 	if (!pStrData || !pFont)
 		return 0;
 
@@ -215,7 +223,7 @@ void Text::Draw(u32 index, u32 size)
 		pFont->SetPosition(fX, fY);
 		pFont->Draw();
 
-		fX += (pFont->GetWidth() + pFont->GetSpacing()) * fScaleX;
+		fX += pFont->GetWidth() + pFont->GetSpacing();
 	}
 }
 
@@ -266,15 +274,23 @@ INLINE void Text::SetPosition(f32 x, f32 y)
 	fPosY = y;
 }
 
+INLINE void Text::SetLocalPosition(f32 x, f32 y)
+{
+	fLocalX = x;
+	fLocalY = y;
+}
+
 INLINE void Text::SetFont(Font *f)
 {
 	//sRelease(pFont);
 	pFont = f;
 	//sAcquire(pFont);
 
-	fHeight = pFont->GetHeight();
+	pFont->SetScale(this->GetScaleX(), this->GetScaleY());
 	if (pStrData)
 		fWidth = this->GetWidth(0, String::Length(pStrData));
+
+	fHeight = pFont->GetHeight();
 }
 
 INLINE void Text::SetBlending(eBlendMode op)
@@ -294,16 +310,34 @@ INLINE void Text::SetColor(PIXEL px)
 
 INLINE void Text::SetScale(f32 scaleX, f32 scaleY)
 {
-	if (scaleX == fScaleX && scaleY == fScaleY)
-		return;
-
 	fScaleX = scaleX;
 	fScaleY = scaleY;
+
+	if (pFont)
+	{
+		pFont->SetScale(fScaleX, fScaleY);
+		fHeight = pFont->GetHeight();
+	}
+
+	if (pStrData)
+		fWidth = this->GetWidth(0, String::Length(pStrData));
+
+	bChanged = TRUE;
 }
 
 INLINE const WideString Text::GetText() const
 {
 	return pStrData;
+}
+
+INLINE f32 Text::GetScaleX() const
+{
+	return fScaleX;
+}
+
+INLINE f32 Text::GetScaleY() const
+{
+	return fScaleY;
 }
 
 } // namespace

@@ -39,6 +39,7 @@
 #include "Dictionary.h"
 #include "System.h"
 #include "Texture.h"
+#include "Number.h"
 
 #define FONT_OFFSET		33
 #define FONT_TOTAL		90
@@ -169,6 +170,7 @@ u32 Font::SelectLetter(u32 letter)
 	}
 
 	pFont->SetCurrentFrame(nc);
+	pFont->SetLocalPosition(-pFont->fWidth / 2.0f, -pFont->fHeight / 2.0f);
 
 	return nc;
 }
@@ -184,7 +186,7 @@ void Font::SetLetter(u32 letter)
 	if (letter == '\t')
 	{
 		this->bSpace = TRUE;
-		this->fWidth = this->fSpaceWidth * 2;
+		this->fWidth = this->fSpaceWidth * 2 * Number::Abs(mFont.GetScaleX());
 	}
 	else if (letter == '\n')
 	{
@@ -194,7 +196,7 @@ void Font::SetLetter(u32 letter)
 	else if (letter == ' ')
 	{
 		this->bSpace = TRUE;
-		this->fWidth = this->fSpaceWidth;
+		this->fWidth = this->fSpaceWidth * Number::Abs(mFont.GetScaleX());
 	}
 	else
 	{
@@ -211,7 +213,7 @@ INLINE f32 Font::GetWidth() const
 
 INLINE f32 Font::GetHeight() const
 {
-	return this->fHeight;
+	return mFont.GetHeight();
 }
 
 INLINE void Font::SetSpacing(f32 spacing)
@@ -221,7 +223,7 @@ INLINE void Font::SetSpacing(f32 spacing)
 
 INLINE f32 Font::GetSpacing() const
 {
-	return this->fSpacing;
+	return this->fSpacing * Number::Abs(mFont.GetScaleX());;
 }
 
 INLINE void Font::SetSpaceWidth(f32 width)
@@ -231,7 +233,7 @@ INLINE void Font::SetSpaceWidth(f32 width)
 
 INLINE f32 Font::GetSpaceWidth() const
 {
-	return this->fSpaceWidth;
+	return this->fSpaceWidth * Number::Abs(mFont.GetScaleX());
 }
 
 INLINE void Font::SetTracking(f32 tracking)
@@ -241,13 +243,19 @@ INLINE void Font::SetTracking(f32 tracking)
 
 INLINE f32 Font::GetTracking()
 {
-	return this->fTracking;
+	return this->fTracking * Number::Abs(mFont.GetScaleX());
 }
 
 INLINE void Font::SetPosition(f32 x, f32 y)
 {
 	mFont.SetPosition(x, y);
 	mFontExt.SetPosition(x, y);
+}
+
+INLINE void Font::SetLocalPosition(f32 x, f32 y)
+{
+	mFont.SetLocalPosition(x, y);
+	mFontExt.SetLocalPosition(x, y);
 }
 
 INLINE u32 Font::GetUsedMemory() const

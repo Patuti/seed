@@ -52,8 +52,8 @@ TextArea::TextArea()
 	: IWidget()
 	, iLines(0)
 	, fDiffX(0.0f)
-	, fScaleX(0.0f)
-	, fScaleY(0.0f)
+	, fTextScaleX(1.0f)
+	, fTextScaleY(1.0f)
 	, eHAlign(HorizontalAlignLeft)
 	, eVAlign(VerticalAlignTop)
 	, pFont(NULL)
@@ -120,7 +120,7 @@ void TextArea::Render()
 {
 	cText.SetBlending(eBlendOperation);
 	cText.SetColor(iColor.pixel);
-	cText.SetScale(this->GetScaleX(), this->GetScaleY());
+	cText.SetScale(fTextScaleX, fTextScaleY);
 
 	for (u32 i = 0; i < iLines; i++)
 	{
@@ -158,7 +158,7 @@ u32 TextArea::CalculateLineCount()
 			lines++;
 			index += size;
 		}
-		this->SetHeight(lines * (cText.GetHeight() + cText.GetFontTracking()));
+		IWidget::SetHeight(lines * (cText.GetHeight() + cText.GetFontTracking()));
 	}
 	else
 	{
@@ -195,6 +195,8 @@ u32 TextArea::RebuildPosX()
 	u32 size = 0;
 	f32 lineWidth = 0.0f;
 	u32 usedLines = 0;
+
+	cText.SetScale(fTextScaleX, fTextScaleY);
 	for (u32 i = 0; i < iLines; i++)
 	{
 		size = cText.GetLengthNonBreakMaxWidth(&index, this->GetWidth(), &lineWidth);
@@ -235,7 +237,7 @@ u32 TextArea::RebuildPosX()
 void TextArea::RebuildPosY(u32 usedLines)
 {
 	f32 y = 0.0f;
-	f32 textHeight = ((cText.GetHeight() + cText.GetFontTracking()) * usedLines) * this->GetScaleY();
+	f32 textHeight = (cText.GetHeight() + cText.GetFontTracking()) * usedLines;
 	switch (eVAlign)
 	{
 		case VerticalAlignCenter:
@@ -252,34 +254,125 @@ void TextArea::RebuildPosY(u32 usedLines)
 	}
 
 	for (u32 i = 0; i < usedLines; i++)
-		pLines[i].fPosY = y + ((cText.GetHeight() + cText.GetFontTracking()) * i * this->GetScaleY());
+		pLines[i].fPosY = y + (cText.GetHeight() + cText.GetFontTracking()) * i;
 }
 
 INLINE void TextArea::SetText(const WideString str)
 {
+	cText.SetScale(fTextScaleX, fTextScaleY);
 	cText.SetText(str);
 
 	if (!this->GetHeight())
-		this->SetHeight(cText.GetHeight());
+		IWidget::SetHeight(cText.GetHeight() + cText.GetFontTracking());
 
 	if (!this->GetWidth())
-		this->SetWidth(cText.GetWidth());
+		IWidget::SetWidth(cText.GetWidth());
 
 	this->Rebuild();
 }
 
-
 INLINE void TextArea::SetText(const String &str)
 {
+	cText.SetScale(fTextScaleX, fTextScaleY);
 	cText.SetText(str);
 
 	if (!this->GetHeight())
-		this->SetHeight(cText.GetHeight());
+		IWidget::SetHeight(cText.GetHeight() + cText.GetFontTracking());
 
 	if (!this->GetWidth())
-		this->SetWidth(cText.GetWidth());
+		IWidget::SetWidth(cText.GetWidth());
 
 	this->Rebuild();
+}
+
+void TextArea::SetScaleX(f32 scaleX)
+{
+	this->SetScale(scaleX, this->GetScaleY());
+}
+
+void TextArea::SetScaleY(f32 scaleY)
+{
+	this->SetScale(this->GetScaleX(), scaleY);
+}
+
+void TextArea::SetScale(f32 scale)
+{
+	this->SetScale(scale, scale);
+}
+
+void TextArea::SetScale(f32 scaleX, f32 scaleY)
+{
+	fTextScaleX = scaleX;
+	fTextScaleY = scaleY;
+
+	cText.SetScale(scaleX, scaleY);
+
+	if (bAutoAdjust)
+	{
+		if (this->GetWidth() != cText.GetWidth())
+			IWidget::SetWidth(cText.GetWidth());
+
+		if (this->GetHeight() != cText.GetHeight())
+			IWidget::SetHeight(cText.GetHeight());
+	}
+
+	bChanged = TRUE;
+}
+
+void TextArea::SetScale(const Point<f32> &scale)
+{
+	this->SetScale(scale.x, scale.y);
+}
+
+void TextArea::AddScaleX(f32 scaleX)
+{
+	this->SetScale(this->GetScaleX() + scaleX, this->GetScaleY());
+}
+
+void TextArea::AddScaleY(f32 scaleY)
+{
+	this->SetScale(this->GetScaleX(), this->GetScaleY() + scaleY);
+}
+
+void TextArea::AddScale(f32 scale)
+{
+	this->SetScale(this->GetScaleX() + scale, this->GetScaleY() + scale);
+}
+
+void TextArea::AddScale(f32 scaleX, f32 scaleY)
+{
+	this->SetScale(this->GetScaleX() + scaleX, this->GetScaleY() + scaleY);
+}
+
+void TextArea::AddScale(const Point<f32> &scale)
+{
+	this->SetScale(this->GetScaleX() + scale.x, this->GetScaleY() + scale.y);
+}
+
+INLINE void TextArea::SetWidth(f32 w)
+{
+	IWidget::SetWidth(w);
+
+	bAutoAdjust = FALSE;
+	bChanged = TRUE;
+}
+
+INLINE void TextArea::SetHeight(f32 h)
+{
+	IWidget::SetHeight(h);
+
+	bAutoAdjust = FALSE;
+	bChanged = TRUE;
+}
+
+INLINE f32 TextArea::GetScaleX() const
+{
+	return cText.GetScaleX();
+}
+
+INLINE f32 TextArea::GetScaleY() const
+{
+	return cText.GetScaleY();
 }
 
 INLINE void TextArea::SetAutoAdjust(BOOL b)
