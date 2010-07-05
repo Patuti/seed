@@ -399,12 +399,12 @@ INLINE f32 ITransformable2D::GetScaleY() const
 
 INLINE f32 ITransformable2D::GetWidth() const
 {
-	return fWidth * Number::Abs(ptScale.x);
+	return fWidth * Number::Abs(this->GetScaleX());
 }
 
 INLINE f32 ITransformable2D::GetHeight() const
 {
-	return fHeight * Number::Abs(ptScale.y);
+	return fHeight * Number::Abs(this->GetScaleY());
 }
 
 INLINE f32 ITransformable2D::GetX() const

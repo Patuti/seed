@@ -208,7 +208,8 @@ void Button::Update(f32 dt)
 {
 	UNUSED(dt);
 
-	IWidget::Update(dt);
+	// abstract
+	//IWidget::Update(dt);
 	if (bButtonChanged || bTransformationChanged)
 	{
 		if (bSpriteBased)
