@@ -69,36 +69,34 @@ Label::~Label()
 
 void Label::Reset()
 {
-	this->iId				= 0;
-	this->iColor.pixel		= 0;
-	this->eBlendOperation	= BlendNone;
+	iId = 0;
+	eBlendOperation	= BlendNone;
 
 	IWidget::Reset();
 
-	this->bVisible			= TRUE;
-	this->bChanged			= TRUE;
-	this->bTransformationChanged = TRUE;
-	this->bDisabled			= TRUE;
-	this->bAutoAdjust		= TRUE;
-	this->iAlign			= HorizontalAlignLeft;
+	bVisible = TRUE;
+	bChanged = TRUE;
+	bTransformationChanged = TRUE;
+	bDisabled = TRUE;
+	bAutoAdjust = TRUE;
+	iAlign = HorizontalAlignLeft;
 
-	this->cText.Reset();
+	cText.Reset();
 }
 
 void Label::ReleaseText()
 {
-	this->iId				= 0;
-	this->iColor.pixel		= 0;
-	this->eBlendOperation	= Seed::BlendNone;
+	iId = 0;
+	eBlendOperation = Seed::BlendNone;
 
-	this->bVisible			= TRUE;
-	this->bChanged			= TRUE;
-	this->bTransformationChanged = TRUE;
-	this->bDisabled			= TRUE;
-	this->bAutoAdjust		= TRUE;
-	this->iAlign			= HorizontalAlignLeft;
+	bVisible = TRUE;
+	bChanged = TRUE;
+	bTransformationChanged = TRUE;
+	bDisabled = TRUE;
+	bAutoAdjust = TRUE;
+	iAlign = HorizontalAlignLeft;
 
-	this->cText.Reset();
+	cText.Reset();
 }
 
 void Label::Update(f32 dt)
@@ -122,7 +120,7 @@ void Label::Render()
 {
 	cText.SetBlending(eBlendOperation);
 	cText.SetColor(iColor.pixel);
-	//cText.SetScale(GetScaleX(), GetScaleY());
+	cText.SetScale(GetScaleX(), GetScaleY());
 	cText.SetScale(fTextScaleX, fTextScaleY);
 	cText.SetPosition(this->GetX(), this->GetY());
 	cText.SetLocalPosition(this->GetLocalX(), this->GetLocalY());
@@ -137,7 +135,7 @@ void Label::Render()
 
 		case HorizontalAlignCenter:
 		{
-			this->cText.SetPosition(this->GetX() + ((this->GetWidth() - cText.GetWidth()) / 2.0f), this->GetY());
+			cText.SetPosition(this->GetX() + ((this->GetWidth() - cText.GetWidth()) / 2.0f), this->GetY());
 		}
 		break;
 
@@ -235,7 +233,7 @@ INLINE void Label::SetAutoAdjust(BOOL b)
 
 INLINE BOOL Label::IsAutoAdjust() const
 {
-	return this->bAutoAdjust;
+	return bAutoAdjust;
 }
 
 INLINE void Label::SetWidth(f32 w)
@@ -254,36 +252,36 @@ INLINE void Label::SetAlignment(eHorizontalAlignment align)
 
 INLINE void Label::SetText(const WideString str)
 {
-	this->cText.SetText(str);
+	cText.SetText(str);
 
 	this->SetHeight(cText.GetHeight());
 	if (!this->GetWidth() || bAutoAdjust)
 		IWidget::SetWidth(cText.GetWidth());
 
-	this->bChanged = TRUE;
+	bChanged = TRUE;
 }
 
 INLINE void Label::SetText(const String &str)
 {
-	this->cText.SetText(str);
+	cText.SetText(str);
 
 	this->SetHeight(cText.GetHeight());
 	if (!this->GetWidth() || bAutoAdjust)
 		IWidget::SetWidth(cText.GetWidth());
 
-	this->bChanged = TRUE;
+	bChanged = TRUE;
 }
 
 INLINE void Label::SetFont(const Font *font)
 {
-	this->pFont = font;
-	this->cText.SetFont(const_cast<Font*>(pFont));
+	pFont = font;
+	cText.SetFont(const_cast<Font*>(pFont));
 
 	this->SetHeight(cText.GetHeight());
 	if (!this->GetWidth() || bAutoAdjust)
 		IWidget::SetWidth(cText.GetWidth());
 
-	this->bChanged = TRUE;
+	bChanged = TRUE;
 }
 
 INLINE f32 Label::GetTextWidth()
@@ -291,7 +289,7 @@ INLINE f32 Label::GetTextWidth()
 	f32 width = 0.0f;
 	u32 idx = 0;
 	if (pFont && this->GetWidth())
-		this->cText.GetLengthNonBreakMaxWidth(&idx, 1.0f, &width);
+		cText.GetLengthNonBreakMaxWidth(&idx, 1.0f, &width);
 
 	return width;
 }

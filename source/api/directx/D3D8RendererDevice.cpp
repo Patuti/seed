@@ -207,6 +207,8 @@ INLINE BOOL D3D8RendererDevice::Initialize()
 	//mDevice->CreateVertexBuffer(4 * sizeof(sVertex), D3DUSAGE_WRITEONLY, D3DFVF_VERTEXFORMAT, D3DPOOL_MANAGED, &pVertexBuffer);
 	//mDevice->CreateTexture(1024, 1024, 0, D3DUSAGE_DYNAMIC, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &iTextureId);
 
+	this->Enable2D();
+
 	return ret;
 }
 
@@ -239,6 +241,8 @@ INLINE BOOL D3D8RendererDevice::Reset()
 	mParams.MultiSampleType = D3DMULTISAMPLE_NONE;
 
 	mDevice->Reset(&mParams);
+
+	this->Enable2D();
 
 	return TRUE; // abstract IRenderer::Reset();
 }
@@ -441,7 +445,7 @@ INLINE void D3D8RendererDevice::UploadData(void *userData)
 {
 	RendererPacket *packet = static_cast<RendererPacket *>(userData);
 
-	this->SetBlendingOperation(packet->nBlendMode, packet->iColor.pixel);
+//	this->SetBlendingOperation(packet->nBlendMode, packet->iColor.pixel);
 
 	ITexture *texture = packet->pTexture;
 	IDirect3DTexture8 *t = static_cast<IDirect3DTexture8 *>(texture->GetTextureName());

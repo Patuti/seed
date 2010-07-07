@@ -42,10 +42,8 @@ namespace Seed {
 
 IRenderable::IRenderable()
 	: eBlendOperation(BlendNone)
-//	, iPriority(0)
 	, iColor(255, 255, 255, 255)
 	, bVisible(TRUE)
-//	, fPriority(0.0f)
 {
 }
 

@@ -131,11 +131,19 @@ void RendererManager::Remove(Renderer *renderer)
 INLINE void RendererManager::Disable()
 {
 	bEnabled = FALSE;
+	for (u32 i = 0; i < arRenderer.Size(); i++)
+	{
+		arRenderer[i]->Disable();
+	}
 }
 
 INLINE void RendererManager::Enable()
 {
 	bEnabled = TRUE;
+	for (u32 i = 0; i < arRenderer.Size(); i++)
+	{
+		arRenderer[i]->Enable();
+	}
 }
 
 INLINE const char *RendererManager::GetObjectName() const

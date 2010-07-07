@@ -88,7 +88,6 @@ class SEED_CORE_API Label : public IWidget
 
 	protected:
 		eHorizontalAlignment	iAlign;
-		//PIXEL		iColor;
 		BOOL		bAutoAdjust;
 		f32			fTextScaleX;
 		f32			fTextScaleY;

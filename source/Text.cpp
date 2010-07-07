@@ -66,7 +66,7 @@ Text::Text()
 	, fHeight(0)
 	, fScaleX(1.0f)
 	, fScaleY(1.0f)
-	, iColor(0)
+	, iColor(PIXEL_COLOR(255, 255, 255, 255))
 	, iOperation(Seed::BlendNone)
 {
 }

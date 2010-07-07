@@ -125,17 +125,6 @@ Try to keep these values at a minimum.
 // DEBUGGING DEFINES
 //================================================================================
 #if defined(DEBUG)
-	#define DEBUG_GAMESTATE_NOWAIT			1	// To disable save system sync delay
-	#define DEBUG_ENABLE_RECT_TEXTAREA		1	// Enable TextArea Wireframe debugging
-	#define DEBUG_ENABLE_RECT_LABEL			1	// Enable Label Wireframe debugging
-	#define DEBUG_ENABLE_RECT_BUTTON		1	// Enable Button Wireframe debugging
-	#define DEBUG_ENABLE_RECT_SPRITE		1	// Enable Sprite Wireframe debugging
-
-	#define DEBUG_RECT_COLOR_TEXTAREA		PIXEL_COLOR(255, 0, 0, 255)
-	#define DEBUG_RECT_COLOR_LABEL			PIXEL_COLOR(0, 255, 0, 255)
-	#define DEBUG_RECT_COLOR_BUTTON			PIXEL_COLOR(0, 0, 255, 255)
-	#define DEBUG_RECT_COLOR_SPRITE			PIXEL_COLOR(255, 255, 255, 255)
-
 	#define SEED_LOG_RESOURCEMANAGER		1
 #endif // DEBUG
 
