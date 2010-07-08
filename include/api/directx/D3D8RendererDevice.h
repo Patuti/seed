@@ -51,8 +51,8 @@
 #undef Delete
 #undef BOOL
 #undef SIZE_T
-#include <d3d8.h>
-#include <d3dx8.h>
+#include <dx8/d3d8.h>
+#include <dx8/d3dx8.h>
 #pragma pop_macro("SIZE_T")
 #pragma pop_macro("BOOL")
 #pragma pop_macro("Delete")

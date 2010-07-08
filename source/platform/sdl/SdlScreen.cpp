@@ -250,14 +250,14 @@ INLINE BOOL Screen::InitializeVideo()
 	Info(TAG "Desktop Resolution: %dx%d", cxScreen, cyScreen);
 	Info(TAG "Desktop DPI scaled resolution: %dx%d", scaleX, scaleY);
 
-	if (cxScreen > 1024 && cyScreen > 768)
+	if (cxScreen <= 1024 && cyScreen <= 768 && iWidth > 800 && iHeight > 600)
 	{
-		iWidth = 1024;
-		iHeight = 768;
+		iWidth = 800;
+		iHeight = 600;
 	}
 #endif
 
-SDL_WM_SetCaption(pConfiguration->GetApplicationTitle(), pConfiguration->GetApplicationTitle());
+	SDL_WM_SetCaption(pConfiguration->GetApplicationTitle(), pConfiguration->GetApplicationTitle());
 	pSurface = SDL_SetVideoMode(iWidth, iHeight, iBPP, iFlags);
 	if (!pSurface)
 	{

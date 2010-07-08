@@ -78,7 +78,8 @@ class SEED_CORE_API Checksum
 
 };
 
-extern Checksum *pChecksum;// Checksum::GetInstance()
+//#define pChecksum Checksum::GetInstance()
+extern Checksum *pChecksum;
 
 } // namespace
 

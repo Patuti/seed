@@ -35,11 +35,6 @@
 */
 
 #include "SceneNode.h"
-#include "Defines.h"
-#include "Log.h"
-#include "Enum.h"
-
-#define TAG		"[SceneNode] "
 
 namespace Seed {
 

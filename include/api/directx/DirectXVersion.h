@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
-#include <dxdiag.h>
+#include <dx8/dxdiag.h>
 
 HRESULT GetDXVersion(DWORD *pdwDirectXVersion, TCHAR *strDirectXVersion, int cchDirectXVersion);
 HRESULT GetDirectXVersionViaDxDiag(DWORD *pdwDirectXVersionMajor, DWORD *pdwDirectXVersionMinor, TCHAR *pcDirectXVersionLetter);

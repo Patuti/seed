@@ -42,7 +42,7 @@
 
 namespace Seed {
 
-template <int NODES> class SEED_CORE_API SceneNode : public ISceneNode
+template <int NODES> class SceneNode : public ISceneNode
 {
 	public:
 		SceneNode()

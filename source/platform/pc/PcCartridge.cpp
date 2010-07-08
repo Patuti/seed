@@ -59,7 +59,6 @@ Cartridge::Cartridge()
 
 Cartridge::~Cartridge()
 {
-	this->Reset();
 }
 
 INLINE BOOL Cartridge::Initialize()

@@ -55,7 +55,7 @@
 
 namespace Seed { namespace SDL {
 
-class Screen : public IScreen
+class SEED_CORE_API Screen : public IScreen
 {
 	SEED_SINGLETON_DECLARE(Screen);
 	public:

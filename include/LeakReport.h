@@ -55,7 +55,7 @@
 
 namespace Seed {
 
-class LeakReport
+class SEED_CORE_API LeakReport
 {
 	SEED_SINGLETON_DECLARE(LeakReport);
 
@@ -127,10 +127,6 @@ class LeakReport
 
 		PointerInfo arInfo[SEED_LEAK_MAX];
 };
-
-//extern "C" {
-//SEED_CORE_API SEED_SINGLETON_EXTERNALIZE(LeakReport);
-//}
 
 #define pLeakReport LeakReport::GetInstance()
 
